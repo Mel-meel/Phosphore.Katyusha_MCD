@@ -1,0 +1,361 @@
+## Créé le 5/5/2020 ##
+
+######################################################
+#  ___         __    __  ___         __   ___  ____  #
+#  |__| |  |  /  \  /    |__| |  |  /  \  |__| |     #
+#  |    |--| |    | ---- |    |--| |    | |\   |--   #
+#  |    |  |  \__/  ___/ |    |  |  \__/  | \  |___  #
+#                                                    #
+######################################################
+
+# Clic gauche sur le canvas principal
+bind .mcd.canvas.c <Button-1> {
+    global ACTION_B1
+    global CONFIGS
+    global LOCALE
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [.mcd.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [.mcd.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set px [expr %x + ($scrollbar_x_debut * $xbcanvas)]
+    set py [expr %y + ($scrollbar_y_debut * $ybcanvas)]
+    .mcd.infos.s.position_curseur configure -text "x : $px / y : $py"
+    if {$ACTION_B1 == "null"} {
+        puts "Rien à faire en position $px : $py"
+    } elseif {$ACTION_B1 == "ajout_table"} {
+        # Si la fenêtre d'ajout de table n'existe pas déjà, la créer
+        if {![winfo exists .fen_ajout_table]} {
+            INTERFACE_ajout_table $px $py
+            Katyusha_boutons_ajout_off
+        }
+    } elseif {$ACTION_B1 == "ajout_relation"} {
+        # Si la fenêtre d'ajout de relation n'existe pas déjà, la créer
+        if {![winfo exists .fen_ajout_relation]} {
+            INTERFACE_ajout_relation $px $py
+            Katyusha_boutons_ajout_off
+        }
+    } elseif {$ACTION_B1 == "ajout_etiquette"} {
+        # Si la fenêtre d'ajout d'étiquette n'existe pas déjà, la créer
+        if {![winfo exists .fen_ajout_etiquette]} {
+            INTERFACE_Etiquettes_ajout $px $py
+            Katyusha_boutons_ajout_off
+        }
+    } elseif {$ACTION_B1 == "ajout_heritage"} {
+        # Si la fenêtre d'ajout d'héritage n'existe pas déjà, la créer
+        if {![winfo exists .fen_ajout_relation]} {
+            INTERFACE_Heritages_ajout $px $py
+            Katyusha_boutons_ajout_off
+        }
+    }
+}
+
+
+##
+# Bouger une table avec la souris
+##
+.mcd.canvas.c bind table <Button-1> {
+    global tables_graphique
+    global CONFIGS
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [.mcd.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [.mcd.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [.mcd.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [.mcd.canvas.c gettags $id]
+    set tag [lindex $selected 1]
+    puts "$tag sélectionné"
+    set id_graphique [lindex [dict get $tables_graphique [lindex $selected 1]] 0]
+    set coords [.mcd.canvas.c coords $id_graphique]
+    set atx [expr %x + ($scrollbar_x_debut * $xbcanvas)]
+    set aty [expr %y + ($scrollbar_y_debut * $ybcanvas)]
+}
+
+.mcd.canvas.c bind table <B1-Motion> {
+    global tables_graphique
+    global CONFIGS
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    if {$tag != ""} {
+        set changed_x [expr [expr %x + ($scrollbar_x_debut * $xbcanvas)] - $atx]
+        set changed_y [expr [expr %y + ($scrollbar_y_debut * $ybcanvas)] - $aty]
+        # Vérifie que la table ne dépasse pas les limites du mcd
+        # TODO : À revoir, la limitation de déplacement ne fonctionne pas correctement
+        #if {$changed_x < $xbcanvas && $changed_x > 0 && $changed_y < $ybcanvas && $changed_y > 0} {
+            foreach c [dict get $tables_graphique $tag] {
+                .mcd.canvas.c move $c $changed_x $changed_y
+            }
+            set coords [.mcd.canvas.c coords $id_graphique]
+            # MAJ des coordonnées de la table
+            set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
+            set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
+            Katyusha_Tables_MAJ_coords $tag [list $x $y]
+            # MAJ de la ligne reliant la table à sa relation
+            Katyusha_Tables_MAJ_ligne_coords $tag [list [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+        #}
+        set atx [expr %x + ($scrollbar_x_debut * $xbcanvas)]
+        set aty [expr %y + ($scrollbar_y_debut * $ybcanvas)]
+    } else {
+        puts "Oups..."
+    }
+    update
+}
+
+
+##
+# Bouger une relation avec la souris
+##
+.mcd.canvas.c bind relation <Button-1> {
+    global relations_graphique
+    global CONFIGS
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [.mcd.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [.mcd.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [.mcd.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [.mcd.canvas.c gettags $id]
+    set tag [lindex $selected 1]
+    puts "$tag sélectionné"
+    set id_graphique [lindex [dict get $relations_graphique [lindex $selected 1]] 0]
+    set coords [.mcd.canvas.c coords $id_graphique]
+    set atx [expr %x + ($scrollbar_x_debut * $xbcanvas)]
+    set aty [expr %y + ($scrollbar_y_debut * $ybcanvas)]
+}
+
+.mcd.canvas.c bind relation <B1-Motion> {
+    global relations_graphique
+    
+    set changed_x [expr [expr %x + ($scrollbar_x_debut * $xbcanvas)] - $atx]
+    set changed_y [expr [expr %y + ($scrollbar_y_debut * $ybcanvas)] - $aty]
+    foreach c [dict get $relations_graphique $tag] {
+        .mcd.canvas.c move $c $changed_x $changed_y
+    }
+            set coords [.mcd.canvas.c coords $id_graphique]
+            # MAJ des coordonnées de la table
+            set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
+            set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
+    Katyusha_Relations_MAJ_coords $tag [list $x $y]
+    Katyusha_Relations_MAJ_ligne_coords $tag [list [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set atx [expr %x + ($scrollbar_x_debut * $xbcanvas)]
+    set aty [expr %y + ($scrollbar_y_debut * $ybcanvas)]
+    update
+}
+
+
+##
+# Bouger une etiquette avec la souris
+##
+.mcd.canvas.c bind etiquette <Button-1> {
+    global etiquettes_graphique
+    global CONFIGS
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [.mcd.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [.mcd.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [.mcd.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [.mcd.canvas.c gettags $id]
+    set tag [lindex $selected 1]
+    set id_graphique [lindex [dict get $etiquettes_graphique [lindex $selected 1]] 0]
+    set coords [.mcd.canvas.c coords $id_graphique]
+    puts "$tag sélectionné"
+    set atx [expr %x + ($scrollbar_x_debut * $xbcanvas)]
+    set aty [expr %y + ($scrollbar_y_debut * $ybcanvas)]
+}
+
+.mcd.canvas.c bind etiquette <B1-Motion> {
+    global etiquettes_graphique
+    
+    set changed_x [expr [expr %x + ($scrollbar_x_debut * $xbcanvas)] - $atx]
+    set changed_y [expr [expr %y + ($scrollbar_y_debut * $ybcanvas)] - $aty]
+    for {set c 0} {$c < 2} {incr c} {
+        .mcd.canvas.c move [lindex [dict get $etiquettes_graphique $tag] $c] $changed_x $changed_y
+    }
+    Katyusha_Etiquettes_MAJ_coords $tag [list $atx $aty]
+    set atx [expr %x + ($scrollbar_x_debut * $xbcanvas)]
+    set aty [expr %y + ($scrollbar_y_debut * $ybcanvas)]
+    update
+}
+
+
+##
+# Bouger un héritage avec la souris
+##
+.mcd.canvas.c bind heritage <Button-1> {
+    global heritages_graphique
+    global CONFIGS
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [.mcd.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [.mcd.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [.mcd.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [.mcd.canvas.c gettags $id]
+    set tag [lindex $selected 1]
+    set id_graphique [lindex [dict get $heritages_graphique [lindex $selected 1]] 0]
+    set coords [.mcd.canvas.c coords $id_graphique]
+    puts "$tag sélectionné"
+    set atx [expr %x + ($scrollbar_x_debut * $xbcanvas)]
+    set aty [expr %y + ($scrollbar_y_debut * $ybcanvas)]
+}
+
+.mcd.canvas.c bind heritage <B1-Motion> {
+    global heritages_graphique
+    
+    set changed_x [expr [expr %x + ($scrollbar_x_debut * $xbcanvas)] - $atx]
+    set changed_y [expr [expr %y + ($scrollbar_y_debut * $ybcanvas)] - $aty]
+    for {set c 0} {$c < 2} {incr c} {
+        .mcd.canvas.c move [lindex [dict get $heritages_graphique $tag] $c] $changed_x $changed_y
+    }
+    set coords [.mcd.canvas.c coords $id_graphique]
+    # MAJ des coordonnées de la table
+    set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
+    set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
+    Katyusha_Heritages_MAJ_coords $tag [list $atx $aty]
+    Katyusha_Heritages_MAJ_lignes $tag
+    
+    set atx [expr %x + ($scrollbar_x_debut * $xbcanvas)]
+    set aty [expr %y + ($scrollbar_y_debut * $ybcanvas)]
+    update
+}
+
+##
+# Menu de clic droit des tables
+##
+.mcd.canvas.c bind table <Button-3> {
+    global CONFIGS
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [.mcd.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [.mcd.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [.mcd.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [.mcd.canvas.c gettags $id]
+    popupMenu .menu_table %x %y
+}
+
+menu .menu_table -tearoff 0
+.menu_table add command -label $LOCALE(editer) -command {INTERFACE_ajout_table 0 0 [lindex $selected 1]}
+.menu_table add command -label $LOCALE(supprimer) -command {INTERFACE_suppression_entite "table" [lindex $selected 1]}
+
+##
+# Menu de clic droit des relations
+##
+.mcd.canvas.c bind relation <Button-3> {
+    global CONFIGS
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [.mcd.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [.mcd.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [.mcd.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [.mcd.canvas.c gettags $id]
+    popupMenu .menu_relation %x %y
+}
+
+menu .menu_relation -tearoff 0
+.menu_relation add command -label $LOCALE(editer) -command {INTERFACE_ajout_relation 0 0 [lindex $selected 1]}
+.menu_relation add command -label $LOCALE(supprimer) -command {INTERFACE_suppression_entite "relation" [lindex $selected 1]}
+
+##
+# Menu de clic droit des étiquettes
+##
+.mcd.canvas.c bind etiquette <Button-3> {
+    global CONFIGS
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [.mcd.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [.mcd.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [.mcd.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [.mcd.canvas.c gettags $id]
+    popupMenu .menu_etiquette %x %y
+}
+
+menu .menu_etiquette -tearoff 0
+.menu_etiquette add command -label $LOCALE(editer) -command {INTERFACE_Etiquettes_ajout 0 0 [lindex $selected 1]}
+.menu_etiquette add command -label $LOCALE(supprimer) -command {INTERFACE_suppression_entite "etiquette" [lindex $selected 1]}
+
+
+##
+# Menu de clic droit des héritages
+##
+.mcd.canvas.c bind heritage <Button-3> {
+    global CONFIGS
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [.mcd.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [.mcd.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [.mcd.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [.mcd.canvas.c gettags $id]
+    popupMenu .menu_heritage %x %y
+}
+
+menu .menu_heritage -tearoff 0
+.menu_heritage add command -label $LOCALE(editer) -command {INTERFACE_Heritages_ajout 0 0 [lindex $selected 1]}
+.menu_heritage add command -label $LOCALE(supprimer) -command {INTERFACE_suppression_entite "heritage" [lindex $selected 1]}
+
+proc popupMenu {theMenu theX theY} {
+    set x [expr [winfo rootx .mcd.canvas.c]+int($theX)]
+    set y [expr [winfo rooty .mcd.canvas.c]+int($theY)]
+    tk_popup $theMenu $x $y
+}

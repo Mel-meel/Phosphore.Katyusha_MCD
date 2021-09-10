@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<katyusha>
+	<version>0.0.6</version>
+</katyusha>
+<base>
+	<nom>Base</nom>
+	<sgbd>mysql</sgbd>
+	<drop>0</drop>
+</base>
+<tables>
+</tables>
+<relations>
+</relations>
+
