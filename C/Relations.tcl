@@ -28,6 +28,9 @@ proc Katyusha_Relations_maj {} {
     }
 }
 
+##
+# Met à jour les lignes reliant les relations aux tables
+##
 proc Katyusha_Relations_MAJ_lignes_relations {} {
     global relations
     foreach {k relation} $relations {
