@@ -386,7 +386,9 @@ proc INTERFACE_exporter_svg {} {
 proc INTERFACE_imprimer {} {
     set taille [Katyusha_SVG_taille_svg .mcd.canvas.c]
     set fichier [tk_getSaveFile]
-    set fp [open $fichier "w+"]
-.mcd.canvas.c postscript -channel $fp -width [lindex $taille 0] -height [lindex $taille 0]
-    close $fp
+    if {$fichier != ""} {
+        set fp [open $fichier "w+"]
+        .mcd.canvas.c postscript -channel $fp -width [lindex $taille 0] -height [lindex $taille 0]
+        close $fp
+    }
 }
