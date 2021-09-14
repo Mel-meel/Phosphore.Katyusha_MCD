@@ -152,6 +152,7 @@ proc Katyusha_ajout_relation {relation_tmp} {
     dict set relations_graphique $ID $graph
     # Trace les lignes pour plus de visibilité
     Katyusha_Relations_lignes_relation_tables $relation_tmp $ID
+    Katyusha_Relations_MAJ_ligne_coords $ID [dict get $relation_tmp "coords"]
     puts "Ajout de la relation : [dict get $relation_tmp nom]"
     set ID [expr $ID + 1]
     unset graph relation_tmp nom hauteur largeur texte_attributs
@@ -166,6 +167,7 @@ proc Katyusha_Relations_modification_graphique {id relation} {
     set graph [Katyusha_Relations_creer_affichage_graphique $id $relation]
     # Ajoute la liste temporaire au dictionnaire graphique des relations
     dict set relations_graphique $id $graph
+    Katyusha_Historique_maj
 }
 
 ##
