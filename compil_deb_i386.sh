@@ -17,7 +17,7 @@ mkdir ./tmp/KatyushaMCD_$1-$2_i386/usr
 mkdir ./tmp/KatyushaMCD_$1-$2_i386/usr/bin
 
 echo "#!/bin/sh
-tclsh /usr/share/Phosphore/KatyushaMCD/Katyusha.tcl" > ./tmp/KatyushaMCD_$1-$2_i386/usr/bin/katyushamcd
+tclsh /usr/share/Phosphore/KatyushaMCD/Katyusha.tcl \$1" > ./tmp/KatyushaMCD_$1-$2_i386/usr/bin/katyushamcd
 chmod +x ./tmp/KatyushaMCD_$1-$2_i386/usr/bin/katyushamcd
 
 mkdir ./tmp/KatyushaMCD_$1-$2_i386/usr/share
