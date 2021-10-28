@@ -434,11 +434,11 @@ proc Katyusha_GenerationSQL_applique_changements_tables {relations tables sgbd} 
             } else {
                 set type_lien1 [lindex $lien1 1]
                 if {$type_lien1 == "1.1"} {
-                    set table_lien [lindex $lien2 0]
-                    set table_liee [lindex $lien1 0]
-                } else {
                     set table_lien [lindex $lien1 0]
                     set table_liee [lindex $lien2 0]
+                } else {
+                    set table_lien [lindex $lien2 0]
+                    set table_liee [lindex $lien1 0]
                 }
             }
             set id_table_liee [Katyusha_Tables_ID_table $table_liee]
