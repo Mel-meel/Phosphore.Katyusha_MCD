@@ -360,11 +360,11 @@ proc Katyusha_GenerationSQL_FK {tables relations sgbd} {
             } else {
                 set type_lien1 [lindex $lien1 1]
                 if {$type_lien1 == "1.1"} {
-                    set table_lien [lindex $lien2 0]
-                    set table_liee [lindex $lien1 0]
-                } else {
                     set table_lien [lindex $lien1 0]
                     set table_liee [lindex $lien2 0]
+                } else {
+                    set table_lien [lindex $lien2 0]
+                    set table_liee [lindex $lien1 0]
                 }
             }
             set pk_table_liee [Katyusha_pk_table $table_liee $sgbd]
