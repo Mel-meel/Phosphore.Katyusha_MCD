@@ -12,7 +12,7 @@
 #
 ##
 proc Katyusha_Configurations_liste_elements_config {} {
-    return [list "LANG" "RESOLUTION" "STATS" "NOM_BDD_DEFAUT" "SGBD_DEFAUT" "DROP_DEFAUT" "TAILLE_CANVAS" "REP_PROJETS_DEFAUT" "COULEUR_FOND_RELATION_DEFAUT" "COULEUR_LIENS_RELATION_DEFAUT" "COULEUR_LIGNE_RELATION_DEFAUT" "COULEUR_TEXTE_RELATION_DEFAUT" "COULEUR_FOND_TETE_TABLE_DEFAUT" "COULEUR_FOND_CORPS_TABLE_DEFAUT" "COULEUR_LIGNE_TABLE_DEFAUT" "COULEUR_TEXTE_TABLE_DEFAUT" "COULEUR_FOND_ETIQUETTE_DEFAUT" "COULEUR_LIGNE_ETIQUETTE_DEFAUT" "COULEUR_TEXTE_ETIQUETTE_DEFAUT" "COULEUR_FOND_HERITAGE_DEFAUT" "COULEUR_LIGNE_HERITAGE_DEFAUT" "COULEUR_TEXTE_HERITAGE_DEFAUT" "COULEUR_LIENS_HERITAGE_DEFAUT"]
+    return [list "LANG" "RESOLUTION" "STATS" "NOM_BDD_DEFAUT" "SGBD_DEFAUT" "DROP_DEFAUT" "TAILLE_CANVAS" "REP_PROJETS_DEFAUT" "COULEUR_FOND_RELATION_DEFAUT" "COULEUR_LIENS_RELATION_DEFAUT" "COULEUR_LIGNE_RELATION_DEFAUT" "COULEUR_TEXTE_RELATION_DEFAUT" "COULEUR_FOND_TETE_TABLE_DEFAUT" "COULEUR_FOND_CORPS_TABLE_DEFAUT" "COULEUR_LIGNE_TABLE_DEFAUT" "COULEUR_TEXTE_TABLE_DEFAUT" "COULEUR_FOND_ETIQUETTE_DEFAUT" "COULEUR_LIGNE_ETIQUETTE_DEFAUT" "COULEUR_TEXTE_ETIQUETTE_DEFAUT" "COULEUR_FOND_HERITAGE_DEFAUT" "COULEUR_LIGNE_HERITAGE_DEFAUT" "COULEUR_TEXTE_HERITAGE_DEFAUT" "COULEUR_LIENS_HERITAGE_DEFAUT" "AFFICHAGE_OBJETS"]
 }
 
 ##
@@ -38,15 +38,15 @@ proc Katyusha_Configurations_init {} {
         file copy "$rpr/configs/defaut.conf" "$rep_configs/katyusha.conf"
     } else {
         # Si le fichier existe, vérifie que toutes les données sont présentes
-        set fp [open "$rep_configs/katyusha.conf" "r"]
-        set contenu [read $fp]
-        close $fp
-        foreach element [Katyusha_Configurations_liste_elements_config] {
-            if {[string first $element $contenu] < 0} {
-                file delete "$rep_configs/katyusha.conf"
-                file copy "$rpr/configs/defaut.conf" "$rep_configs/katyusha.conf"
-            }
-        }
+        #set fp [open "$rep_configs/katyusha.conf" "r"]
+        #set contenu [read $fp]
+        #close $fp
+        #foreach element [Katyusha_Configurations_liste_elements_config] {
+        #    if {[string first $element $contenu] < 0} {
+        #        file delete "$rep_configs/katyusha.conf"
+        #        file copy "$rpr/configs/defaut.conf" "$rep_configs/katyusha.conf"
+        #    }
+        #}
     }
     if {![file exists "$rep_configs/recents"]} {
         file copy "$rpr/configs/recents" "$rep_configs/recents"
@@ -63,20 +63,40 @@ proc Katyusha_Configurations_init {} {
     set nom_script "projet$id_script.sql"
 }
 
-proc Katyusha_Configurations_charge {rep_main rep_configs} {
-    global CONFIGS
-    global MCD
-    # Charge les configurations
-    # Ouvre le fichier en lecture
-    set fp [open "$rep_configs/katyusha.conf" "r"]
+proc Katyusha_Configurations_charge_config {fichier} {
+	set configs [dict create]
+	# Ouvre le fichier en lecture
+    set fp [open $fichier "r"]
     set stream [read $fp]
     close $fp
     # Balyage des lignes
     foreach ligne [split $stream "\n"] {
         set clef [lindex [split $ligne ":"] 0]
         set valeur [lindex [split $ligne ":"] 1]
-        set CONFIGS($clef) $valeur
+        dict set configs $clef $valeur
     }
+    return $configs
+}
+
+proc Katyusha_Configurations_charge {rep_main rep_configs} {
+    global CONFIGS
+    global MCD
+    # Charge les configurations du fichier local et du fichier pa défaut
+    set conf_loc [Katyusha_Configurations_charge_config "$rep_configs/katyusha.conf"]
+    set conf_defaut [Katyusha_Configurations_charge_config "$rep_main/configs/defaut.conf"]
+    puts $conf_defaut
+    # Compare et prends les élément de configuration par défaut si ils n'existent pas en local
+    foreach {k v} $conf_defaut {
+		if {[dict exists $conf_loc $k] != 1} {
+			dict set conf_loc $k $v
+		}
+	}
+    #puts $conf_loc
+	
+	foreach {k v} $conf_loc {
+		set CONFIGS($k) $v
+	}
+	
     set MCD(nom) $CONFIGS(NOM_BDD_DEFAUT)
     set MCD(sgbd) $CONFIGS(SGBD_DEFAUT)
     set MCD(drop) $CONFIGS(DROP_DEFAUT)
@@ -97,6 +117,9 @@ proc Katyusha_Configurations_charge {rep_main rep_configs} {
     set MCD(couleur_texte_heritage) $CONFIGS(COULEUR_TEXTE_HERITAGE_DEFAUT)
     set MCD(couleur_ligne_heritage) $CONFIGS(COULEUR_LIGNE_HERITAGE_DEFAUT)
     set MCD(couleur_liens_heritage) $CONFIGS(COULEUR_LIENS_HERITAGE_DEFAUT)
+    set MCD(affichage_objets) $CONFIGS(AFFICHAGE_OBJETS)
+    
+    Katyusha_Configurations_sauve $CONFIGS(LANG)
 }
 
 proc Katyusha_Configurations_packages {} {
@@ -218,7 +241,7 @@ proc Katyusha_Configurations_sauve {langue} {
         set conf "$conf$element:$CONFIGS($element)\n"
     }
     
-    #set conf "LANG:$CONFIGS(LANG)\nRESOLUTION:$CONFIGS(RESOLUTION)\nSTATS:$CONFIGS(STATS)\nNOM_BDD_DEFAUT:$CONFIGS(NOM_BDD_DEFAUT)\nSGBD_DEFAUT:$CONFIGS(SGBD_DEFAUT)\nDROP_DEFAUT:$CONFIGS(DROP_DEFAUT)\nTAILLE_CANVAS:$CONFIGS(TAILLE_CANVAS)"
+    #set conf "LANG:$CONFIGS(LANG)\nRESOLUTION:$CONFIGS(RESOLUTION)\nSTATS:$CONFIGS(STATS)\nNOM_BDD_DEFAUT:$CONFIGS(NOM_BDD_DEFAUT)\nSGBD_DEFAUT:$CONFIGS(SGBD_DEFAUT)\nDROP_DEFAUT:$CONFIGS(DROP_DEFAUT)\nTAILLE_CANVAS:$CONFIGS(TAILLE_CANVAS)\nAFFICHAGE_OBJETS:$CONFIG(AFFICHAGE_OBJETS)"
     
     # Ouvre le fichier en écriture
     set fp [open "$rep_configs/katyusha.conf" "w+"]
