@@ -36,17 +36,6 @@ proc Katyusha_Configurations_init {} {
     # Copie le fichier par défaut si le fichier de configuration n'existe pas
     if {![file exists "$rep_configs/katyusha.conf"]} {
         file copy "$rpr/configs/defaut.conf" "$rep_configs/katyusha.conf"
-    } else {
-        # Si le fichier existe, vérifie que toutes les données sont présentes
-        #set fp [open "$rep_configs/katyusha.conf" "r"]
-        #set contenu [read $fp]
-        #close $fp
-        #foreach element [Katyusha_Configurations_liste_elements_config] {
-        #    if {[string first $element $contenu] < 0} {
-        #        file delete "$rep_configs/katyusha.conf"
-        #        file copy "$rpr/configs/defaut.conf" "$rep_configs/katyusha.conf"
-        #    }
-        #}
     }
     if {![file exists "$rep_configs/recents"]} {
         file copy "$rpr/configs/recents" "$rep_configs/recents"
@@ -84,14 +73,12 @@ proc Katyusha_Configurations_charge {rep_main rep_configs} {
     # Charge les configurations du fichier local et du fichier pa défaut
     set conf_loc [Katyusha_Configurations_charge_config "$rep_configs/katyusha.conf"]
     set conf_defaut [Katyusha_Configurations_charge_config "$rep_main/configs/defaut.conf"]
-    puts $conf_defaut
     # Compare et prends les élément de configuration par défaut si ils n'existent pas en local
     foreach {k v} $conf_defaut {
 		if {[dict exists $conf_loc $k] != 1} {
 			dict set conf_loc $k $v
 		}
 	}
-    #puts $conf_loc
 	
 	foreach {k v} $conf_loc {
 		set CONFIGS($k) $v
@@ -117,7 +104,7 @@ proc Katyusha_Configurations_charge {rep_main rep_configs} {
     set MCD(couleur_texte_heritage) $CONFIGS(COULEUR_TEXTE_HERITAGE_DEFAUT)
     set MCD(couleur_ligne_heritage) $CONFIGS(COULEUR_LIGNE_HERITAGE_DEFAUT)
     set MCD(couleur_liens_heritage) $CONFIGS(COULEUR_LIENS_HERITAGE_DEFAUT)
-    set MCD(affichage_objets) $CONFIGS(AFFICHAGE_OBJETS)
+    set CONFIGS(AFFICHAGE_OBJETS) [split $CONFIGS(AFFICHAGE_OBJETS) " "]
     
     Katyusha_Configurations_sauve $CONFIGS(LANG)
 }
@@ -241,7 +228,16 @@ proc Katyusha_Configurations_sauve {langue} {
         set conf "$conf$element:$CONFIGS($element)\n"
     }
     
-    #set conf "LANG:$CONFIGS(LANG)\nRESOLUTION:$CONFIGS(RESOLUTION)\nSTATS:$CONFIGS(STATS)\nNOM_BDD_DEFAUT:$CONFIGS(NOM_BDD_DEFAUT)\nSGBD_DEFAUT:$CONFIGS(SGBD_DEFAUT)\nDROP_DEFAUT:$CONFIGS(DROP_DEFAUT)\nTAILLE_CANVAS:$CONFIGS(TAILLE_CANVAS)\nAFFICHAGE_OBJETS:$CONFIG(AFFICHAGE_OBJETS)"
+    set tmp ""
+    foreach el $CONFIGS(AFFICHAGE_OBJETS) {
+		if {$tmp == ""} {
+			set tmp "AFFICHAGE_OBJETS:$el"
+		} else {
+    		set tmp "$tmp\ $el"
+		}
+	}
+	
+    #set conf "LANG:$CONFIGS(LANG)\nRESOLUTION:$CONFIGS(RESOLUTION)\nSTATS:$CONFIGS(STATS)\nNOM_BDD_DEFAUT:$CONFIGS(NOM_BDD_DEFAUT)\nSGBD_DEFAUT:$CONFIGS(SGBD_DEFAUT)\nDROP_DEFAUT:$CONFIGS(DROP_DEFAUT)\nTAILLE_CANVAS:$CONFIGS(TAILLE_CANVAS)\n$tmp"
     
     # Ouvre le fichier en écriture
     set fp [open "$rep_configs/katyusha.conf" "w+"]

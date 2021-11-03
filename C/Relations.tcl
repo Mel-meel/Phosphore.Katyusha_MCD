@@ -67,26 +67,29 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
     set hauteur [expr $hauteur + 18]
     # Calcul la taille de la relation sur le canvas
     set largeur_nom [expr ([string length $nom] * 10) + 20]
-    set largeur_atts [expr (([dict get $tailles_colones "nom"] + [dict get $tailles_colones "type"] + [dict get $tailles_colones "null"]) * 10) + 90]
+	set largeur_atts 0
+    foreach {k el} $tailles_colones {
+		set largeur_atts [expr $largeur_atts + $el]
+    }
+    set largeur_atts [expr ($largeur_atts * 10) + 90]
+    
     if {$largeur_nom <= $largeur_atts} {
         set largeur $largeur_atts
     } else {
         set largeur $largeur_nom
     }
+    
     # Créé l'affichage graphique de la nouvelle relation dans une liste temporaire
     set x [lindex [dict get $relation "coords"] 0]
     set y [lindex [dict get $relation "coords"] 1]
-    # Rectangle invisible, sorte de "bound box" de la relation
-    #lappend graph [.mcd.canvas.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 30] -state hidden -tag [list relation $ID]]
     
     lappend graph [.mcd.canvas.c create oval [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 30] -width 2 -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond"] -tag [list relation $ID]]
-    lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 20] [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "pk"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
+    if [dict exists $colones "pk"] {
+		lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 20] [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "pk"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
+	}
     lappend graph [.mcd.canvas.c create oval [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 30] -width 2 -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond"] -tag [list relation $ID]]
     lappend graph [.mcd.canvas.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y - ($hauteur / 2) + 20] -fill [dict get $couleurs "texte"] -anchor w -text $nom -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
-
-    lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 50] [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "nom"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
-    lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 50 + ([dict get $tailles_colones "nom"] * 10) + 10] [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "type"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
-    lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 50 + (([dict get $tailles_colones "nom"] + [dict get $tailles_colones "type"]) * 10) + 20] [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "null"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
+    
     # Créé les images de clefs primaires
     foreach pk $pks {
         lappend graph [.mcd.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 30 + $pk] -image $IMG(pk) -tag [list relation $ID]]

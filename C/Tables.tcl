@@ -28,12 +28,14 @@ proc maj_tables {} {
 }
 
 proc Katyusha_Tables_creer_texte_affichage_graphique_taille_colones {attributs} {
-    dict set tailles "nom" 0
-    dict set tailles "type" 0
-    dict set tailles "null" 0
-    dict set tailles "pk" 0
+	global CONFIGS
+	
+    foreach el $CONFIGS(AFFICHAGE_OBJETS) {
+		dict set tailles $el 0
+	}
+    
     foreach {k attribut} $attributs {
-        foreach element [list "nom" "type" "null" "pk"] {
+        foreach element $CONFIGS(AFFICHAGE_OBJETS) {
             set valeur [dict get $attribut $element]
             if {$element == "null"} {
                 if {$valeur == 0} {
@@ -57,13 +59,15 @@ proc Katyusha_Tables_creer_texte_affichage_graphique_taille_colones {attributs} 
 }
 
 proc Katyusha_Tables_creer_affichage_graphique_format_colones {attributs} {
-    dict set colones "nom" ""
-    dict set colones "type" ""
-    dict set colones "null" ""
-    dict set colones "pk" ""
+	global CONFIGS
+	
+    foreach el $CONFIGS(AFFICHAGE_OBJETS) {
+		dict set colones $el ""
+	}
+	
     # Balayage des attributs
     foreach {k attribut} $attributs {
-        foreach element [list "nom" "type" "null" "pk"] {
+        foreach element $CONFIGS(AFFICHAGE_OBJETS) {
             set valeur [dict get $attribut $element]
             if {$element == "null"} {
                 if {$valeur == 0} {
@@ -110,6 +114,7 @@ proc Katyusha_Tables_creer_texte_affichage_graphique {table} {
 proc Katyusha_Tables_creer_affichage_graphique {ID table} {
     global IMG
     global rpr
+    global CONFIGS
     
     # Récupère le nom de la table
     set nom [dict get $table "nom"]
@@ -129,19 +134,32 @@ proc Katyusha_Tables_creer_affichage_graphique {ID table} {
         set hauteur [expr $hauteur + 18]
     }
     # Calcul la taille de la table sur le canvas
-    set largeur [expr (([dict get $tailles_colones "nom"] + [dict get $tailles_colones "type"] + [dict get $tailles_colones "null"]) * 10) + 90]
+    set largeur 0
+    foreach {k el} $tailles_colones {
+		set largeur [expr $largeur + $el]
+    }
+    set largeur [expr ($largeur * 10) + 90]
     # Créé l'affichage graphique de la nouvelle table dans une liste temporaire
     set x [lindex [dict get $table "coords"] 0]
     set y [lindex [dict get $table "coords"] 1]
     lappend graph [.mcd.canvas.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 40] -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond_tete"] -tag [list table $ID]]
-    lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 20] [expr $y + 50] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "pk"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
+    if [dict exists $colones "pk"] {
+		lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 20] [expr $y + 50] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "pk"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
+	}
     lappend graph [.mcd.canvas.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 40] -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond_tete"] -tag [list table $ID]]
     lappend graph [.mcd.canvas.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y - ($hauteur / 2) + 40] -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond_corps"] -tag [list table $ID]]
     lappend graph [.mcd.canvas.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y - ($hauteur / 2) + 20] -fill [dict get $couleurs "texte"] -anchor w -text $nom -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
     lappend graph [.mcd.canvas.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2) + 40] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 40] -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond_tete"] -tag [list table $ID]]
-    lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 50] [expr $y + 50] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "nom"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
-    lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 50 + ([dict get $tailles_colones "nom"] * 10) + 10] [expr $y + 50] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "type"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
-    lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 50 + (([dict get $tailles_colones "nom"] + [dict get $tailles_colones "type"]) * 10) + 20] [expr $y + 50] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "null"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
+    # Affiche les éléments des attributs selon la configuration
+    set taille 0
+    set x2 [expr $x - ($largeur / 2) + 50]
+    puts $colones
+    puts $tailles_colones
+    foreach element $CONFIGS(AFFICHAGE_OBJETS) {
+		set x2 [expr $x2 + ($taille * 10) + 10]
+		lappend graph [.mcd.canvas.c create text $x2 [expr $y + 50] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones $element] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
+		set taille [dict get $tailles_colones $element]
+	}
     # Créé les images de clefs primaires
     foreach pk $pks {
         lappend graph [.mcd.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 40 + $pk] -image $IMG(pk) -tag [list table $ID]]
