@@ -220,6 +220,11 @@ proc Katyusha_Configurations_MCD {nom liste_sgbd drop_base} {
 proc Katyusha_Configurations_sauve {langue} {
     global CONFIGS
     global rep_configs
+    global E_conf_att_nom
+    global E_conf_att_type
+    global E_conf_att_null
+    global E_conf_att_defaut
+    global E_conf_att_taille
     
     set CONFIGS(LANG) [lindex [split $langue " - "] 0]
     set conf ""
@@ -227,7 +232,9 @@ proc Katyusha_Configurations_sauve {langue} {
     foreach element [Katyusha_Configurations_liste_elements_config] {
         set conf "$conf$element:$CONFIGS($element)\n"
     }
-    
+	
+
+	
     set tmp ""
     foreach el $CONFIGS(AFFICHAGE_OBJETS) {
 		if {$tmp == ""} {
