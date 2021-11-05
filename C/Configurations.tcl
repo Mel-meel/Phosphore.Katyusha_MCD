@@ -217,7 +217,7 @@ proc Katyusha_Configurations_MCD {nom liste_sgbd drop_base} {
 ##
 # Enregistre les préférences de Katyusha MCD
 ##
-proc Katyusha_Configurations_sauve {langue} {
+proc Katyusha_Configurations_sauve {langue {maj_canvas 0}} {
     global CONFIGS
     global rep_configs
     global E_conf_att_nom
@@ -237,18 +237,31 @@ proc Katyusha_Configurations_sauve {langue} {
 	
     set tmp ""
     foreach el $CONFIGS(AFFICHAGE_OBJETS) {
-		if {$tmp == ""} {
-			set tmp "AFFICHAGE_OBJETS:$el"
-		} else {
-    		set tmp "$tmp\ $el"
-		}
-	}
+        if {$tmp == ""} {
+            set tmp "AFFICHAGE_OBJETS:$el"
+        } else {
+            set tmp "$tmp\ $el"
+        }
+    }
 	
-    #set conf "LANG:$CONFIGS(LANG)\nRESOLUTION:$CONFIGS(RESOLUTION)\nSTATS:$CONFIGS(STATS)\nNOM_BDD_DEFAUT:$CONFIGS(NOM_BDD_DEFAUT)\nSGBD_DEFAUT:$CONFIGS(SGBD_DEFAUT)\nDROP_DEFAUT:$CONFIGS(DROP_DEFAUT)\nTAILLE_CANVAS:$CONFIGS(TAILLE_CANVAS)\n$tmp"
+    set conf "LANG:$CONFIGS(LANG)\nRESOLUTION:$CONFIGS(RESOLUTION)\nSTATS:$CONFIGS(STATS)\nNOM_BDD_DEFAUT:$CONFIGS(NOM_BDD_DEFAUT)\nSGBD_DEFAUT:$CONFIGS(SGBD_DEFAUT)\nDROP_DEFAUT:$CONFIGS(DROP_DEFAUT)\nTAILLE_CANVAS:$CONFIGS(TAILLE_CANVAS)\n$tmp"
     
     # Ouvre le fichier en écriture
     set fp [open "$rep_configs/katyusha.conf" "w+"]
     set stream [read $fp]
     puts $fp $conf
     close $fp
+    
+    if {$maj_canvas == 1} {
+        # Met à jour le canvas
+        Katyusha_MCD_canvas_effacer
+        # Mise à jour graphique des entités
+        maj_tables
+        Katyusha_Relations_maj
+        Katyusha_Relations_MAJ_lignes_relations
+        Katyusha_Etiquettes_maj
+        Katyusha_Heritages_maj
+        Katyusha_MAJ_SC
+        Katyusha_Historique_maj
+    }
 }

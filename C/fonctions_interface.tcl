@@ -167,6 +167,7 @@ proc INTERFACE_preferences {} {
     global IMG
     global LOCALE
     global CONFIGS
+    global E_conf_att_pk
     global E_conf_att_nom
     global E_conf_att_type
     global E_conf_att_null
@@ -223,12 +224,17 @@ proc INTERFACE_preferences {} {
             pack $f.pref.taille_canvas.l $f.pref.taille_canvas.e -side left -fill x
         pack $f.pref.taille_canvas -fill x -padx 10
     pack $f.pref
+
+
+
     ##
     # Gestion de l'affichage au sein des objets
     ##
     
     foreach el $CONFIGS(AFFICHAGE_OBJETS) {
-		if {$el == "nom"} {
+		if {$el == "pk"} {
+			set E_conf_att_pk 1
+		} elseif {$el == "nom"} {
 			set E_conf_att_nom 1
 		} elseif {$el == "type"} {
 			set E_conf_att_type 1
@@ -244,6 +250,12 @@ proc INTERFACE_preferences {} {
     frame $f.aff_objets
 		label $f.aff_objets.titre -text "Choisir les propriétés des attributs à afficher à l'intérieur des objets du MCD"
 		pack $f.aff_objets.titre -fill x -pady 10 -padx 50
+		frame $f.aff_objets.pk
+			label $f.aff_objets.pk.f -text "Clef primaire" -width 50 -anchor w
+			checkbutton $f.aff_objets.pk.c -onvalue 1 -offvalue 0 -variable E_conf_att_pk
+			pack $f.aff_objets.pk.f $f.aff_objets.pk.c -side left -anchor w
+		pack $f.aff_objets.pk
+		
 		frame $f.aff_objets.nom
 			label $f.aff_objets.nom.f -text "Nom" -width 50 -anchor w
 			checkbutton $f.aff_objets.nom.c -onvalue 1 -offvalue 0 -variable E_conf_att_nom
@@ -255,6 +267,12 @@ proc INTERFACE_preferences {} {
 			checkbutton $f.aff_objets.type.c -onvalue 1 -offvalue 0 -variable E_conf_att_type
 			pack $f.aff_objets.type.f $f.aff_objets.type.c -side left -anchor w
 		pack $f.aff_objets.type
+			
+		frame $f.aff_objets.taille
+			label $f.aff_objets.taille.f -text "Taille de l'attribut" -width 50 -anchor w
+			checkbutton $f.aff_objets.taille.c -onvalue 1 -offvalue 0 -variable E_conf_att_taille
+			pack $f.aff_objets.taille.f $f.aff_objets.taille.c -side left -anchor w
+		pack $f.aff_objets.taille
 		
 		frame $f.aff_objets.null
 			label $f.aff_objets.null.f -text "Si l'attribut peut être nul" -width 50 -anchor w
@@ -267,18 +285,13 @@ proc INTERFACE_preferences {} {
 			checkbutton $f.aff_objets.defaut.c -onvalue 1 -offvalue 0 -variable E_conf_att_defaut
 			pack $f.aff_objets.defaut.f $f.aff_objets.defaut.c -side left -anchor w
 		pack $f.aff_objets.defaut
-			
-		frame $f.aff_objets.taille
-			label $f.aff_objets.taille.f -text "Taille de l'attribut" -width 50 -anchor w
-			checkbutton $f.aff_objets.taille.c -onvalue 1 -offvalue 0 -variable E_conf_att_taille
-			pack $f.aff_objets.taille.f $f.aff_objets.taille.c -side left -anchor w
-		pack $f.aff_objets.taille
 		
     pack $f.aff_objets -fill x
     
     frame $f.commandes
         button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
 			global CONFIGS
+			global E_conf_att_pk
 			global E_conf_att_nom
 			global E_conf_att_type
 			global E_conf_att_null
@@ -288,24 +301,27 @@ proc INTERFACE_preferences {} {
 			
 			set CONFIGS(AFFICHAGE_OBJETS) [list]
 			
+			if {$E_conf_att_pk == 1} {
+				lappend CONFIGS(AFFICHAGE_OBJETS) "pk"
+			}
 			if {$E_conf_att_nom == 1} {
 				lappend CONFIGS(AFFICHAGE_OBJETS) "nom"
 			}
 			if {$E_conf_att_type == 1} {
 				lappend CONFIGS(AFFICHAGE_OBJETS) "type"
 			}
+			if {$E_conf_att_taille == 1} {
+				lappend CONFIGS(AFFICHAGE_OBJETS) "taille"
+			}
 			if {$E_conf_att_null == 1} {
 				lappend CONFIGS(AFFICHAGE_OBJETS) "null"
 			}
 			if {$E_conf_att_defaut == 1} {
-				lappend CONFIGS(AFFICHAGE_OBJETS) "defaut"
-			}
-			if {$E_conf_att_taille == 1} {
-				lappend CONFIGS(AFFICHAGE_OBJETS) "taille"
+				lappend CONFIGS(AFFICHAGE_OBJETS) "valeur"
 			}
 			
             set langue [.fen_preferences.pref.langues.lb get]
-            Katyusha_Configurations_sauve $langue
+            Katyusha_Configurations_sauve $langue 1
             set res [tk_messageBox -type ok -message $LOCALE(prefs_alerte_configs_redemarrage)]
             destroy .fen_preferences
         }
