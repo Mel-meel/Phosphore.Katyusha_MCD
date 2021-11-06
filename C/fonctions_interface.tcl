@@ -248,40 +248,40 @@ proc INTERFACE_preferences {} {
 	}
 	
     frame $f.aff_objets
-		label $f.aff_objets.titre -text "Choisir les propriétés des attributs à afficher à l'intérieur des objets du MCD"
+		label $f.aff_objets.titre -text $LOCALE(prefs_titre_choix_props_att)
 		pack $f.aff_objets.titre -fill x -pady 10 -padx 50
 		frame $f.aff_objets.pk
-			label $f.aff_objets.pk.f -text "Clef primaire" -width 50 -anchor w
+			label $f.aff_objets.pk.f -text $LOCALE(prefs_pk) -width 50 -anchor w
 			checkbutton $f.aff_objets.pk.c -onvalue 1 -offvalue 0 -variable E_conf_att_pk
 			pack $f.aff_objets.pk.f $f.aff_objets.pk.c -side left -anchor w
 		pack $f.aff_objets.pk
 		
 		frame $f.aff_objets.nom
-			label $f.aff_objets.nom.f -text "Nom" -width 50 -anchor w
+			label $f.aff_objets.nom.f -text $LOCALE(prefs_nom) -width 50 -anchor w
 			checkbutton $f.aff_objets.nom.c -onvalue 1 -offvalue 0 -variable E_conf_att_nom
 			pack $f.aff_objets.nom.f $f.aff_objets.nom.c -side left -anchor w
 		pack $f.aff_objets.nom
 		
 		frame $f.aff_objets.type
-			label $f.aff_objets.type.f -text "Type" -width 50 -anchor w
+			label $f.aff_objets.type.f -text $LOCALE(prefs_type) -width 50 -anchor w
 			checkbutton $f.aff_objets.type.c -onvalue 1 -offvalue 0 -variable E_conf_att_type
 			pack $f.aff_objets.type.f $f.aff_objets.type.c -side left -anchor w
 		pack $f.aff_objets.type
 			
 		frame $f.aff_objets.taille
-			label $f.aff_objets.taille.f -text "Taille de l'attribut" -width 50 -anchor w
+			label $f.aff_objets.taille.f -text $LOCALE(prefs_taille) -width 50 -anchor w
 			checkbutton $f.aff_objets.taille.c -onvalue 1 -offvalue 0 -variable E_conf_att_taille
 			pack $f.aff_objets.taille.f $f.aff_objets.taille.c -side left -anchor w
 		pack $f.aff_objets.taille
 		
 		frame $f.aff_objets.null
-			label $f.aff_objets.null.f -text "Si l'attribut peut être nul" -width 50 -anchor w
+			label $f.aff_objets.null.f -text $LOCALE(prefs_null) -width 50 -anchor w
 			checkbutton $f.aff_objets.null.c -onvalue 1 -offvalue 0 -variable E_conf_att_null
 			pack $f.aff_objets.null.f $f.aff_objets.null.c -side left -anchor w
 		pack $f.aff_objets.null
 			
 		frame $f.aff_objets.defaut
-			label $f.aff_objets.defaut.f -text "Varleur par défaut" -width 50 -anchor w
+			label $f.aff_objets.defaut.f -text $LOCALE(prefs_defaut) -width 50 -anchor w
 			checkbutton $f.aff_objets.defaut.c -onvalue 1 -offvalue 0 -variable E_conf_att_defaut
 			pack $f.aff_objets.defaut.f $f.aff_objets.defaut.c -side left -anchor w
 		pack $f.aff_objets.defaut
