@@ -42,8 +42,9 @@ proc Katyusha_Relations_MAJ_lignes_relations {} {
 # Créé l'affichage graphique d'une relation
 ##
 proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
-    global MCD
+    global rpr
     global IMG
+    global CONFIGS
     
     # Récupère le nom de la relation
     set nom [dict get $relation "nom"]
@@ -69,7 +70,7 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
     set largeur_nom [expr ([string length $nom] * 10) + 20]
     set largeur_atts 0
     foreach {k el} $tailles_colones {
-		set largeur_atts [expr $largeur_atts + $el]
+        set largeur_atts [expr $largeur_atts + $el]
     }
     set largeur_atts [expr ($largeur_atts * 10) + 90]
     
@@ -84,16 +85,30 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
     set y [lindex [dict get $relation "coords"] 1]
     
     lappend graph [.mcd.canvas.c create oval [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 30] -width 2 -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond"] -tag [list relation $ID]]
-    if [dict exists $colones "pk"] {
-	lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 20] [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "pk"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
-    }
-    lappend graph [.mcd.canvas.c create oval [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 30] -width 2 -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond"] -tag [list relation $ID]]
     lappend graph [.mcd.canvas.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y - ($hauteur / 2) + 20] -fill [dict get $couleurs "texte"] -anchor w -text $nom -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
-    
+        # Affiche les éléments des attributs selon la configuration
+    set taille 0
+    set x2 [expr $x - ($largeur / 2) + 10]
+    foreach element $CONFIGS(AFFICHAGE_OBJETS) {
+        set x2 [expr $x2 + ($taille * 10) + 10]
+        # Pour palier au problème d'affichage de l'UTF8 avec TK, on créé ici
+        # le symbole 🔑 en blanc si l'attribut est une clef primaire.
+        # L'intérêt de l'afficher en blanc est que le symbole sera visible
+        # lors de l'export en SVG.
+        # Pour l'afficher sur le canvas, plus loin une image est collée par
+        # dessus le symbole.
+        if {$element == "pk"} {
+            set col [dict get $couleurs "fond"]
+        } else {
+            set col [dict get $couleurs "texte"]
+        }
+        lappend graph [.mcd.canvas.c create text $x2 [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones $element] -fill $col -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
+        set taille [dict get $tailles_colones $element]
+    }
     # Créé les images de clefs primaires
-    #foreach pk $pks {
-    #    lappend graph [.mcd.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 30 + $pk] -image $IMG(pk) -tag [list relation $ID]]
-    #}
+    foreach pk $pks {
+        lappend graph [.mcd.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 30 + $pk] -image $IMG(pk) -tag [list relation $ID]]
+    }
     unset x y hauteur largeur nom relation ID
     return $graph
 }

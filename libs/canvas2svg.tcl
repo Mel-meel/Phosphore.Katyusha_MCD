@@ -90,7 +90,13 @@ proc canvas2svg {c} {
         #foreach {x0 y0 x1 y1} \
         #    [string map {".0 " " "} "[$c coords $item] "] break
         lassign [$c coords $item] x0 y0 x1 y1
-        catch {set fill [rgb2xcolor [$c itemcget $item -fill]]}
+        catch {
+            if {$type == "text"} {
+                set fill "black"
+            } else {
+                set fill [rgb2xcolor [$c itemcget $item -fill]]
+            }
+        }
         catch {set stroke [rgb2xcolor [$c itemcget $item -outline]]}
         catch {set width [expr round([$c itemcget $item -width])]}
         set pts {}

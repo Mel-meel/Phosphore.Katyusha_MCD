@@ -59,11 +59,11 @@ proc Katyusha_Tables_creer_texte_affichage_graphique_taille_colones {attributs} 
 }
 
 proc Katyusha_Tables_creer_affichage_graphique_format_colones {attributs} {
-	global CONFIGS
+    global CONFIGS
 	
     foreach el $CONFIGS(AFFICHAGE_OBJETS) {
-		dict set colones $el ""
-	}
+        dict set colones $el ""
+    }
 	
     # Balayage des attributs
     foreach {k attribut} $attributs {
@@ -115,18 +115,22 @@ proc Katyusha_Tables_creer_affichage_graphique {ID table} {
         set hauteur [expr $hauteur + 18]
     }
     # Calcul la taille de la table sur le canvas
-    set largeur 0
+    set largeur_nom [expr ([string length $nom] * 10) + 20]
+    set largeur_atts 0
     foreach {k el} $tailles_colones {
-		set largeur [expr $largeur + $el]
+        set largeur_atts [expr $largeur_atts + $el]
     }
-    set largeur [expr ($largeur * 10) + 90]
+    set largeur_atts [expr ($largeur_atts * 10) + 90]
+    
+    if {$largeur_nom <= $largeur_atts} {
+        set largeur $largeur_atts
+    } else {
+        set largeur $largeur_nom
+    }
+    
     # Créé l'affichage graphique de la nouvelle table dans une liste temporaire
     set x [lindex [dict get $table "coords"] 0]
     set y [lindex [dict get $table "coords"] 1]
-    lappend graph [.mcd.canvas.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 40] -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond_tete"] -tag [list table $ID]]
-    #if [dict exists $colones "pk"] {
-		#lappend graph [.mcd.canvas.c create text [expr $x - ($largeur / 2) + 20] [expr $y + 50] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones "pk"] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
-    #}
     lappend graph [.mcd.canvas.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 40] -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond_tete"] -tag [list table $ID]]
     lappend graph [.mcd.canvas.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y - ($hauteur / 2) + 40] -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond_corps"] -tag [list table $ID]]
     lappend graph [.mcd.canvas.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y - ($hauteur / 2) + 20] -fill [dict get $couleurs "texte"] -anchor w -text $nom -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
@@ -134,17 +138,26 @@ proc Katyusha_Tables_creer_affichage_graphique {ID table} {
     # Affiche les éléments des attributs selon la configuration
     set taille 0
     set x2 [expr $x - ($largeur / 2) + 10]
-    puts $colones
-    puts $tailles_colones
     foreach element $CONFIGS(AFFICHAGE_OBJETS) {
-		set x2 [expr $x2 + ($taille * 10) + 10]
-		lappend graph [.mcd.canvas.c create text $x2 [expr $y + 50] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones $element] -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
-		set taille [dict get $tailles_colones $element]
-	}
+        set x2 [expr $x2 + ($taille * 10) + 10]
+        # Pour palier au problème d'affichage de l'UTF8 avec TK, on créé ici
+        # le symbole 🔑 en blanc si l'attribut est une clef primaire.
+        # L'intérêt de l'afficher en blanc est que le symbole sera visible
+        # lors de l'export en SVG.
+        # Pour l'afficher sur le canvas, plus loin une image est collée par
+        # dessus le symbole.
+        if {$element == "pk"} {
+            set col [dict get $couleurs "fond_tete"]
+        } else {
+            set col [dict get $couleurs "texte"]
+        }
+        lappend graph [.mcd.canvas.c create text $x2 [expr $y + 50] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones $element] -fill $col -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
+        set taille [dict get $tailles_colones $element]
+    }
     # Créé les images de clefs primaires
-    #foreach pk $pks {
-        #lappend graph [.mcd.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 40 + $pk] -image $IMG(pk) -tag [list table $ID]]
-    #}
+    foreach pk $pks {
+        lappend graph [.mcd.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 40 + $pk] -image $IMG(pk) -tag [list table $ID]]
+    }
     unset x y hauteur largeur nom table ID
     return $graph
 }
