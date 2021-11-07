@@ -147,18 +147,18 @@ proc Katyusha_Configurations_resolution {} {
 proc Katyusha_Configurations_liste_langues {} {
     global rpr
     
-    set liste_langues [list]
-    set langues [glob -nocomplain -dir "$rpr/locale" "*.tcl"]
-    foreach langue $langues {
-        set nom_fichier [lindex [split $langue "/"] 2]
-        set code_langue [lindex [split $nom_fichier "."] 0]
-        set fp [open $langue "r"]
-        set contenu_fichier [read $fp]
-        close $fp
-        set premiere_ligne [lindex [split $contenu_fichier "\n"] 0]
-        set nom_langue [lindex [split $premiere_ligne " "] 1]
-        lappend liste_langues "$code_langue - $nom_langue"
-    }
+    #set liste_langues [list]
+    #set langues [glob -nocomplain -dir "$rpr/locale" "*.tcl"]
+    #foreach langue $langues {
+    #    set nom_fichier [lindex [split $langue "/"] 2]
+    #    set code_langue [lindex [split $nom_fichier "."] 0]
+    #    set fp [open $langue "r"]
+    #    set contenu_fichier [read $fp]
+    #    close $fp
+    #    set premiere_ligne [lindex [split $contenu_fichier "\n"] 0]
+    #    set nom_langue [lindex [split $premiere_ligne " "] 1]
+    #    lappend liste_langues "$code_langue - $nom_langue"
+    #}
     set liste_langues [list "fr - Français" "de - Deutsch" "en - English"]
     return $liste_langues
 }
