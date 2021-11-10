@@ -54,6 +54,7 @@ menu .mb.katyusha -tearoff 0
 menu .mb.fichier -tearoff 0
 menu .mb.bdd -tearoff 0
 menu .mb.mcd -tearoff 0
+menu .mb.code -tearoff 0
 menu .mb.aide -tearoff 0
 menu .mb.fichier.recents -tearoff 0
 . configure -menu .mb
@@ -61,6 +62,7 @@ menu .mb.fichier.recents -tearoff 0
 .mb add cascade -menu .mb.fichier -label $LOCALE(menu_fichier)
 .mb add cascade -menu .mb.mcd -label $LOCALE(menu_mcd)
 .mb add cascade -menu .mb.bdd -label $LOCALE(menu_bdd)
+.mb add cascade -menu .mb.code -label $LOCALE(menu_code)
 .mb add cascade -menu .mb.aide -label $LOCALE(menu_aide)
 
 # Menu Katyusha
@@ -110,6 +112,10 @@ foreach fichier [Katyusha_fichiers_recents] {
 #.mb.bdd add command -label $LOCALE(menu_connex_bdd) -command INTERFACE_connexion_bdd
 .mb.bdd add command -label $LOCALE(menu_gen_sql) -command INTERFACE_generation_sql
 #.mb.bdd add command -label $LOCALE(menu_gen_mcd) -command INTERFACE_generation_mcd
+
+# Menu code
+.mb.code add command -label "Générer du code PHP" -command INTERFACE_Code_generation_php
+.mb.code add command -label "Générer du code PHP Objet" -command INTERFACE_Code_generation_php_objet
 
 # Menu Aide
 .mb.aide add command -label $LOCALE(menu_aide_a_propos) -command INTERFACE_apropos
