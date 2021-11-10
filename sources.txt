@@ -59,6 +59,7 @@
 ./images/splash_0.1.x.png
 ./images/splash_0.2.x.png
 ./images/splash_0.3.x.png
+./images/splash_0.4.x.png
 ./images/supprimer.png
 ./images/valider-x32.png
 ./images/zoom-fit-best.png

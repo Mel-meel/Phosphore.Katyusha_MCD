@@ -18,7 +18,7 @@ proc Katyusha_Splash {rpr} {
     set y [lindex $resolution 1]
     
     # Récupération des images du splash
-    image create photo splash -file "$rpr/images/splash_0.3.x.png"
+    image create photo splash -file "$rpr/images/splash_0.4.x.png"
 
     # Variables de placement du splash
     set width_t 600
