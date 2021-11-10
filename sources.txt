@@ -6,6 +6,7 @@
 ./C/INTERFACE_Tables.tcl
 ./C/INTERFACE_Relations.tcl
 ./C/INTERFACE_Heritages.tcl
+./C/INTERFACE_Code.tcl
 ./C/C.tcl
 ./C/SQL_gen.tcl
 ./C/XML.tcl
@@ -26,6 +27,9 @@
 ./C/Attributs.tcl
 ./C/Historique.tcl
 ./C/SVG.tcl
+./C/Code.tcl
+./C/Code_gen.tcl
+./C/MLD.tcl
 
 ./libs/canvas2svg.tcl
 ./libs/arabe.tcl

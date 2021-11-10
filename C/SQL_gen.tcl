@@ -84,71 +84,6 @@ proc Katyusha_GenerationSQL_attribut {id attribut sgbd} {
 }
 
 ##
-# Détermine si une table est table fille d'un héritage
-##
-proc Katyusha_GenerationSQL_table_fille_ {id_table table} {
-    global heritages
-    
-    set res 0
-    foreach {k heritage} $heritages {
-        set filles [dict get $heritage "filles"]
-        foreach {k fille} $filles {
-            if {$fille == $id_table} {
-                set res 1
-            }
-        }
-    }
-    
-    return $res
-}
-
-##
-# Détermine si une table est table mère d'un héritage
-##
-proc Katyusha_GenerationSQL_table_mere_ {id_table table} {
-    global heritages
-    
-    set res 0
-    set id_heritage -1
-    foreach {k heritage} $heritages {
-        set mere [dict get $heritage "mere"]
-        if {$mere == $id_table} {
-            set res 1
-            set id_heritage $k
-        }
-    }
-    
-    return [list $id_heritage $res]
-}
-
-##
-#
-##
-proc Katyusha_GenerationSQL_table_mere_ajout_attributs_filles {attributs id_heritage nom_table_mere} {
-    global heritages
-    global tables
-    
-    set heritage [dict get $heritages $id_heritage]
-    set filles [dict get $heritage "filles"]
-    set id_attribut [expr [Katyusha_Attributs_dernier_id $attributs] + 1]
-    # Balayage des tables filles
-    foreach {k id_fille} $filles {
-        set fille [dict get $tables $id_fille]
-        set attributs_fille [dict get $fille "attributs"]
-        foreach {kk attribut} $attributs_fille {
-            set id_attribut [expr $id_attribut + 1]
-            dict set attributs $id_attribut [dict create "nom" [dict get $attribut "nom"] "type" [dict get $attribut "type"] "complement_type" [dict get $attribut "complement_type"] "taille" 0 "pk" 0 "null" 1 "auto" 0 "valeur" "null"]
-
-        }
-    }
-    # Ajout de l'attribut discriminant
-    set id_attribut [expr $id_attribut + 1]
-    dict set attributs $id_attribut [dict create "nom" "type_$nom_table_mere" "type" "varchar" "complement_type" "" "taille" 0 "pk" 0 "null" 0 "auto" 0 "valeur" $nom_table_mere]
-
-    return $attributs
-}
-
-##
 # Construit le script SQL des tables
 ##
 proc Katyusha_tables_sql {tables sgbd} {
@@ -156,15 +91,15 @@ proc Katyusha_tables_sql {tables sgbd} {
     # Balayage des tables
     foreach {k table} $tables {
         # On ne génère le script sql de la table que si elle n'est pas table fille d'un héritage
-        if {[Katyusha_GenerationSQL_table_fille_ $k $table] == 0} {
+        if {[Katyusha_MLD_table_fille_ $k $table] == 0} {
         set nom_table [dict get $table "nom"]
         puts "Génération de la table : $nom_table"
         set attributs_table [dict get $table "attributs"]
         # Si la table en question est table mère d'un héritage, elle aspire les attributs de ses filles
         # Et on lui ajoute un attribut discriminant
-        set table_mere [Katyusha_GenerationSQL_table_mere_ $k $table]
+        set table_mere [Katyusha_MLD_table_mere_ $k $table]
         if {[lindex $table_mere 1] == 1} {
-            set attributs_table [Katyusha_GenerationSQL_table_mere_ajout_attributs_filles $attributs_table [lindex $table_mere 0] $nom_table]
+            set attributs_table [Katyusha_MLD_table_mere_ajout_attributs_filles $attributs_table [lindex $table_mere 0] $nom_table]
         }
         # Si pas de description, ""
         if {[dict exists $table "description"]} {
@@ -249,51 +184,6 @@ proc Katyusha_pk_table {nom_table sgbd {pk_relatif 0}} {
 }
 
 ##
-# Détermine si une nouvelle table doit être créer
-#       1 pour une nouvelle table
-#       0 sinon
-##
-proc Katyusha_GenerationSQL_liens_n_table {liens} {
-    set n_table 1
-    
-    if {[dict size $liens] == 2} {
-        foreach {k lien} $liens {
-            set table_lien [lindex $lien 0]
-            set n_lien [lindex $lien 1]
-            if {$n_table == 1} {
-                if {$n_lien == "1.1"} {
-                    set n_table 0
-                } else {
-                }
-            }
-        }
-    }
-    
-    return $n_table
-}
-
-##
-# Si une nouvelle table doit être créé, récupère les clefs primaires des tables liés pour en faire des colones de la table créée
-##
-proc Katyusha_GenerationSQL_attributs_n_table {liens sgbd} {
-    set SQL ""
-    set attributs [dict create]
-    foreach {k lien} $liens {
-        set table_lien [lindex $lien 0]
-        set n_lien [lindex $lien 1]
-        if {$n_lien == "0.n" || $n_lien == "0.1" || $n_lien == "1.n" || $n_lien == "n.n"} {
-            # Liste des clefs primaires de la table
-            set liste_pk_table [Katyusha_pk_table $table_lien $sgbd 1]
-            # Balayage des clefs primaires
-            foreach {kk attribut} $liste_pk_table {
-                dict set attributs [dict size $attributs] $attribut
-            }
-        }
-    }
-    return $attributs
-}
-
-##
 # Ajoute un drop et create au script SQL
 ##
 proc Katyusha_GenerationSQL_base {sgbd} {
@@ -310,23 +200,6 @@ proc Katyusha_GenerationSQL_base {sgbd} {
     return $SQL
 }
 
-proc Katyusha_GenerationSQL_liens_egaux {liens} {
-    set res 0
-    set lien1 "null"
-    
-    foreach {k lien} $liens {
-        set lien2 [lindex $lien 1]
-        if {$lien1 == $lien2} {
-            set res 1
-        } else {
-            set res 0
-        }
-        set lien1 $lien2
-    }
-    
-    return $res
-}
-
 ##
 # Créé le code SQL des clefs étrangères à ajouter
 ##
@@ -336,7 +209,7 @@ proc Katyusha_GenerationSQL_FK {tables relations sgbd} {
         set nom_relation [dict get $relation "nom"]
         # Récupère et analyse les liens de la relation
         set liens [dict get $relation "liens"]
-        set n_table [Katyusha_GenerationSQL_liens_n_table $liens]
+        set n_table [Katyusha_MLD_liens_n_table $liens]
         
         # Si une nouvelle table doit être créée
         if {$n_table == 1} {
@@ -354,7 +227,7 @@ proc Katyusha_GenerationSQL_FK {tables relations sgbd} {
             set liens [dict get $relation "liens"]
             set lien1 [dict get $liens 0]
             set lien2 [dict get $liens 1]
-            if {[Katyusha_GenerationSQL_liens_egaux $liens] == 1} {
+            if {[Katyusha_MLD_liens_egaux $liens] == 1} {
                 set table_lien [lindex $lien1 0]
                 set table_liee [lindex $lien2 0]
             } else {
@@ -384,97 +257,16 @@ proc Katyusha_GenerationSQL_FK {tables relations sgbd} {
     return $SQL
 }
 
-##
-# Transforme certaines relations en tables
-##
-proc Katyusha_GenerationSQL_relations_en_tables {relations tables sgbd} {
-    foreach {k relation} $relations {
-        set liens [dict get $relation "liens"]
-        set nom [dict get $relation "nom"]
-        set attributs [dict get $relation "attributs"]
-        # Nouvelle table?
-        set n_table [Katyusha_GenerationSQL_liens_n_table $liens]
-        
-        if {$n_table == 1} {
-            # Créé les attributs de la nouvelle table
-            dict set table_tmp "nom" $nom
-            dict set table_tmp "description" ""
-            set attributs_gen [Katyusha_GenerationSQL_attributs_n_table $liens $sgbd]
-            # Regroupe les attributs de départ et les attributs générés
-            set c [expr [lindex [dict keys $attributs_gen] [expr [llength [dict keys $attributs_gen]] - 1]] + 1]
-            foreach {k v} $attributs {
-                dict set attributs_gen $c $v
-                set c [expr $c + 1]
-            }
-            dict set table_tmp "attributs" $attributs_gen
-            dict set table_tmp "vraie" 0
-            dict set tables [expr [Katyusha_Tables_dernier_id $tables] + 1] $table_tmp
-        }
-    }
-    return $tables
-}
-
-##
-# 
-##
-proc Katyusha_GenerationSQL_applique_changements_tables {relations tables sgbd} {
-    foreach {k relation} $relations {
-        set liens [dict get $relation "liens"]
-        set nom [dict get $relation "nom"]
-        set attributs [dict get $relation "attributs"]
-        # Nouvelle table?
-        set n_table [Katyusha_GenerationSQL_liens_n_table $liens]
-        
-        if {$n_table == 0} {
-            set lien1 [dict get $liens 0]
-            set lien2 [dict get $liens 1]
-            if {[Katyusha_GenerationSQL_liens_egaux $liens] == 1} {
-                set table_lien [lindex $lien1 0]
-                set table_liee [lindex $lien2 0]
-            } else {
-                set type_lien1 [lindex $lien1 1]
-                if {$type_lien1 == "1.1"} {
-                    set table_lien [lindex $lien1 0]
-                    set table_liee [lindex $lien2 0]
-                } else {
-                    set table_lien [lindex $lien2 0]
-                    set table_liee [lindex $lien1 0]
-                }
-            }
-            set id_table_liee [Katyusha_Tables_ID_table $table_liee]
-            set id_table_lien [Katyusha_Tables_ID_table $table_lien]
-            
-            set pk_table_liee [Katyusha_pk_table $table_liee $sgbd [lindex $lien2 2]]
-            set c [expr [lindex [dict keys $attributs] [expr [llength [dict keys $attributs]] - 1]] + 1]
-            foreach {k v} $pk_table_liee {
-                dict set attributs $c $v
-                set c [expr $c + 1]
-            }
-            
-            set table_lien [dict get $tables $id_table_lien]
-            set attributs_table_lien [dict get $table_lien "attributs"]
-            set c [expr [lindex [dict keys $attributs_table_lien] [expr [llength [dict keys $attributs_table_lien]] - 1]] + 1]
-            foreach {k v} $attributs {
-                dict set attributs_table_lien $c $v
-                set c [expr $c + 1]
-            }
-            dict set table_lien "attributs" $attributs_table_lien
-            dict set tables $id_table_lien $table_lien
-        }
-    }
-    return $tables
-}
-
 proc Katyusha_GenerationSQL_heritages {tables heritages sgbd} {
     foreach {k table} $tables {
         # On ne génère le script sql de la table que si elle n'est pas table fille d'un héritage
-        if {[Katyusha_GenerationSQL_table_fille_ $k $table] == 0} {
+        if {[Katyusha_MLD_table_fille_ $k $table] == 0} {
             set nom_table [dict get $table "nom"]
             puts "Génération de la table : $nom_table"
             set attributs_table [dict get $table "attributs"]
             # Si la table en question est table mère d'un héritage, elle aspire les attributs de ses filles
             # Et on lui ajoute un attribut discriminant
-            set table_mere [Katyusha_GenerationSQL_table_mere_ $k $table]
+            set table_mere [Katyusha_MLD_table_mere_ $k $table]
             if {[lindex $table_mere 1] == 1} {
                 set attributs_table [Katyusha_GenerationSQL_table_mere_ajout_attributs_filles $attributs_table [lindex $table_mere 0] $nom_table]
             }
@@ -489,9 +281,9 @@ proc Katyusha_GenerationSQL_tables {tables relations heritages sgbd} {
         dict set tables $k $table
     }
     # Transforme certaines relations en tables
-    set tables [Katyusha_GenerationSQL_relations_en_tables $relations $tables $sgbd]
+    set tables [Katyusha_MLD_relations_en_tables $relations $tables $sgbd]
     # Applique les changements dûs aux relations sur les tables
-    set tables [Katyusha_GenerationSQL_applique_changements_tables $relations $tables $sgbd]
+    set tables [Katyusha_MLD_applique_changements_tables $relations $tables $sgbd]
     set SQL "[Katyusha_tables_sql $tables $sgbd]\n[Katyusha_GenerationSQL_FK $tables $relations $sgbd]"
     
     return $SQL
