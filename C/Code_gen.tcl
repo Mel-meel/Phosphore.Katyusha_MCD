@@ -32,12 +32,14 @@ proc Katyusha_GenerationCode_main {tables relations heritages langage type_langa
         # Enregistre les fichiers
         foreach {nom code} $codes {
              set code "<?php\n$code\n?>"
+puts $code
         }
     }
 }
 
 ##
-# Construit le script SQL des tables
+# Génère pour chaque table le code correspondant au langage, au type de langage et à l'ORM choisi
+# 11/11/2021 : Pour le moment ne fonctionne que pour PHP procédural avec PDO et pour l'ORM PHP Doctrine
 ##
 proc Katyusha_GenerationCode_tables {tables langage type_langage} {
     set code [list]
@@ -69,9 +71,13 @@ proc Katyusha_GenerationCode_table {code_attributs langage type_langage} {
     return $code_attributs
 }
 
+##
+# Génère pour une table le code correspondant à l'ORM choisi
+# 11/11/2021 : Pour le moment, uniquement pour l'ORM PHP Doctrine
+##
+proc Katyusha_Generation_Code_fonctions_objet_orm {nom_table attributs langage} {
 
-
-
+}
 
 # Pour le moment, que pour PHP mode procédural
 proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage} {
@@ -93,6 +99,7 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage}
     set sql "$sql from $nom_table"
     
     set code "$code    \$res = array() ;\n    \$req = \$connex->prepare($sql) ;\n    \$req->execute() ;\n    \$c = 0 ;\n    while (\$row = \$req->fetch(PDO::FETCH_ASSOC)) \{\n        \$res\[\$c\] = \$row ;\n        \$c = \$c+1 ;\n    \}\n    \$req->closeCursor() ;\n    return \$res ;\n\}\n\n"
+    
     
     ##
     # Fonction de requête select PK
@@ -150,18 +157,49 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage}
     
     set code "$code    \$req = \$connex->prepare($sql) ;\n$bind    \$req->execute() ;\n    \$req->closeCursor() ;\n\}\n\n"
     
-
-
-
-
-
-
-
-
-
     
     ##
-    # Fonction de requête delet PK
+    # Fonction de requête update PK
+    ##
+    set code "$code\nfunction BDD_$nom_table\_update_PK(\$connex, \$$nom_table) \{\n"
+    set sql ""
+    set where ""
+    set bind ""
+    set bbind ""
+    set c 1
+    set cc 1
+    foreach {k attribut} $attributs {
+        set nom_attribut [dict get $attribut "nom"]
+        if {[dict get $attribut "pk"] == 0} {
+            if {$bind == ""} {
+                set sql "set $nom_attribut = ?"
+            } else {
+                set sql "$sql, set $nom_attribut = ?"
+            }
+            set bind "$bind    \$req->bindParam($c, \$$nom_table\[\"$nom_attribut\"\]) ;\n"
+            set c [expr $c + 1]
+        }
+    }
+    foreach {k attribut} $attributs {
+        set nom_attribut [dict get $attribut "nom"]
+        if {[dict get $attribut "pk"] == 1} {
+            if {$bbind == ""} {
+                set where "$nom_attribut = ?"
+            } else {
+                set where "$where and $nom_attribut = ?"
+            }
+            set bbind "$bbind    \$req->bindParam($c, \$$nom_table\[\"$nom_attribut\"\]) ;\n"
+            set c [expr $c + 1]
+        }
+    }
+    # Assemble la requête
+    set sql "update $nom_table $sql where $where"
+    
+    set code "$code    \$res = array() ;\n    \$req = \$connex->prepare(\"$sql\") ;\n$bind$bbind    \$req->execute() ;\n    \$res = \$req->fetch(PDO::FETCH_ASSOC) ;\n    \$req->closeCursor() ;\n    return \$res ;\n\}\n\n"
+    
+    
+    ##
+    # Fonction de requête delete PK
     ##
     set code "$code\nfunction BDD_$nom_table\_delete_PK(\$connex, \$$nom_table) \{\n"
     set sql ""
@@ -186,9 +224,7 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage}
     
     set code "$code    \$res = array() ;\n    \$req = \$connex->prepare(\"$sql\") ;\n$bind    \$req->execute() ;\n    \$res = \$req->fetch(PDO::FETCH_ASSOC) ;\n    \$req->closeCursor() ;\n    return \$res ;\n\}\n\n"
     
-
-
-
+    
     return $code
 }
 
