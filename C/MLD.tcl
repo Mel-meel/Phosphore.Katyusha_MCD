@@ -126,7 +126,7 @@ proc Katyusha_MLD_relations_en_tables {relations tables sgbd} {
 ##
 # 
 ##
-proc Katyusha_MLD_applique_changements_tables {relations tables sgbd} {
+proc Katyusha_MLD_applique_changements_tables {relations tables} {
     foreach {k relation} $relations {
         set liens [dict get $relation "liens"]
         set nom [dict get $relation "nom"]
