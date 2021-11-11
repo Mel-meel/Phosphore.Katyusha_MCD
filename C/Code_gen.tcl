@@ -18,9 +18,6 @@ proc Katyusha_GenerationCode_main {tables relations heritages langage type_langa
     set tables [Katyusha_MLD_relations_en_tables $relations $tables $sgbd]
     # Applique les changements dûs aux relations sur les tables
     set tables [Katyusha_MLD_applique_changements_tables $relations $tables $sgbd]
-    foreach {k v} $tables {
-        puts [dict get $v "nom"]
-    }
     set code [Katyusha_GenerationCode_tables $tables $langage $type_langage]
     puts $code
 }
@@ -29,7 +26,7 @@ proc Katyusha_GenerationCode_main {tables relations heritages langage type_langa
 # Construit le script SQL des tables
 ##
 proc Katyusha_GenerationCode_tables {tables langage type_langage} {
-    set code ""
+    set code [list]
     # Balayage des tables
     foreach {k table} $tables {
         # On ne génère le script sql de la table que si elle n'est pas table fille d'un héritage
@@ -43,7 +40,7 @@ proc Katyusha_GenerationCode_tables {tables langage type_langage} {
             if {[lindex $table_mere 1] == 1} {
                 set attributs_table [Katyusha_MLD_table_mere_ajout_attributs_filles $attributs_table [lindex $table_mere 0] $nom_table]
             }
-            set code [Katyusha_GenerationCode_table [Katyusha_GenerationCode_attributs $nom_table $attributs_table $langage $type_langage] $langage $type_langage]
+            lappend code [Katyusha_GenerationCode_table [Katyusha_GenerationCode_attributs $nom_table $attributs_table $langage $type_langage] $langage $type_langage]
         }
     }
     return $code
@@ -112,13 +109,33 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage}
     # Assemble la requête
     set sql "$sql from $nom_table $where"
     
-    set code "$code    \$res = array() ;\n    \$req = \$connex->prepare(\"$sql\") ;    $bind\n    \$req->execute() ;\n    \$res = \$req->fetch(PDO::FETCH_ASSOC) ;\n    \$req->closeCursor() ;\n    return \$res ;\n\n"
-
-
-
-
-
-
+    set code "$code    \$res = array() ;\n    \$req = \$connex->prepare(\"$sql\") ;    $bind\n    \$req->execute() ;\n    \$res = \$req->fetch(PDO::FETCH_ASSOC) ;\n    \$req->closeCursor() ;\n    return \$res ;\n\}\n\n"
+    
+    
+    ##
+    # Fonction d'insertion des données
+    ##
+    set code "$code\nfunction BDD_$nom_table\_insert(\$connex, \$$nom_table) \{\n"
+    set sql ""
+    set sql_var ""
+    set bind ""
+    set c 1
+    foreach {k attribut} $attributs {
+        set nom_attribut [dict get $attribut "nom"]
+        if {$sql == ""} {
+            set sql "$nom_attribut"
+            set sql_var "?"
+        } else {
+            set sql "$sql, $nom_attribut"
+            set sql_var "$sql_var, ?"
+        }
+        set bind "$bind\n    \$req->bindParam($c, \$$nom_table\[\"$nom_attribut\"\]) ;"
+        set c [expr $c + 1]
+    }
+    set sql "insert into $nom_table ($sql) values ($sql_var)"
+    
+    set code "$code    \$req = \$connex->prepare($sql) ;\n$bind\n    \$req->execute() ;\n    \$req->closeCursor() ;\n\}\n\n"
+    
     return $code
 }
 
