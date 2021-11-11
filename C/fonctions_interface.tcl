@@ -71,7 +71,7 @@ proc INTERFACE_generation_sql {} {
             set script [lindex $lscript 0]
             set fichier_script [lindex $lscript 1]
             set erreurs [lindex $lscript 2]
-            if {$script != 0 && $fichier_script != 0} {
+            if {$script != 0 && $fichier_script != 0 && $fichier_script != ""} {
                 INTERFACE_script_SQL $script $fichier_script
             } else {
                 INTERFACE_erreurs_MCD $erreurs

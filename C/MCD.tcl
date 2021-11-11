@@ -37,6 +37,9 @@ proc Katyusha_MCD_init {} {
     global heritages_a
     global etiquettes_a
     global E_defaut_valeur
+    global MCD
+    global CONFIGS
+    global fichier_sauvegarde
     
     # Dictionnaire contenant toutes les tables et leurs informations, sauf graphiques
     set tables [dict create]
@@ -81,16 +84,13 @@ proc Katyusha_MCD_init {} {
     set etiquettes_a $etiquettes
     
     set E_defaut_valeur "null"
+
+    set MCD(rep) $CONFIGS(REP_PROJETS_DEFAUT)
+    set fichier_sauvegarde ""
 }
 
 proc Katyusha_MCD_nouveau {} {
-    .mcd.canvas.c delete "table"
-    .mcd.canvas.c delete "relation"
-    .mcd.canvas.c delete "ligne"
-    .mcd.canvas.c delete "etiquette"
-    .mcd.canvas.c delete "heritage"
-    .mcd.canvas.c delete "ligne_heritage"
-    .mcd.canvas.c delete "texte_cardinalite"
+    Katyusha_MCD_canvas_effacer
     Katyusha_MCD_init
     maj_arbre_entites
 }

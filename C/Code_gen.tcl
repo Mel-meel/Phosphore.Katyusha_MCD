@@ -9,6 +9,9 @@
 ######################################################
 
 proc Katyusha_GenerationCode_main {tables relations heritages langage type_langage {sgbd "aucun"}} {
+    global MCD
+    global CONFIGS
+    
     # Pour reconnaitre les "vraies" tables des fausses
     foreach {k table} $tables {
         dict set table "vraie" 1
@@ -18,8 +21,19 @@ proc Katyusha_GenerationCode_main {tables relations heritages langage type_langa
     set tables [Katyusha_MLD_relations_en_tables $relations $tables $sgbd]
     # Applique les changements dûs aux relations sur les tables
     set tables [Katyusha_MLD_applique_changements_tables $relations $tables $sgbd]
-    set code [Katyusha_GenerationCode_tables $tables $langage $type_langage]
-    puts $code
+    set codes [Katyusha_GenerationCode_tables $tables $langage $type_langage]
+    
+    
+    if {$MCD(rep) == $CONFIGS(REP_PROJETS_DEFAUT) || $MCD(rep) == ""} {
+        set MCD(rep) [tk_chooseDirectory]
+    }
+    
+    if {$MCD(rep) != ""} {
+        # Enregistre les fichiers
+        foreach {nom code} $codes {
+             set code "<?php\n$code\n?>"
+        }
+    }
 }
 
 ##
@@ -40,7 +54,7 @@ proc Katyusha_GenerationCode_tables {tables langage type_langage} {
             if {[lindex $table_mere 1] == 1} {
                 set attributs_table [Katyusha_MLD_table_mere_ajout_attributs_filles $attributs_table [lindex $table_mere 0] $nom_table]
             }
-            lappend code [Katyusha_GenerationCode_table [Katyusha_GenerationCode_attributs $nom_table $attributs_table $langage $type_langage] $langage $type_langage]
+            dict set code $nom_table [Katyusha_GenerationCode_table [Katyusha_GenerationCode_attributs $nom_table $attributs_table $langage $type_langage] $langage $type_langage]
         }
     }
     return $code
@@ -102,14 +116,14 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage}
             } else {
                 set where "$where and $nom_attribut = ?"
             }
-            set bind "$bind\n    \$req->bindParam($c, \$$nom_table\[\"$nom_attribut\"\]) ;"
+            set bind "$bind    \$req->bindParam($c, \$$nom_table\[\"$nom_attribut\"\]) ;\n"
             set c [expr $c + 1]
         }
     }
     # Assemble la requête
     set sql "$sql from $nom_table $where"
     
-    set code "$code    \$res = array() ;\n    \$req = \$connex->prepare(\"$sql\") ;    $bind\n    \$req->execute() ;\n    \$res = \$req->fetch(PDO::FETCH_ASSOC) ;\n    \$req->closeCursor() ;\n    return \$res ;\n\}\n\n"
+    set code "$code    \$res = array() ;\n    \$req = \$connex->prepare(\"$sql\") ;\n$bind    \$req->execute() ;\n    \$res = \$req->fetch(PDO::FETCH_ASSOC) ;\n    \$req->closeCursor() ;\n    return \$res ;\n\}\n\n"
     
     
     ##
@@ -129,13 +143,52 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage}
             set sql "$sql, $nom_attribut"
             set sql_var "$sql_var, ?"
         }
-        set bind "$bind\n    \$req->bindParam($c, \$$nom_table\[\"$nom_attribut\"\]) ;"
+        set bind "$bind    \$req->bindParam($c, \$$nom_table\[\"$nom_attribut\"\]) ;\n"
         set c [expr $c + 1]
     }
     set sql "insert into $nom_table ($sql) values ($sql_var)"
     
-    set code "$code    \$req = \$connex->prepare($sql) ;\n$bind\n    \$req->execute() ;\n    \$req->closeCursor() ;\n\}\n\n"
+    set code "$code    \$req = \$connex->prepare($sql) ;\n$bind    \$req->execute() ;\n    \$req->closeCursor() ;\n\}\n\n"
     
+
+
+
+
+
+
+
+
+
+    
+    ##
+    # Fonction de requête delet PK
+    ##
+    set code "$code\nfunction BDD_$nom_table\_delete_PK(\$connex, \$$nom_table) \{\n"
+    set sql ""
+    set where ""
+    set bind ""
+    set c 1
+    foreach {k attribut} $attributs {
+        set nom_attribut [dict get $attribut "nom"]
+        # Construit la clause where
+        if {[dict get $attribut "pk"] == 1} {
+            if {$bind == ""} {
+                set where "where $nom_attribut = ?"
+            } else {
+                set where "$where and $nom_attribut = ?"
+            }
+            set bind "$bind    \$req->bindParam($c, \$$nom_table\[\"$nom_attribut\"\]) ;\n"
+            set c [expr $c + 1]
+        }
+    }
+    # Assemble la requête
+    set sql "delete from $nom_table $where"
+    
+    set code "$code    \$res = array() ;\n    \$req = \$connex->prepare(\"$sql\") ;\n$bind    \$req->execute() ;\n    \$res = \$req->fetch(PDO::FETCH_ASSOC) ;\n    \$req->closeCursor() ;\n    return \$res ;\n\}\n\n"
+    
+
+
+
     return $code
 }
 

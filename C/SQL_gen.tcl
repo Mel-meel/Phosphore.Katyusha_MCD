@@ -301,6 +301,7 @@ proc Katyusha_generation_sql {sgbd} {
     global version
     global fk
     global MCD
+    global CONFIGS
     
     puts "Génération du script SQL pour $sgbd"
     
@@ -315,17 +316,21 @@ proc Katyusha_generation_sql {sgbd} {
     # Défini le chemin d'enregistrement du fichier SQL
     if {$id_projet == -1} {
         set id_projet [llength [glob -nocomplain -dir $rep_mcd "projet*"]]
-        #file mkdir "$rep_mcd/projet$id_projet"
     }
-    #set id_fichier [llength [glob -nocomplain -dir "$rep_mcd/projet$id_projet" "$MCD(nom)*.sql"]]
-    set fichier "$MCD(rep)/$MCD(nom)\-$sgbd.sql"
-    # Enregistre dans le fichier
-    set stream [open $fichier "w+"]
-    puts $stream $SQL
-    close $stream
-    
-    puts "Script SQL généré avec succès : $fichier"
-    
+    if {$MCD(rep) == $CONFIGS(REP_PROJETS_DEFAUT) || $MCD(rep) == ""} {
+        set MCD(rep) [tk_chooseDirectory]
+    }
+    if {$MCD(rep) != ""} {
+        set fichier "$MCD(rep)/$MCD(nom)\-$sgbd.sql"
+        # Enregistre dans le fichier
+        set stream [open $fichier "w+"]
+        puts $stream $SQL
+        close $stream
+        
+        puts "Script SQL généré avec succès : $fichier"
+    } else {
+        set fichier ""
+    }
     return [list $SQL $fichier]
 }
 

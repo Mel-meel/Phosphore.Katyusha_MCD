@@ -372,6 +372,7 @@ proc Katyusha_Charge_bloc_entite {xml entite} {
 # TODO : contrôle de la version du logiciel pour vérifier la compatibilité du fichier chargé
 ##
 proc Katyusha_Charge {fichier} {
+    global MCD
     global tables
     global relations
     global etiquettes
@@ -392,6 +393,7 @@ proc Katyusha_Charge {fichier} {
         # Réinitialise le MCD avant des créer les tables, relations, ...
         Katyusha_MCD_nouveau
         set fichier_sauvegarde $fichier
+        set MCD(rep) [file dirname $fichier_sauvegarde]
         .mcd.infos.fichier configure -text $fichier_sauvegarde
         # Nettoie le fichier
         set stream [string map [list "\t" ""] $stream]

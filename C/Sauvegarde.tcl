@@ -274,6 +274,7 @@ proc Katyusha_Sauvegarde_heritages {heritages} {
 # Enregistre toutes les données dans un fichier au format XML
 ##
 proc Katyusha_Sauvegarde {} {
+    global MCD
     global LOCALE
     global tables
     global relations
@@ -298,6 +299,7 @@ proc Katyusha_Sauvegarde {} {
     set xml "$xml[Katyusha_Sauvegarde_heritages $heritages]"
     # Enregistre dans le fichier
     set stream [open $fichier_sauvegarde "w+"]
+    set MCD(rep) [file dirname $fichier_sauvegarde]
     puts $stream $xml
     close $stream
     

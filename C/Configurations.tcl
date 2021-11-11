@@ -53,8 +53,8 @@ proc Katyusha_Configurations_init {} {
 }
 
 proc Katyusha_Configurations_charge_config {fichier} {
-	set configs [dict create]
-	# Ouvre le fichier en lecture
+    set configs [dict create]
+    # Ouvre le fichier en lecture
     set fp [open $fichier "r"]
     set stream [read $fp]
     close $fp
