@@ -126,7 +126,7 @@ proc Katyusha_MLD_relations_en_tables {relations tables sgbd} {
 ##
 # 
 ##
-proc Katyusha_MLD_applique_changements_tables {relations tables} {
+proc Katyusha_MLD_applique_changements_tables {relations tables {sgbd "aucun"}} {
     foreach {k relation} $relations {
         set liens [dict get $relation "liens"]
         set nom [dict get $relation "nom"]
@@ -153,7 +153,7 @@ proc Katyusha_MLD_applique_changements_tables {relations tables} {
             set id_table_liee [Katyusha_Tables_ID_table $table_liee]
             set id_table_lien [Katyusha_Tables_ID_table $table_lien]
             
-            set pk_table_liee [Katyusha_pk_table $table_liee $sgbd [lindex $lien2 2]]
+            set pk_table_liee [Katyusha_MLD_pks_table $table_liee [lindex $lien2 2]]
             set c [expr [lindex [dict keys $attributs] [expr [llength [dict keys $attributs]] - 1]] + 1]
             foreach {k v} $pk_table_liee {
                 dict set attributs $c $v
@@ -216,4 +216,111 @@ proc Katyusha_MLD_liens_egaux {liens} {
     }
     
     return $res
+}
+
+##
+#
+##
+proc Katyusha_MLD_pks_table {nom_table {pk_relatif 0}} {
+    global tables
+    
+    set attributs [dict create]
+    foreach {k table} $tables {
+        set nom_table_liste [dict get $table "nom"]
+        # Si le nom correspond
+        if {$nom_table_liste == $nom_table} {
+            set attributs_table [dict get $table "attributs"]
+            # Balayage des attributs à la recherche des clefs primaires
+            foreach {k attribut} $attributs_table {
+                set pk_attribut [dict get $attribut "pk"]
+                # Ajoute le nom de la table (s'il n'est pas déjà inclu) pour une meilleure lisibilité
+                # et éviter les doublons
+                # Par example :
+                #       table.id devient table.id_table
+                set nom_attribut [dict get $attribut "nom"]
+                dict set attribut "nom_origine" $nom_attribut
+                # Supprime les incrémentations automatiques
+                dict set attribut "auto" 0
+                dict set attribut "valeur" ""
+                if {[string first $nom_table $nom_attribut] == -1} {
+                    dict set attribut "nom" "$nom_attribut\_$nom_table"
+                }
+                dict set attribut "pk" $pk_relatif
+                if {$pk_attribut == 1} {
+                    dict set attributs [expr [Katyusha_Tables_dernier_id $attributs] + 1] $attribut
+                }
+            }
+        }
+    }
+    return $attributs
+}
+
+proc Katyusha_MLD_table_aspire_attributs_table_liee {lien1 lien2 tables} {
+    set id_table [Katyusha_Tables_ID_table [lindex $lien1 0]]
+    set table [dict get $tables $id_table]
+    set attributs [dict get $table "attributs"]
+    set pks [Katyusha_MLD_pks_table [lindex $lien2 0] [lindex $lien1 2]]
+        foreach {kk pk} $pks {
+            dict set attributs [expr [Dict_dernier_id $attributs] + 1] $pk
+            # Ajoute les clefs primaires des tables liées à la liste des clefs étrangères
+            set fk [dict create "table_lien" [lindex $lien1 0] "table_liee" [lindex $lien2 0] "nom" [dict get $pk "nom"] "nom_origine" [dict get $pk "nom_origine"]]
+            lappend fks $fk
+        }
+    dict set table "attributs" $attributs
+    return [list $table $fks]
+}
+
+##
+# Transforme le MCD en MLD
+# Doit pouvoir gérer les héritages en cascade, les héritages multiples
+# Renvoie une liste, le premier élément est un dictionnaire contenant toutes les tables du MLD
+# le deuxième est un dictionnaire avec toutes les informations pour construire les clefs étrangères
+##
+proc Katyusha_MLD_mcd_vers_mld {tables relations heritages} {
+    set fks [list]
+    # Transforme certaines relations en table
+    foreach {k relation} $relations {
+        set liens [dict get $relation "liens"]
+        set nom [dict get $relation "nom"]
+        set attributs [dict get $relation "attributs"]
+        # Contrôle si une nouvelles table doit être créer
+        set n_table [Katyusha_MLD_liens_n_table $liens]
+        # Si nouvelle table
+        if {$n_table == 1} {
+            # Récupère le nom, les attributs
+            set table_tmp [dict create]
+            dict set table_tmp "nom" $nom
+            # Récupère les clefs primaires des tables liées pour en faire des clefs étrangères
+            foreach {kk lien} $liens {
+                set pks [Katyusha_MLD_pks_table [lindex $lien 0] [lindex $lien 2]]
+                # Ajoute les clefs primaires aux attributs
+                foreach {kkk pk} $pks {
+                    dict set attributs [expr [Dict_dernier_id $attributs] + 1] $pk
+                    # Ajoute les clefs primaires des tables liées à la liste des clefs étrangères
+                    set fk [dict create "table_lien" [lindex $lien 0] "table_liee" $nom "nom" [dict get $pk "nom"] "nom_origine" [dict get $pk "nom_origine"]]
+                    lappend fks $fk
+                }
+            }
+            dict set table_tmp "attributs" $attributs
+            dict set tables [expr [Dict_dernier_id $tables] + 1] $table_tmp
+        # Si pas de nouvelle table, forcément un des deux seuls liens est 1.1
+        } else {
+            set lien1 [dict get $liens 0]
+            set lien2 [dict get $liens 1]
+            if {[lindex $lien1 1] == "1.1"} {
+                set id_table [Katyusha_Tables_ID_table [lindex $lien1 0]]
+                set table_fks [Katyusha_MLD_table_aspire_attributs_table_liee $lien1 $lien2 $tables]
+                set table [lindex $table_fks 0]
+                set fks [concat $fks [lindex $table_fks 1]]
+                dict set tables $id_table $table
+            } elseif {[lindex $lien2 1] == "1.1"} {
+                set id_table [Katyusha_Tables_ID_table [lindex $lien2 0]]
+                set table_fks [Katyusha_MLD_table_aspire_attributs_table_liee $lien2 $lien1 $tables]
+                set table [lindex $table_fks 0]
+                set fks [concat $fks [lindex $table_fks 1]]
+                dict set tables $id_table $table
+            }
+        }
+    }
+    return [list $tables $fks]
 }
