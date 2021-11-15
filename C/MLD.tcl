@@ -59,10 +59,10 @@ proc Katyusha_MLD_attributs_n_table {liens sgbd} {
         set n_lien [lindex $lien 1]
         if {$n_lien == "0.n" || $n_lien == "0.1" || $n_lien == "1.n" || $n_lien == "n.n"} {
             # Liste des clefs primaires de la table
-            set liste_pk_table [Katyusha_MLD_pks_table $table_lien 1]
+            set liste_pk_table [Katyusha_MLD_pks_table $table_lien $n_lien 1]
             # Balayage des clefs primaires
             foreach {kk attribut} $liste_pk_table {
-                dict set attributs [dict size $attributs] $attribut
+                dict set attributs [expr [Dict_dernier_id $attributs] + 1] $attribut
             }
         }
     }
@@ -153,7 +153,7 @@ proc Katyusha_MLD_applique_changements_tables {relations tables {sgbd "aucun"}} 
             set id_table_liee [Katyusha_Tables_ID_table $table_liee]
             set id_table_lien [Katyusha_Tables_ID_table $table_lien]
             
-            set pk_table_liee [Katyusha_MLD_pks_table $table_liee [lindex $lien2 2]]
+            set pk_table_liee [Katyusha_MLD_pks_table $table_liee [lindex $lien2 1] [lindex $lien2 2]]
             set c [expr [lindex [dict keys $attributs] [expr [llength [dict keys $attributs]] - 1]] + 1]
             foreach {k v} $pk_table_liee {
                 dict set attributs $c $v
@@ -221,7 +221,7 @@ proc Katyusha_MLD_liens_egaux {liens} {
 ##
 #
 ##
-proc Katyusha_MLD_pks_table {nom_table {pk_relatif 0}} {
+proc Katyusha_MLD_pks_table {nom_table cardinalite est_pk} {
     global tables
     
     set attributs [dict create]
@@ -242,10 +242,11 @@ proc Katyusha_MLD_pks_table {nom_table {pk_relatif 0}} {
                 # Supprime les incrémentations automatiques
                 dict set attribut "auto" 0
                 dict set attribut "valeur" ""
+                dict set attribut "card" $cardinalite
                 if {[string first $nom_table $nom_attribut] == -1} {
                     dict set attribut "nom" "$nom_attribut\_$nom_table"
                 }
-                dict set attribut "pk" $pk_relatif
+                dict set attribut "pk" $est_pk
                 if {$pk_attribut == 1} {
                     dict set attributs [expr [Katyusha_Tables_dernier_id $attributs] + 1] $attribut
                 }
@@ -259,7 +260,7 @@ proc Katyusha_MLD_table_aspire_attributs_table_liee {lien1 lien2 tables} {
     set id_table [Katyusha_Tables_ID_table [lindex $lien1 0]]
     set table [dict get $tables $id_table]
     set attributs [dict get $table "attributs"]
-    set pks [Katyusha_MLD_pks_table [lindex $lien2 0] [lindex $lien1 2]]
+    set pks [Katyusha_MLD_pks_table [lindex $lien2 0] [lindex $lien2 1] [lindex $lien1 2]]
         foreach {kk pk} $pks {
             dict set attributs [expr [Dict_dernier_id $attributs] + 1] $pk
             # Ajoute les clefs primaires des tables liées à la liste des clefs étrangères
@@ -292,12 +293,12 @@ proc Katyusha_MLD_mcd_vers_mld {tables relations heritages} {
             dict set table_tmp "nom" $nom
             # Récupère les clefs primaires des tables liées pour en faire des clefs étrangères
             foreach {kk lien} $liens {
-                set pks [Katyusha_MLD_pks_table [lindex $lien 0] [lindex $lien 2]]
+                set pks [Katyusha_MLD_pks_table [lindex $lien 0] [lindex $lien 1] 1]
                 # Ajoute les clefs primaires aux attributs
                 foreach {kkk pk} $pks {
                     dict set attributs [expr [Dict_dernier_id $attributs] + 1] $pk
                     # Ajoute les clefs primaires des tables liées à la liste des clefs étrangères
-                    set fk [dict create "table_lien" [lindex $lien 0] "table_liee" $nom "nom" [dict get $pk "nom"] "nom_origine" [dict get $pk "nom_origine"]]
+                    set fk [dict create "pk" 1 "table_lien" [lindex $lien 0] "table_liee" $nom "nom" [dict get $pk "nom"] "nom_origine" [dict get $pk "nom_origine"]]
                     lappend fks $fk
                 }
             }

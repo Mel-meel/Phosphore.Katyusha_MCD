@@ -8,7 +8,7 @@
 #                                                    #
 ######################################################
 
-proc Katyusha_GenerationCode_main {tables relations heritages langage type_langage prefix ficier_unique {sgbd "aucun"}} {
+proc Katyusha_GenerationCode_main_procedural {tables relations heritages langage type_langage prefix fichier_unique {sgbd "aucun"}} {
     global MCD
     global CONFIGS
     
@@ -21,7 +21,7 @@ proc Katyusha_GenerationCode_main {tables relations heritages langage type_langa
     set tables [Katyusha_MLD_relations_en_tables $relations $tables $sgbd]
     # Applique les changements dûs aux relations sur les tables
     set tables [Katyusha_MLD_applique_changements_tables $relations $tables $sgbd]
-    set codes [Katyusha_GenerationCode_tables $tables $langage $type_langage $prefix]
+    set codes [Katyusha_GenerationCode_tables $tables $langage $type_langage $prefix "null" "null"]
     
     
     if {$MCD(rep) == $CONFIGS(REP_PROJETS_DEFAUT) || $MCD(rep) == ""} {
@@ -37,8 +37,7 @@ proc Katyusha_GenerationCode_main {tables relations heritages langage type_langa
 }
 
 ##
-# Génère pour chaque table le code correspondant au langage, au type de langage et à l'ORM choisi
-# 11/11/2021 : Pour le moment ne fonctionne que pour PHP procédural avec PDO et pour l'ORM PHP Doctrine
+# Uniquement pour du PHP procédural
 ##
 proc Katyusha_GenerationCode_tables {tables langage type_langage prefix} {
     set code [list]
@@ -61,8 +60,34 @@ proc Katyusha_GenerationCode_tables {tables langage type_langage prefix} {
     return $code
 }
 
-proc Katyusha_GenerationCode_attributs {nom_table attributs langage type_langage prefix} {
-    set fonctions [Katyusha_Generation_Code_fonctions_$type_langage $nom_table $attributs $langage $prefix]
+##
+# Génère pour chaque table le code correspondant au langage, au type de langage et à l'ORM choisi
+# 11/11/2021 : Pour le moment ne fonctionne que pour PHP procédural avec PDO et pour l'ORM PHP Doctrine
+##
+proc Katyusha_GenerationCode_tables {tables langage type_langage prefix orm ns} {
+    set code [dict create]
+    # Balayage des tables
+    foreach {k table} $tables {
+        # On ne génère le script sql de la table que si elle n'est pas table fille d'un héritage
+        if {[Katyusha_MLD_table_fille_ $k $table] == 0} {
+            set nom_table [dict get $table "nom"]
+            puts "Génération du code $langage de la table : $nom_table"
+            set attributs_table [dict get $table "attributs"]
+            # Si la table en question est table mère d'un héritage, elle aspire les attributs de ses filles
+            # Et on lui ajoute un attribut discriminant
+            set table_mere [Katyusha_MLD_table_mere_ $k $table]
+            if {[lindex $table_mere 1] == 1} {
+                set attributs_table [Katyusha_MLD_table_mere_ajout_attributs_filles $attributs_table [lindex $table_mere 0] $nom_table]
+            }
+            dict set code $nom_table [Katyusha_GenerationCode_table [Katyusha_GenerationCode_attributs $nom_table $attributs_table $langage $type_langage $prefix $orm $ns] $langage $type_langage]
+        }
+    }
+    return $code
+}
+
+proc Katyusha_GenerationCode_attributs {nom_table attributs langage type_langage prefix orm ns} {
+    
+    set fonctions [Katyusha_GenerationCode_$type_langage $nom_table $attributs $langage $prefix]
     return $fonctions
 }
 
@@ -70,16 +95,8 @@ proc Katyusha_GenerationCode_table {code_attributs langage type_langage} {
     return $code_attributs
 }
 
-##
-# Génère pour une table le code correspondant à l'ORM choisi
-# 11/11/2021 : Pour le moment, uniquement pour l'ORM PHP Doctrine
-##
-proc Katyusha_Generation_Code_fonctions_objet_orm {nom_table attributs langage prefix} {
-
-}
-
 # Pour le moment, que pour PHP mode procédural
-proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage prefix} {
+proc Katyusha_GenerationCode_procedural {nom_table attributs langage prefix} {
     set fonctions [dict create]
     
     ##
@@ -225,4 +242,83 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage 
     
     
     return $code
+}
+
+
+
+
+
+
+
+###############################################################
+#                   Code pour les ORM                         #
+###############################################################
+
+proc Katyusha_GenerationCode_main_orm {tables relations heritages langage orm ns prefix fichier_unique {sgbd "aucun"}} {
+    global MCD
+    global CONFIGS
+    
+    # Transforme certaines relations en tables
+    set tables [Katyusha_MLD_relations_en_tables $relations $tables $sgbd]
+    # Applique les changements dûs aux relations sur les tables
+    set tables [Katyusha_MLD_applique_changements_tables $relations $tables $sgbd]
+    set codes [Katyusha_GenerationCode_tables_orm $tables $langage $orm $ns $prefix]
+    
+    
+    if {$MCD(rep) == $CONFIGS(REP_PROJETS_DEFAUT) || $MCD(rep) == ""} {
+        set MCD(rep) [tk_chooseDirectory]
+    }
+    
+    if {$MCD(rep) != ""} {
+        if {$fichier_unique == 1} {
+            set code "<?php\n// src/Base.php\n"
+        } else {
+        # Enregistre les fichiers
+        foreach {nom code} $codes {
+             set code "<?php\n$code\n?>"
+        }
+        }
+    }
+}
+
+proc Katyusha_GenerationCode_table_orm {table langage orm ns prefix} {
+    set code ""
+    
+    set nom_table [dict get $table "nom"]
+    set attributs [dict get $table "attributs"]
+    
+    foreach {k attribut} $attributs {
+        set code "$code\n[Katyusha_Code_attribut_orm $attribut $langage $orm]"
+    }
+    return $code
+}
+
+proc Katyusha_GenerationCode_tables_orm {tables langage orm ns prefix} {
+    set codes [dict create]
+    # Balayage des tables
+    foreach {k table} $tables {
+        # On ne génère le script sql de la table que si elle n'est pas table fille d'un héritage
+        if {[Katyusha_MLD_table_fille_ $k $table] == 0} {
+            set nom_table [dict get $table "nom"]
+            puts "Génération du code $langage de la table : $nom_table"
+            set attributs_table [dict get $table "attributs"]
+            # Si la table en question est table mère d'un héritage, elle aspire les attributs de ses filles
+            # Et on lui ajoute un attribut discriminant
+            set table_mere [Katyusha_MLD_table_mere_ $k $table]
+            if {[lindex $table_mere 1] == 1} {
+                set attributs_table [Katyusha_MLD_table_mere_ajout_attributs_filles $attributs_table [lindex $table_mere 0] $nom_table]
+            }
+            dict set codes $nom_table [Katyusha_GenerationCode_table_orm $table $langage $orm $ns $prefix]
+        }
+    }
+    return $codes
+}
+
+
+##
+# Génère pour une table le code correspondant à l'ORM choisi
+# 11/11/2021 : Pour le moment, uniquement pour l'ORM PHP Doctrine
+##
+proc Katyusha_GenerationCode_orm {nom_table attributs langage prefix} {
+
 }
