@@ -59,7 +59,7 @@ proc Katyusha_MLD_attributs_n_table {liens sgbd} {
         set n_lien [lindex $lien 1]
         if {$n_lien == "0.n" || $n_lien == "0.1" || $n_lien == "1.n" || $n_lien == "n.n"} {
             # Liste des clefs primaires de la table
-            set liste_pk_table [Katyusha_pk_table $table_lien $sgbd 1]
+            set liste_pk_table [Katyusha_MLD_pks_table $table_lien 1]
             # Balayage des clefs primaires
             foreach {kk attribut} $liste_pk_table {
                 dict set attributs [dict size $attributs] $attribut

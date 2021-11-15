@@ -8,7 +8,7 @@
 #                                                    #
 ######################################################
 
-proc Katyusha_GenerationCode_main {tables relations heritages langage type_langage {sgbd "aucun"}} {
+proc Katyusha_GenerationCode_main {tables relations heritages langage type_langage prefix ficier_unique {sgbd "aucun"}} {
     global MCD
     global CONFIGS
     
@@ -20,8 +20,8 @@ proc Katyusha_GenerationCode_main {tables relations heritages langage type_langa
     # Transforme certaines relations en tables
     set tables [Katyusha_MLD_relations_en_tables $relations $tables $sgbd]
     # Applique les changements dûs aux relations sur les tables
-    set tables [Katyusha_MLD_applique_changements_tables $relations $tables ]
-    set codes [Katyusha_GenerationCode_tables $tables $langage $type_langage]
+    set tables [Katyusha_MLD_applique_changements_tables $relations $tables $sgbd]
+    set codes [Katyusha_GenerationCode_tables $tables $langage $type_langage $prefix]
     
     
     if {$MCD(rep) == $CONFIGS(REP_PROJETS_DEFAUT) || $MCD(rep) == ""} {
@@ -32,7 +32,6 @@ proc Katyusha_GenerationCode_main {tables relations heritages langage type_langa
         # Enregistre les fichiers
         foreach {nom code} $codes {
              set code "<?php\n$code\n?>"
-puts $code
         }
     }
 }
@@ -41,7 +40,7 @@ puts $code
 # Génère pour chaque table le code correspondant au langage, au type de langage et à l'ORM choisi
 # 11/11/2021 : Pour le moment ne fonctionne que pour PHP procédural avec PDO et pour l'ORM PHP Doctrine
 ##
-proc Katyusha_GenerationCode_tables {tables langage type_langage} {
+proc Katyusha_GenerationCode_tables {tables langage type_langage prefix} {
     set code [list]
     # Balayage des tables
     foreach {k table} $tables {
@@ -56,14 +55,14 @@ proc Katyusha_GenerationCode_tables {tables langage type_langage} {
             if {[lindex $table_mere 1] == 1} {
                 set attributs_table [Katyusha_MLD_table_mere_ajout_attributs_filles $attributs_table [lindex $table_mere 0] $nom_table]
             }
-            dict set code $nom_table [Katyusha_GenerationCode_table [Katyusha_GenerationCode_attributs $nom_table $attributs_table $langage $type_langage] $langage $type_langage]
+            dict set code $nom_table [Katyusha_GenerationCode_table [Katyusha_GenerationCode_attributs $nom_table $attributs_table $langage $type_langage $prefix] $langage $type_langage]
         }
     }
     return $code
 }
 
-proc Katyusha_GenerationCode_attributs {nom_table attributs langage type_langage} {
-    set fonctions [Katyusha_Generation_Code_fonctions_$type_langage $nom_table $attributs $langage]
+proc Katyusha_GenerationCode_attributs {nom_table attributs langage type_langage prefix} {
+    set fonctions [Katyusha_Generation_Code_fonctions_$type_langage $nom_table $attributs $langage $prefix]
     return $fonctions
 }
 
@@ -75,18 +74,18 @@ proc Katyusha_GenerationCode_table {code_attributs langage type_langage} {
 # Génère pour une table le code correspondant à l'ORM choisi
 # 11/11/2021 : Pour le moment, uniquement pour l'ORM PHP Doctrine
 ##
-proc Katyusha_Generation_Code_fonctions_objet_orm {nom_table attributs langage} {
+proc Katyusha_Generation_Code_fonctions_objet_orm {nom_table attributs langage prefix} {
 
 }
 
 # Pour le moment, que pour PHP mode procédural
-proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage} {
+proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage prefix} {
     set fonctions [dict create]
     
     ##
     # Fonction de requête select
     ##
-    set code "function BDD_$nom_table\_select(\$connex) \{\n"
+    set code "function $prefix$nom_table\_select(\$connex) \{\n"
     set sql ""
     foreach {k attribut} $attributs {
         set nom_attribut [dict get $attribut "nom"]
@@ -104,7 +103,7 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage}
     ##
     # Fonction de requête select PK
     ##
-    set code "$code\nfunction BDD_$nom_table\_select_PK(\$connex, \$$nom_table) \{\n"
+    set code "$code\nfunction $prefix$nom_table\_select_PK(\$connex, \$$nom_table) \{\n"
     set sql ""
     set where ""
     set bind ""
@@ -136,7 +135,7 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage}
     ##
     # Fonction d'insertion des données
     ##
-    set code "$code\nfunction BDD_$nom_table\_insert(\$connex, \$$nom_table) \{\n"
+    set code "$code\nfunction $prefix$nom_table\_insert(\$connex, \$$nom_table) \{\n"
     set sql ""
     set sql_var ""
     set bind ""
@@ -161,7 +160,7 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage}
     ##
     # Fonction de requête update PK
     ##
-    set code "$code\nfunction BDD_$nom_table\_update_PK(\$connex, \$$nom_table) \{\n"
+    set code "$code\nfunction $prefix$nom_table\_update_PK(\$connex, \$$nom_table) \{\n"
     set sql ""
     set where ""
     set bind ""
@@ -201,7 +200,7 @@ proc Katyusha_Generation_Code_fonctions_procedural {nom_table attributs langage}
     ##
     # Fonction de requête delete PK
     ##
-    set code "$code\nfunction BDD_$nom_table\_delete_PK(\$connex, \$$nom_table) \{\n"
+    set code "$code\nfunction $prefix$nom_table\_delete_PK(\$connex, \$$nom_table) \{\n"
     set sql ""
     set where ""
     set bind ""
