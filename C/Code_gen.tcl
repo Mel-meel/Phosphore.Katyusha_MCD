@@ -264,6 +264,7 @@ proc Katyusha_GenerationCode_main_orm {tables relations heritages langage orm ns
     set tables [Katyusha_MLD_applique_changements_tables $relations $tables $sgbd]
     set codes [Katyusha_GenerationCode_tables_orm $tables $langage $orm $ns $prefix]
     
+    puts $codes
     
     if {$MCD(rep) == $CONFIGS(REP_PROJETS_DEFAUT) || $MCD(rep) == ""} {
         set MCD(rep) [tk_chooseDirectory]
@@ -290,6 +291,7 @@ proc Katyusha_GenerationCode_table_orm {table langage orm ns prefix} {
     foreach {k attribut} $attributs {
         set code "$code\n[Katyusha_Code_attribut_orm $attribut $langage $orm]"
     }
+    set code [Katyusha_Code_table_orm $nom_table $code $langage $orm]
     return $code
 }
 
