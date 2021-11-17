@@ -43,6 +43,8 @@ proc Katyusha_action_boutons_ajout {entite_select} {
 ##
 proc Katyusha_boutons_ajout_off {} {
     global ACTION_B1
+    global CONFIGS
+    
     foreach bouton [list "ajout_table" "ajout_relation" "ajout_etiquette" "ajout_heritage"] {
         .panel.commandes.$bouton configure -relief raised
     }
@@ -270,4 +272,11 @@ proc Katyusha_compare_versions {v1 v2} {
         }
     }
     return $res
+}
+
+proc Katyusha_C_fichier_enrigistrer {fichier contenu acces} {
+    # Enregistre dans le fichier
+    set stream [open $fichier $acces]
+    puts $stream $contenu
+    close $stream
 }

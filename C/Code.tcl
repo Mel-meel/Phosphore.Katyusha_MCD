@@ -15,7 +15,7 @@ proc Katyusha_Code_table_orm {nom_table code_attributs langage orm} {
     # ORM PHP Doctrine
     ##
     if {$langage == "php" && $orm == "doctrine"} {
-        set code "<?php\nuse Doctrine\\ORM\\Mapping as ORM ;\n\nclass $nom_table \{\n$code_attributs\n\}\n?>"
+        set code "\nclass $nom_table \{\n$code_attributs\n\}\n"
     }
 }
 

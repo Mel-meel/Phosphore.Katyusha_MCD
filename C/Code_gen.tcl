@@ -25,14 +25,40 @@ proc Katyusha_GenerationCode_main_procedural {tables relations heritages langage
     
     
     if {$MCD(rep) == $CONFIGS(REP_PROJETS_DEFAUT) || $MCD(rep) == ""} {
-        set MCD(rep) [tk_chooseDirectory]
+        set MCD(rep) [tk_chooseDirectory -initialdir $CONFIGS(REP_PROJETS_DEFAUT)]
     }
     
     if {$MCD(rep) != ""} {
-        # Enregistre les fichiers
-        foreach {nom code} $codes {
-             set code "<?php\n$code\n?>"
+        file mkdir "$MCD(rep)/$MCD(nom)\_$langage"
+        # Si toutes les classes dans un seul fichier
+        if {$fichier_unique == 1} {
+            # Langage PHP
+            if {$langage == "php"} {
+                set code "<?php\n"
+                foreach {nom code_table} $codes {
+                    set code "$code\n$code_table"
+                }
+                set code "$code\n?>"
+                set fichier "$MCD(rep)/$MCD(nom)\_$langage\/Base.php"
+            }
+            # Enregistre toutes les fonctions dans le fichier
+            Katyusha_C_fichier_enrigistrer $fichier $code "w+"
+            set message "Fonctions [string toupper $langage] enregistrées dans le fichier : $MCD(rep)/$MCD(nom)\_$langage\/Base.php"
+        # Sinon, un fichier par classe
+        } else {
+            # Langage PHP
+            if {$langage == "php"} {
+                set code ""
+                foreach {nom code_table} $codes {
+                    set fichier "$MCD(rep)/$MCD(nom)\_$langage\/$nom.php"
+                    set code "<?php\n$code_table\n?>"
+                    # Enregistre toutes les fonctions dans le fichier
+                    Katyusha_C_fichier_enrigistrer $fichier $code "w+"
+                }
+            }
+            set message "Fichiers [string toupper $langage] enregistrés dans le répertoire : $MCD(rep)/$MCD(nom)\_$langage"
         }
+        set res_info [tk_messageBox -icon info -type ok -message $message]
     }
 }
 
@@ -114,7 +140,7 @@ proc Katyusha_GenerationCode_procedural {nom_table attributs langage prefix} {
     }
     set sql "$sql from $nom_table"
     
-    set code "$code    \$res = array() ;\n    \$req = \$connex->prepare($sql) ;\n    \$req->execute() ;\n    \$c = 0 ;\n    while (\$row = \$req->fetch(PDO::FETCH_ASSOC)) \{\n        \$res\[\$c\] = \$row ;\n        \$c = \$c+1 ;\n    \}\n    \$req->closeCursor() ;\n    return \$res ;\n\}\n\n"
+    set code "$code    \$res = array() ;\n    \$req = \$connex->prepare(\"$sql\") ;\n    \$req->execute() ;\n    \$c = 0 ;\n    while (\$row = \$req->fetch(PDO::FETCH_ASSOC)) \{\n        \$res\[\$c\] = \$row ;\n        \$c = \$c+1 ;\n    \}\n    \$req->closeCursor() ;\n    return \$res ;\n\}\n\n"
     
     
     ##
@@ -171,7 +197,7 @@ proc Katyusha_GenerationCode_procedural {nom_table attributs langage prefix} {
     }
     set sql "insert into $nom_table ($sql) values ($sql_var)"
     
-    set code "$code    \$req = \$connex->prepare($sql) ;\n$bind    \$req->execute() ;\n    \$req->closeCursor() ;\n\}\n\n"
+    set code "$code    \$res = array() ;\n    \$req = \$connex->prepare(\"$sql\") ;\n$bind    \$req->execute() ;\n    \$req->closeCursor() ;\n\}\n\n"
     
     
     ##
@@ -264,21 +290,41 @@ proc Katyusha_GenerationCode_main_orm {tables relations heritages langage orm ns
     set tables [Katyusha_MLD_applique_changements_tables $relations $tables $sgbd]
     set codes [Katyusha_GenerationCode_tables_orm $tables $langage $orm $ns $prefix]
     
-    puts $codes
-    
     if {$MCD(rep) == $CONFIGS(REP_PROJETS_DEFAUT) || $MCD(rep) == ""} {
-        set MCD(rep) [tk_chooseDirectory]
+        set MCD(rep) [tk_chooseDirectory -initialdir $CONFIGS(REP_PROJETS_DEFAUT)]
     }
     
     if {$MCD(rep) != ""} {
+        file mkdir "$MCD(rep)/$MCD(nom)\_$langage\_$orm"
+        # Si toutes les classes dans un seul fichier
         if {$fichier_unique == 1} {
-            set code "<?php\n// src/Base.php\n"
+            # Langage PHP
+            if {$langage == "php"} {
+                set code "<?php\n// src/Base.php\nuse Doctrine\\ORM\\Mapping as ORM ;\n"
+                foreach {nom code_classe} $codes {
+                    set code "$code\n$code_classe"
+                }
+                set code "$code\n?>"
+                set fichier "$MCD(rep)/$MCD(nom)\_$langage\_$orm/Base.php"
+            }
+            # Enregistre toutes les classes dans le fichier
+            Katyusha_C_fichier_enrigistrer $fichier $code "w+"
+            set message "Classes [string toupper $langage] enregistrées dans le fichier : $MCD(rep)/$MCD(nom)\_$langage\_$orm/Base.php"
+        # Sinon, un fichier par classe
         } else {
-        # Enregistre les fichiers
-        foreach {nom code} $codes {
-             set code "<?php\n$code\n?>"
+            # Langage PHP
+            if {$langage == "php"} {
+                set code ""
+                foreach {nom code_classe} $codes {
+                    set fichier "$MCD(rep)/$MCD(nom)\_$langage\_$orm/$nom.php"
+                    set code "<?php\n// src/$nom.php\nuse Doctrine\\ORM\\Mapping as ORM ;\n$code_classe\n?>"
+                    # Enregistre toutes les classes dans le fichier
+                    Katyusha_C_fichier_enrigistrer $fichier $code "w+"
+                }
+            }
+            set message "Classes [string toupper $langage] enregistrées dans le répertoire : $MCD(rep)/$MCD(nom)\_$langage\_$orm"
         }
-        }
+        set res_info [tk_messageBox -icon info -type ok -message $message]
     }
 }
 

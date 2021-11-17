@@ -62,6 +62,7 @@ proc INTERFACE_generation_sql {} {
     set SGBD_dispo [liste_sgbd]
     
     label $f.texte -text $LOCALE(selectionner_sgbd)
+    pack $f.texte -fill x -pady 10 -padx 50
     ttk::combobox $f.lb -values $SGBD_dispo
     frame $f.commandes
         button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
@@ -80,7 +81,8 @@ proc INTERFACE_generation_sql {} {
         }
         button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {destroy ".fen_gen_sql"}
         pack $f.commandes.ok $f.commandes.ko -fill x -side left -padx 50
-    pack $f.texte $f.lb $f.commandes -fill x
+    pack $f.lb -fill x
+    pack $f.commandes -fill x -pady 10 -padx 50
     
     # Titre le la présente fenêtre
     wm title $f $LOCALE(generer_sql)

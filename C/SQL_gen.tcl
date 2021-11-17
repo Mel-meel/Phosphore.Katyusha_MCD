@@ -193,14 +193,12 @@ proc Katyusha_generation_sql {sgbd} {
         set id_projet [llength [glob -nocomplain -dir $rep_mcd "projet*"]]
     }
     if {$MCD(rep) == $CONFIGS(REP_PROJETS_DEFAUT) || $MCD(rep) == ""} {
-        set MCD(rep) [tk_chooseDirectory]
+        set MCD(rep) [tk_chooseDirectory -initialdir $CONFIGS(REP_PROJETS_DEFAUT)]
     }
     if {$MCD(rep) != ""} {
         set fichier "$MCD(rep)/$MCD(nom)\-$sgbd.sql"
         # Enregistre dans le fichier
-        set stream [open $fichier "w+"]
-        puts $stream $SQL
-        close $stream
+        Katyusha_C_fichier_enrigistrer $fichier $SQL "w+"
         
         puts "Script SQL généré avec succès : $fichier"
     } else {
