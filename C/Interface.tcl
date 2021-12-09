@@ -125,12 +125,16 @@ frame .panel
 frame .panel.commandes
     # Bouton on/off d'ajout de table
     button .panel.commandes.ajout_table -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_action_boutons_ajout "table"}
+    tooltip::tooltip .panel.commandes.ajout_table $LOCALE(ajouter_table)
     # Bouton on/off d'ajout d'une relation
     button .panel.commandes.ajout_relation -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_action_boutons_ajout "relation"}
+    tooltip::tooltip .panel.commandes.ajout_relation $LOCALE(ajouter_relation)
     # Bouton on/off d'ajout d'un héritage
     button .panel.commandes.ajout_heritage -text $LOCALE(ajouter_heritage) -image $IMG(ajouter_heritage) -command {Katyusha_action_boutons_ajout "heritage"}
+    tooltip::tooltip .panel.commandes.ajout_heritage $LOCALE(ajouter_heritage)
     # Bouton on/off d'ajout d'une étiquette
     button .panel.commandes.ajout_etiquette -text $LOCALE(ajouter_etiquette) -image $IMG(ajouter_etiquette) -command {Katyusha_action_boutons_ajout "etiquette"}
+    tooltip::tooltip .panel.commandes.ajout_etiquette $LOCALE(ajouter_etiquette)
     pack .panel.commandes.ajout_table .panel.commandes.ajout_relation .panel.commandes.ajout_etiquette .panel.commandes.ajout_heritage -side left
 pack .panel.commandes
     #button .panel.ajout_procedure -text $LOCALE(ajouter_procedure) -command INTERFACE_ajout_procedure
@@ -169,18 +173,6 @@ frame .mcd
         button .mcd.infos_bdd.defaire -text "défaire" -image $IMG(defaire) -command Katyusha_Historique_defaire
         button .mcd.infos_bdd.refaire -text "refaire" -image $IMG(refaire) -command Katyusha_Historique_refaire
         pack .mcd.infos_bdd.zoom_plus .mcd.infos_bdd.zoom_moins .mcd.infos_bdd.zoom_initial .mcd.infos_bdd.defaire .mcd.infos_bdd.refaire -side left
-        ##
-        # Enregistrement du canvas en svg, pas encore au point, prévu pour version 0.3.x
-        ##
-        #button .mcd.infos_bdd.imp -text "dsfc" -command {
-        #    global MCD
-        #    #.mcd.canvas.c postscript -file "$MCD(rep)/test.png"
-        #    #set png [image create photo -format window -data .mcd.canvas.c]
-        #    set stream [open "$MCD(rep)/test.svg" w+]
-        #    puts $stream [canvas2svg .mcd.canvas.c]
-        #    close $stream
-        #}
-        #pack .mcd.infos_bdd.imp -side right
     pack .mcd.infos_bdd -fill x
     # Canvas principal
     frame .mcd.canvas

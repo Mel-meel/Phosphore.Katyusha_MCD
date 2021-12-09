@@ -44,6 +44,7 @@ cp -r ./images ./tmp/KatyushaMCD_$1-$2_i386/usr/share/Phosphore/KatyushaMCD/imag
 cp -r ./libs ./tmp/KatyushaMCD_$1-$2_i386/usr/share/Phosphore/KatyushaMCD/libs
 cp -r ./configs ./tmp/KatyushaMCD_$1-$2_i386/usr/share/Phosphore/KatyushaMCD/configs
 cp -r ./locale ./tmp/KatyushaMCD_$1-$2_i386/usr/share/Phosphore/KatyushaMCD/locale
+cp -r ./packages ./tmp/KatyushaMCD_$1-$2_i386/usr/share/Phosphore/KatyushaMCD/packages
 
 chmod 755 -R ./tmp
 

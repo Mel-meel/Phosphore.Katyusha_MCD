@@ -63,6 +63,9 @@ if {[catch {package require Tk}]} {
     puts " # OK!"
 }
 
+
+source "$rpr/packages/tooltip.tcl"
+
 # Img
 #package ifneeded Img 1.4.13 [list load [file join "$rpr/libs/Img1.4.13" pkgIndex.tcl] Img]
 

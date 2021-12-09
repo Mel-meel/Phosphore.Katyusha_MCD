@@ -35,6 +35,8 @@
 ./libs/arabe.tcl
 ./libs/general_font.ttf
 
+./packages/tootltip.tcl
+
 ./configs/defaut.conf
 ./configs/recents
 

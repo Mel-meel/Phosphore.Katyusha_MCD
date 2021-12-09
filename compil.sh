@@ -15,4 +15,4 @@ wine ~/Logiciels/FreeWrap/win32/freewrap.exe ./Katyusha.tcl -f ./sources.txt -o 
 zip -r ./OUT/KatyushaMCD_WIN_x32_$1.zip ./KatyushaMCD_WIN_x32.exe ./gpl-3.0.txt
 
 # Sources
-tar -czvf ./OUT/KatyushaMCD_SRC_$1.tar.gz ./Katyusha.tcl ./C/ ./images/ ./locale/ ./configs/ ./gpl-3.0.txt
+tar -czvf ./OUT/KatyushaMCD_SRC_$1.tar.gz ./Katyusha.tcl ./C/ ./packages/ ./images/ ./locale/ ./configs/ ./gpl-3.0.txt
