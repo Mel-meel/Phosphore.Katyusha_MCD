@@ -92,7 +92,6 @@ proc INTERFACE_ajout_attribut {entite {id "null"}} {
             ttk::combobox $f.prop.type.cb -values [Katyusha_SQL_liste_types]
             pack $f.prop.type.l $f.prop.type.cb -side left -fill x
             if {$id != "null"} {
-                #$f.prop.type.cb selection range [lsearch [Katyusha_SQL_liste_types] $E_type_attribut] [lsearch [Katyusha_SQL_liste_types] $E_type_attribut]
                 $f.prop.type.cb set $E_type_attribut
             }
         pack $f.prop.type -fill x
@@ -128,6 +127,27 @@ proc INTERFACE_ajout_attribut {entite {id "null"}} {
             checkbutton $f.prop.auto.cb -onvalue 1 -offvalue 0 -variable E_auto_attribut
             pack $f.prop.auto.l $f.prop.auto.cb -side left -fill x
         pack $f.prop.auto -fill x
+        # Si l'attribut est en incrémentation utomatique, il ne peut pas être null
+        bind $f.prop.auto.cb <Button-1> {
+            global E_auto_attribut
+            global E_null_attribut
+            global E_valeur_attribut
+            
+            set f ".fen_ajout_attribut"
+            
+            if {$E_auto_attribut == 0} {
+                set E_null_attribut 0
+                $f.prop.null.cb configure -state disabled
+                set E_valeur_attribut ""
+                $f.prop.valeur.e configure -state disabled
+                $f.prop.type.cb set "integer"
+            } else {
+                set E_null_attribut 1
+                $f.prop.null.cb configure -state normal
+                set E_valeur_attribut "null"
+                $f.prop.valeur.e configure -state normal
+            }
+        }
         # Clef primaire?
         frame $f.prop.pk
             label $f.prop.pk.l -text $LOCALE(pk_attribut) -width 40 -anchor w

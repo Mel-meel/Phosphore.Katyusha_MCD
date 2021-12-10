@@ -511,9 +511,6 @@ proc Katyusha_Tables_controle_attribut {nom type complement_type taille null val
             }
         }
     }
-    if {$valeur == ""} {
-        set ok 0
-    }
     if {$auto != 0 && $auto != 1} {
         set ok 0
     }
