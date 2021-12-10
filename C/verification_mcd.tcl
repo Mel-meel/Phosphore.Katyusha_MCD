@@ -29,6 +29,8 @@ proc Katyusha_verification_mcd_relations {relations} {
 }
 
 proc Katyusha_verification_mcd_relation {relation} {
+    global LOCALE
+    
     set ok 1
     set errs [list]
     # Vérifie que la relation possède au moins 2 liens

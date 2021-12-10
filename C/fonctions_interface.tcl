@@ -116,9 +116,9 @@ proc INTERFACE_erreurs_MCD {erreurs} {
     frame $f.texte
         text $f.texte.t -yscrollcommand {.fen_erreurs_mcd.texte.ysbar set}
         scrollbar $f.texte.ysbar -orient vertical -command {.fen_erreurs_mcd.texte.t yview}
-        pack $f.texte.t -fill x -side left
+        pack $f.texte.t -fill both -side left -expand 1
         pack $f.texte.ysbar -fill y -side left
-    pack $f.texte -fill both
+    pack $f.texte -fill both -expand 1
     # Le script
     $f.texte.t insert end $texte
     # Titre le la présente fenêtre
@@ -149,7 +149,7 @@ proc INTERFACE_script_SQL {script fichier_script} {
         scrollbar $f.texte.ysbar -orient vertical -command {.fen_script_sql.texte.t yview}
         pack $f.texte.t -fill both -side left -expand 1
         pack $f.texte.ysbar -fill both -side left
-    pack $f.texte -fill both
+    pack $f.texte -fill both -expand 1
     label $f.info -text "$LOCALE(script_enregistre)$fichier_script" -padx 10 -pady 10
     pack $f.info -fill x
     # Le script
@@ -245,7 +245,7 @@ proc INTERFACE_preferences {} {
 		} elseif {$el == "defaut"} {
 			set E_conf_att_defaut 1
 		} elseif {$el == "taille"} {
-			set E_conf_att_defaut 1
+			set E_conf_att_taille 1
 		}
 	}
 	
@@ -461,8 +461,9 @@ proc INTERFACE_license {} {
         text $f.texte.t -height 20 -padx 10 -pady 10 -yscrollcommand {.fen_license.texte.ysbar set}
         scrollbar $f.texte.ysbar -orient vertical -command {.fen_license.texte.t yview}
         $f.texte.t insert end [file_read "$rpr/gpl-3.0.txt" "r"]
-        pack $f.texte.t $f.texte.ysbar -side left -fill both
-    pack $f.texte -fill x
+        pack $f.texte.t -side left -fill both -expand 1
+        pack $f.texte.ysbar -side left -fill y
+    pack $f.texte -fill both -expand 1
     button $f.ok -text $LOCALE(jai_compris) -padx 10 -pady 10 -command "destroy $f"
     pack $f.ok -fill x
     
