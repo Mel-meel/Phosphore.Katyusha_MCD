@@ -39,7 +39,9 @@ proc INTERFACE_ajout_attribut {entite {id "null"}} {
             set attributs [dict get $relation_tmp "attributs"]
         }
     }
-    puts $id
+    
+
+    
     # Valeurs par défaut de l'attribut
     if {$id == "null"} {
         set E_valeur_attribut "null"
@@ -197,6 +199,10 @@ proc INTERFACE_COMMANDE_ajout_attribut {entite {id "null"}} {
             destroy $f
         }
     }
+    
+    unset E_auto_attribut
+    unset E_null_attribut
+    unset E_pk_attribut
 }
 
 ##
