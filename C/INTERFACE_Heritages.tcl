@@ -19,12 +19,18 @@ proc INTERFACE_Heritages_ajout {x y {id "null"}} {
     if {$id == "null"} {
         set heritage_tmp [Katyusha_Heritages_init_heritage]
         dict set heritage_tmp "coords" [list $x $y]
-        set table_mere "Cliquer pour choisir une table mère"
+        set table_mere $LOCALE(cliquer_choisir_table_mere)
         set contrainte ""
     } else {
         set heritage_tmp [dict get $heritages $id]
-        set table_mere [dict get $tables [dict get $heritage_tmp "mere"] "nom"]
-        set contrainte [dict get $heritage_tmp "contrainte"]
+        set id_mere [dict get $heritage_tmp "mere"]
+        if {$id_mere != ""} {
+            set table_mere [dict get $tables $id_mere "nom"]
+            set contrainte [dict get $heritage_tmp "contrainte"]
+        } else {
+            set table_mere $LOCALE(cliquer_choisir_table_mere)
+            set contrainte ""
+        }
     }
     set f ".fen_ajout_heritage"
     
@@ -209,7 +215,7 @@ proc INTERFACE_Heritages_ajout_table_fille {} {
 }
 
 ##
-#
+# Interface de suppression d'une table fille d'un héritage
 ##
 proc INTERFACE_Heritages_supp_table_fille {} {
     global heritage_tmp

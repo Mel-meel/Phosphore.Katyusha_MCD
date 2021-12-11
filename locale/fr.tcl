@@ -111,6 +111,7 @@ set LOCALE(pas_assez_table) "Le MCD doit contenir au moins une entité pour ajou
 set LOCALE(ajouter_un_heritage) "Ajouter un héritage"
 set LOCALE(editer_l_heritage) "Éditer l'héritage : "
 set LOCALE(table_mere) "Entité mère : "
+set LOCALE(cliquer_choisir_table_mere) "Cliquer pour choisir une table mère"
 set LOCALE(liste_tables_filles) "Liste des entités filles"
 # Ajout d'une table mère à l'héritage
 set LOCALE(ajouter_table_mere) "Ajouter une entité mère à l'héritage"
@@ -124,7 +125,7 @@ set LOCALE(supprimer_table_fille) "Supprimer une entité fille"
 set LOCALE(aucune_table_selectionne) "Aucune entité sélectionnée"
 # À propos
 set LOCALE(TITRE_a_propos) "À propos de Katyusha MCD"
-set LOCALE(TEXTE_a_propos) "Katyusha MCD est un composant du Projet Phosphore\nDistribué sous licence GPL v3\nCopyleft (c) 2019 - 2021"
+set LOCALE(TEXTE_a_propos) "Katyusha MCD est un composant du Projet Phosphore\nDistribué sous licence GPL v3\nCopyleft (c) Mélanie Verdon Avizou\n 2019 - 2021"
 # Supression entité
 set LOCALE(sure_suppression_table) "Sure de vouloir supprimer cette entité?"
 set LOCALE(sure_suppression_relation) "Sure de vouloir supprimer cette relation?"

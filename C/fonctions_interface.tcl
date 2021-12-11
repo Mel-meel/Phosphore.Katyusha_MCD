@@ -338,6 +338,7 @@ proc INTERFACE_preferences {} {
  
 ##
 # Configuration du MCD
+# Obsolète?
 ##
 proc INTERFACE_config_bdd {} {
     global IMG
@@ -414,6 +415,9 @@ proc INTERFACE_config_bdd {} {
     update
 }
 
+##
+# Petite mise en garde pour les utilisateurs de Windows, parce que Windows c'est mal
+##
 proc INTERFACE_mise_en_garde {} {
     global OS
     global IMG
@@ -439,6 +443,9 @@ proc INTERFACE_mise_en_garde {} {
     update
 }
 
+##
+# Affiche la license
+##
 proc INTERFACE_license {} {
     global IMG
     global rpr
@@ -473,7 +480,8 @@ proc INTERFACE_license {} {
 }
 
 ##
-#
+# Exporte en SVG le contenu du canvas
+# TODO : À réécrire entièrement
 ##
 proc INTERFACE_exporter_svg {} {
     set fichier [tk_getSaveFile]

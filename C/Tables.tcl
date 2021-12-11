@@ -27,12 +27,16 @@ proc maj_tables {} {
     }
 }
 
+##
+# Retourne pour chaque élement des attributs, la plus grande taille de chaque
+# Pas claire, description à revoir
+##
 proc Katyusha_Tables_creer_texte_affichage_graphique_taille_colones {attributs} {
-	global CONFIGS
+    global CONFIGS
 	
     foreach el $CONFIGS(AFFICHAGE_OBJETS) {
-		dict set tailles $el 0
-	}
+        dict set tailles $el 0
+    }
     
     foreach {k attribut} $attributs {
         foreach element $CONFIGS(AFFICHAGE_OBJETS) {
@@ -58,6 +62,12 @@ proc Katyusha_Tables_creer_texte_affichage_graphique_taille_colones {attributs} 
     return $tailles
 }
 
+##
+# Formate les éléments des attributs en colonnes
+# Exemple :
+#    id     integer    12     0
+#    nom    varchar    255    1
+##
 proc Katyusha_Tables_creer_affichage_graphique_format_colones {attributs} {
     global CONFIGS
 	
@@ -317,7 +327,7 @@ proc Katyusha_Tables_MAJ_coords {id_table coords} {
 
 ##
 # Mise à jour des lignes entre une table et les objets auxquels elle est reliée
-# À revoir entièrement, procédure trop longue, pas assez performantes
+# À revoir entièrement, procédure trop longue, pas assez performante
 ##
 proc Katyusha_Tables_MAJ_ligne_coords {id_table coords} {
     global lignes_graphique
@@ -489,7 +499,7 @@ proc Katyusha_Tables_controle_table {table} {
 }
 
 ##
-# TODO : contrôle du complément de type
+# Contrôle les éléments de l'attribut à ajouter
 ##
 proc Katyusha_Tables_controle_attribut {nom type complement_type taille null valeur auto pk description} {
     set ok 1

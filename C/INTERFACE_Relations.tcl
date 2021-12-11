@@ -295,6 +295,9 @@ proc INTERFACE_COMMANDE_ajout_lien {id_lien} {
     }
 }
 
+##
+# Supprime un lien de la relation temporaire
+##
 proc INTERFACE_suppression_lien_relation {} {
     global relation_tmp
     global LOCALE

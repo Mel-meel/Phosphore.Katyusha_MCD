@@ -291,6 +291,9 @@ proc INTERFACE_COMMANDE_suppression_attribut {entite} {
     update
 }
 
+##
+# Confirme pour supprimer l'objet sélectionné
+##
 proc INTERFACE_suppression_entite {type_entite id_entite} {
     global LOCALE
     
