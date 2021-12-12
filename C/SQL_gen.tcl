@@ -32,9 +32,16 @@ proc Katyusha_GenerationSQL_sql_taille_attribut {attribut} {
 }
 
 ##
+# Retourne le nombre de clefs primaires d'une table
+##
+proc Katyusha_GenerationSQL_nombre_pk_table {table} {
+    #set 
+}
+
+##
 # Construit le script SQL d'un attribut
 ##
-proc Katyusha_GenerationSQL_attribut {id attribut sgbd} {
+proc Katyusha_GenerationSQL_attribut {id attribut sgbd si_pk} {
     set SQL ""
     set nom_attribut [dict get $attribut "nom"]
     set type_attribut [string toupper [dict get $attribut "type"]]
@@ -72,13 +79,19 @@ proc Katyusha_GenerationSQL_attribut {id attribut sgbd} {
         set sql_null ""
     }
     
+    if {$si_pk == 1 && $pk_attribut == 1} {
+        set sql_pk " PRIMARY KEY"
+    } else {
+        set sql_pk ""
+    }
+    
     # Valeur par défaut de l'attribut
     if {$auto_attribut == 0 && $valeur_attribut != "" && $valeur_attribut != "null"} {
         set sql_valeur " DEFAULT [Katyusha_GenerationSQL_format_cotes $valeur_attribut]"
     } else {
         set sql_valeur ""
     }
-    set SQL "$sql_nom$sql_type$sql_taille$sql_ctype$sql_null$sql_valeur"
+    set SQL "$sql_nom$sql_type$sql_taille$sql_ctype$sql_null$sql_pk$sql_valeur"
     return $SQL
 }
 
@@ -115,14 +128,21 @@ proc Katyusha_GenerationSQL_tables_sql {tables sgbd} {
                 lappend pks [dict get $attribut "nom"]
                 set null_attribut 0
             }
-            set attribut_sql "    [Katyusha_GenerationSQL_attribut $k $attribut $sgbd]"
+            # Si une seule clefs primaire, on ajoute l'élément à l'attribut
+            if {[llength $pks] == 1} {
+                set si_pk 1
+            } else {
+                set si_pk 0
+            }
+            set attribut_sql "    [Katyusha_GenerationSQL_attribut $k $attribut $sgbd $si_pk]"
             if {$attributs_sql != ""} {
                 set attributs_sql "$attributs_sql, \n$attribut_sql"
             } else {
                 set attributs_sql "$attributs_sql$attribut_sql"
             }
         }
-        # Balayage des clefs primaires de la table
+        # Balayage des clefs primaires de la table si il y en a plus d'une
+        if {[llength $pks] > 1} {
         foreach pk $pks {
             if {$pks_sql == ""} {
                 set pks_sql ", \n    PRIMARY KEY($pk"
@@ -132,6 +152,7 @@ proc Katyusha_GenerationSQL_tables_sql {tables sgbd} {
         }
         if {$pks_sql != ""} {
             set pks_sql "$pks_sql)"
+        }
         }
         # Construit le script de la table
         if {$description_table != "" && $description_table != "\n"} {
