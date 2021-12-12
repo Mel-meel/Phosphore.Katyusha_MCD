@@ -144,7 +144,9 @@ proc Katyusha_grille {} {
     }
 }
 
-# Ouvre un fichier
+##
+# Ouvre et lis le contenu d'un fichier
+##
 proc file_read {fichier acces} {
     if {[file exists $fichier]} {
         set fp [open $fichier $acces]
@@ -251,6 +253,9 @@ proc Katyusha_zoom_initial {} {
     }
 }
 
+##
+# Retourne la valeur de la dernière clef du dictionnaire passé en paramètre
+##
 proc Dict_dernier_id {d} {
     set ids [dict keys $d]
     return [lindex $ids [expr [llength $ids] - 1]]
@@ -274,6 +279,9 @@ proc Katyusha_compare_versions {v1 v2} {
     return $res
 }
 
+##
+# Enregistre un texte dans un fichier
+##
 proc Katyusha_C_fichier_enrigistrer {fichier contenu acces} {
     # Enregistre dans le fichier
     set stream [open $fichier $acces]
