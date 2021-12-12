@@ -21,6 +21,9 @@ proc Katyusha_RE_attributs_table {bloc_attributs} {
     set attributs [split $bloc_attributs ","]
     
     foreach attribut $attributs {
+        while {[string first " " $attribut] == 0} {
+            set attribut [string range $attribut 1 end]
+        }
         puts $attribut
     }
     

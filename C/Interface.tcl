@@ -114,8 +114,8 @@ foreach fichier [Katyusha_fichiers_recents] {
 #.mb.bdd add command -label $LOCALE(menu_gen_mcd) -command INTERFACE_generation_mcd
 
 # Menu code
-.mb.code add command -label "Générer du code PHP" -command INTERFACE_Code_generation_php
-.mb.code add command -label "Générer du code PHP objet pour Doctrine ORM" -command INTERFACE_Code_generation_php_objet_doctrine
+.mb.code add command -label $LOCALE(menu_code_generer_php_fonctions) -command INTERFACE_Code_generation_php
+.mb.code add command -label $LOCALE(menu_code_generer_php_doctrine) -command INTERFACE_Code_generation_php_objet_doctrine
 
 # Menu Aide
 .mb.aide add command -label $LOCALE(menu_aide_a_propos) -command INTERFACE_apropos
