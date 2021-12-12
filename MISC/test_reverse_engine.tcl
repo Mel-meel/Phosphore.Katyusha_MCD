@@ -15,6 +15,41 @@ proc Katyusha_RE_nettoyage_espaces_vides {contenu} {
     return $contenu
 }
 
+proc Katyusha_RE_attributs_table {bloc_attributs} {
+    set atts [dict create]
+    
+    set attributs [split $bloc_attributs ","]
+    
+    foreach attribut $attributs {
+        puts $attribut
+    }
+    
+    return $atts
+}
+
+##
+# Construit un dictionnaire de table
+##
+proc Katyusha_RE_table {commande} {
+    set table [dict create]
+    
+    set curseur1 [string first "CREATE TABLE" [string toupper $commande]]
+    set curseur1 [string first " " $commande [expr $curseur1 + 10]]
+    set curseur2 [string first " " $commande [expr $curseur1 + 1]]
+    # Localise le nom de la table
+    dict set table "nom" [string range $commande [expr $curseur1 + 1] [expr $curseur2 - 1]]
+    
+    # Colones de la table
+    set curseur1 $curseur2
+    set curseur1 [string first "(" $commande $curseur1]
+    set curseur2 [string last ")" $commande]
+    
+    set bloc_attributs [string range $commande [expr $curseur1 + 1] [expr $curseur2 - 1]]
+    dict set table "attributs" [Katyusha_RE_attributs_table $bloc_attributs]
+    
+    return $table
+}
+
 proc Katyusha_RE_isoler_commandes_creation_tables {commandes} {
     set commandes_tables [list]
     
@@ -23,7 +58,7 @@ proc Katyusha_RE_isoler_commandes_creation_tables {commandes} {
         if {$debut != -1} {
             set suite [string first "TABLE" [string toupper $commande] $debut]
             if {$suite != -1} {
-                puts $commande
+                lappend commandes_tables $commande
             }
         }
     }
@@ -104,5 +139,10 @@ set commandes [split $contenu ";"]
 #puts $commandes
 
 set commandes_tables [Katyusha_RE_isoler_commandes_creation_tables $commandes]
-puts $commandes_tables
+#puts $commandes_tables
+
+foreach commande_table $commandes_tables {
+    set table [Katyusha_RE_table $commande_table]
+    puts $table
+}
 
