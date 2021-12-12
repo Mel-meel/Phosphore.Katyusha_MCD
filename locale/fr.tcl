@@ -37,6 +37,7 @@ set LOCALE(menu_mcd_exporter_svg) "Exporter le MCD en SVG"
 set LOCALE(menu_mcd_imprimer) "Exporter le MCD en Post Script"
 set LOCALE(menu_mcd_verifier) "Vérifier l'intégrité du MCD"
 set LOCALE(menu_aide_a_propos) "À propos"
+set LOCALE(menu_aide_license) "License"
 set LOCALE(menu_code_generer_php_fonctions) "Générer du code PHP"
 set LOCALE(menu_code_generer_php_doctrine) "Générer du code PHP objet pour Doctrine ORM"
 # Génération de code
@@ -137,7 +138,7 @@ set LOCALE(supprimer_table_fille) "Supprimer une entité fille"
 set LOCALE(aucune_table_selectionne) "Aucune entité sélectionnée"
 # À propos
 set LOCALE(TITRE_a_propos) "À propos de Katyusha MCD"
-set LOCALE(TEXTE_a_propos) "Katyusha MCD est un composant du Projet Phosphore\nDistribué sous licence GPL v3\nCopyleft (c) Mélanie Verdon Avizou\n 2019 - 2021"
+set LOCALE(TEXTE_a_propos) "Katyusha MCD est un composant du Projet Phosphore\nDistribué sous licence GPL v3\nCopyleft (c) 2019 - 2021\n Mélanie Verdon Avizou"
 # Supression entité
 set LOCALE(sure_suppression_table) "Sure de vouloir supprimer cette entité?"
 set LOCALE(sure_suppression_relation) "Sure de vouloir supprimer cette relation?"
