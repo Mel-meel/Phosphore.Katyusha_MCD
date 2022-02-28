@@ -126,6 +126,11 @@ proc Katyusha_GenerationSQL_tables_sql {tables sgbd} {
         foreach {k attribut} $attributs_table {
             if {[dict get $attribut "pk"] == 1} {
                 lappend pks [dict get $attribut "nom"]
+            }
+        }
+        
+        foreach {k attribut} $attributs_table {
+            if {[dict get $attribut "pk"] == 1} {
                 set null_attribut 0
             }
             # Si une seule clefs primaire, on ajoute l'élément à l'attribut
@@ -143,16 +148,16 @@ proc Katyusha_GenerationSQL_tables_sql {tables sgbd} {
         }
         # Balayage des clefs primaires de la table si il y en a plus d'une
         if {[llength $pks] > 1} {
-        foreach pk $pks {
-            if {$pks_sql == ""} {
-                set pks_sql ", \n    PRIMARY KEY($pk"
-            } else {
-                set pks_sql "$pks_sql, $pk"
+            foreach pk $pks {
+                if {$pks_sql == ""} {
+                    set pks_sql ", \n    PRIMARY KEY($pk"
+                } else {
+                    set pks_sql "$pks_sql, $pk"
+                }
             }
-        }
-        if {$pks_sql != ""} {
-            set pks_sql "$pks_sql)"
-        }
+            if {$pks_sql != ""} {
+                set pks_sql "$pks_sql)"
+            }
         }
         # Construit le script de la table
         if {$description_table != "" && $description_table != "\n"} {
