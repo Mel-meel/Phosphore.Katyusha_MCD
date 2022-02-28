@@ -172,7 +172,7 @@ proc Katyusha_GenerationSQL_tables_sql {tables sgbd} {
 proc Katyusha_GenerationSQL_fks_sql {fks sgbd} {
     set SQL ""
     foreach fk $fks {
-        set SQL "$SQL[Katyusha_SQL_ajout_fk [dict get $fk table_lien] [dict get $fk table_liee] [dict get $fk nom] [dict get $fk nom_origine] $sgbd]\n"
+        set SQL "$SQL[Katyusha_SQL_ajout_fk [dict get $fk table_lien] [dict get $fk table_liee] [dict get $fk nom_origine] [dict get $fk nom] $sgbd]\n"
     }
     return $SQL
 }

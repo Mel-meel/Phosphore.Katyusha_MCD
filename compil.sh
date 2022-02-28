@@ -33,4 +33,4 @@ mv ./locale/fr.o.tcl ./locale/fr.tcl
 
 
 # Sources
-tar -czvf ./OUT/KatyushaMCD_SRC_$1.tar.gz ./Katyusha.tcl ./C/ ./packages/ ./images/ ./locale/ ./configs/ ./gpl-3.0.txt
+tar -czvf ./OUT/KatyushaMCD_SRC_$1.tar.gz ./Katyusha.tcl ./C/ ./packages/ ./libs ./images/ ./locale/ ./configs/ ./gpl-3.0.txt

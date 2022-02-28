@@ -96,7 +96,7 @@ set id_projet -1
 
 Katyusha_MCD_init
 
-set version 0.4.0
+set version 0.4.1
 set splash [lindex [list "Катюша!" "Katyusha!" "!کاتیوشا" "Катюша!"] [expr int((rand() * 4) + 1) - 1]]
 set sgbd 0
 # Fichier dans lequel toutes les sauvegardes simples se feronts
