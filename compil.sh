@@ -28,8 +28,8 @@ rm ./locale/en.tcl
 rm ./locale/de.tcl
 
 mv ./locale/fr.o.tcl ./locale/fr.tcl
-mv ./locale/fr.o.tcl ./locale/fr.tcl
-mv ./locale/fr.o.tcl ./locale/fr.tcl
+mv ./locale/en.o.tcl ./locale/en.tcl
+mv ./locale/de.o.tcl ./locale/de.tcl
 
 
 # Sources
