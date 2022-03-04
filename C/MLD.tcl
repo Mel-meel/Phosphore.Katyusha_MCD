@@ -298,7 +298,7 @@ proc Katyusha_MLD_mcd_vers_mld {tables relations heritages} {
                 foreach {kkk pk} $pks {
                     dict set attributs [expr [Dict_dernier_id $attributs] + 1] $pk
                     # Ajoute les clefs primaires des tables liées à la liste des clefs étrangères
-                    set fk [dict create "pk" 1 "table_lien" [lindex $lien 0] "table_liee" $nom "nom" [dict get $pk "nom"] "nom_origine" [dict get $pk "nom_origine"]]
+                    set fk [dict create "pk" 1 "table_lien" $nom "table_liee" [lindex $lien 0] "nom" [dict get $pk "nom"] "nom_origine" [dict get $pk "nom_origine"]]
                     lappend fks $fk
                 }
             }
