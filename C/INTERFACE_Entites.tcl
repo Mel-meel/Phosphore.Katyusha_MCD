@@ -24,6 +24,7 @@ proc INTERFACE_ajout_attribut {entite {id "null"}} {
     global E_ctype_attribut
     global E_null_attribut
     global E_description_attribut
+    global E_auto_attribut
     
     set f ".fen_ajout_attribut"
     
