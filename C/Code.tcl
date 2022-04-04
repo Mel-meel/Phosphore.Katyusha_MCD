@@ -20,6 +20,7 @@ proc Katyusha_Code_table_orm {nom_table code_attributs langage orm} {
 }
 
 proc Katyusha_Code_attribut_orm {attribut langage orm} {
+puts $attribut
     set code ""
     
     set nom [dict get $attribut "nom"]
@@ -52,6 +53,11 @@ proc Katyusha_Code_attribut_orm {attribut langage orm} {
             set ctype ""
         }
         set code "$code\n     * @ORM\\Column\(type=\"$type\"$ctype\)"
+        
+        # En cas de clef étrangère
+        if {[lsearch [dict keys $attribut] "card"] != -1} {
+            puts [dict get $attribut "card"]
+        }
         set code "$code\n     */"
         set code "$code\n    private \$$nom ;\n"
     }

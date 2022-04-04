@@ -239,6 +239,7 @@ proc Katyusha_MLD_pks_table {nom_table cardinalite est_pk} {
                 #       table.id devient table.id_table
                 set nom_attribut [dict get $attribut "nom"]
                 dict set attribut "nom_origine" $nom_attribut
+                dict set attribut "table_origine" $nom_table
                 # Supprime les incrémentations automatiques
                 dict set attribut "auto" 0
                 dict set attribut "valeur" ""
