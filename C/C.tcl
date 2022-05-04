@@ -21,19 +21,20 @@ proc lremove {liste quoi} {
 
 proc Katyusha_action_boutons_ajout {entite_select} {
     global ACTION_B1
+    global NOTEBOOK_MCD
     
     set entites [list "table" "relation" "etiquette"]
     
     if {$ACTION_B1 == "ajout_$entite_select"} {
         set ACTION_B1 "null"
-        .panel.commandes.ajout_$entite_select configure -relief raised
+        $NOTEBOOK_MCD.panel.commandes.ajout_$entite_select configure -relief raised
     } else {
         set ACTION_B1 "ajout_$entite_select"
-        .panel.commandes.ajout_$entite_select configure -relief sunken
+        $NOTEBOOK_MCD.panel.commandes.ajout_$entite_select configure -relief sunken
     }
     foreach entite $entites {
         if {$entite != $entite_select} {
-            .panel.commandes.ajout_$entite configure -relief raised
+            $NOTEBOOK_MCD.panel.commandes.ajout_$entite configure -relief raised
         }
     }
 }
@@ -44,9 +45,10 @@ proc Katyusha_action_boutons_ajout {entite_select} {
 proc Katyusha_boutons_ajout_off {} {
     global ACTION_B1
     global CONFIGS
+    global NOTEBOOK_MCD
     
     foreach bouton [list "ajout_table" "ajout_relation" "ajout_etiquette" "ajout_heritage"] {
-        .panel.commandes.$bouton configure -relief raised
+        $NOTEBOOK_MCD.panel.commandes.$bouton configure -relief raised
     }
     set ACTION_B1 "null"
 }
@@ -104,9 +106,7 @@ proc liste_tables {} {
 ##
 # Création de la grille du canvas
 ##
-proc Katyusha_grille {} {
-    global canvas_x
-    global canvas_y
+proc Katyusha_grille {canvas} {
     global CONFIGS
 
     set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
@@ -124,7 +124,7 @@ proc Katyusha_grille {} {
             set couleur "#DDDDDD"
         }
         set dx [expr $dx + 10]
-        .mcd.canvas.c create line $dx 0 $dx [expr $xbcanvas + 1000] -fill $couleur -tag "grille"
+        $canvas create line $dx 0 $dx [expr $xbcanvas + 1000] -fill $couleur -tag "grille"
         update
     }
     # Lignes en Y
@@ -139,7 +139,7 @@ proc Katyusha_grille {} {
             set couleur "#DDDDDD"
         }
         set dy [expr $dy + 10]
-        .mcd.canvas.c create line 0 $dy [expr $ybcanvas + 1000] $dy -fill $couleur -tag "grille"
+        $canvas create line 0 $dy [expr $ybcanvas + 1000] $dy -fill $couleur -tag "grille"
         update
     }
 }
@@ -218,36 +218,36 @@ proc hyperlink { name args } {
 ##
 # Zoom avant
 ##
-proc Katyusha_zoom_plus {} {
+proc Katyusha_zoom_plus {canvas} {
     global zoom_compteur
     
     set zoom_compteur [expr $zoom_compteur + 1]
-    .mcd.canvas.c scale all 0 0 1.1 1.1
+    $canvas scale all 0 0 1.1 1.1
 }
 
 ##
 # Zoom_arriere
 ##
-proc Katyusha_zoom_moins {} {
+proc Katyusha_zoom_moins {canvas} {
     global zoom_compteur
     
     set zoom_compteur [expr $zoom_compteur - 1]
-    .mcd.canvas.c scale all 0 0 0.9 0.9
+    $canvas scale all 0 0 0.9 0.9
 }
 
 ##
 # Retour au zoom initial
 ##
-proc Katyusha_zoom_initial {} {
+proc Katyusha_zoom_initial {canvas} {
     global zoom_compteur
     set n [expr abs($zoom_compteur)]
     
     if {$n > 0} {
         for {set c 0} {$c < $n} {incr c} {
             if {$zoom_compteur < 0} {
-                Katyusha_zoom_plus
+                Katyusha_zoom_plus $canvas
             } else {
-                Katyusha_zoom_moins
+                Katyusha_zoom_moins $canvas
             }
         }
     }

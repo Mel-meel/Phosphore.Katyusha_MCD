@@ -19,6 +19,7 @@ global fichier_sauvegarde
 global canvas_x
 global canvas_y
 global OS
+global ZONE_MCD
 
 # Détruit l'image de splash pour pouvoir afficher le reste
 destroy .image
@@ -121,91 +122,94 @@ foreach fichier [Katyusha_fichiers_recents] {
 .mb.aide add command -label $LOCALE(menu_aide_a_propos) -command INTERFACE_apropos
 .mb.aide add command -label $LOCALE(menu_aide_license) -command INTERFACE_license
 
-frame .panel
-frame .panel.commandes
-    # Bouton on/off d'ajout de table
-    button .panel.commandes.ajout_table -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_action_boutons_ajout "table"}
-    tooltip::tooltip .panel.commandes.ajout_table $LOCALE(ajouter_table)
-    # Bouton on/off d'ajout d'une relation
-    button .panel.commandes.ajout_relation -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_action_boutons_ajout "relation"}
-    tooltip::tooltip .panel.commandes.ajout_relation $LOCALE(ajouter_relation)
-    # Bouton on/off d'ajout d'un héritage
-    button .panel.commandes.ajout_heritage -text $LOCALE(ajouter_heritage) -image $IMG(ajouter_heritage) -command {Katyusha_action_boutons_ajout "heritage"}
-    tooltip::tooltip .panel.commandes.ajout_heritage $LOCALE(ajouter_heritage)
-    # Bouton on/off d'ajout d'une étiquette
-    button .panel.commandes.ajout_etiquette -text $LOCALE(ajouter_etiquette) -image $IMG(ajouter_etiquette) -command {Katyusha_action_boutons_ajout "etiquette"}
-    tooltip::tooltip .panel.commandes.ajout_etiquette $LOCALE(ajouter_etiquette)
-    pack .panel.commandes.ajout_table .panel.commandes.ajout_relation .panel.commandes.ajout_etiquette .panel.commandes.ajout_heritage -side left
-pack .panel.commandes
-    #button .panel.ajout_procedure -text $LOCALE(ajouter_procedure) -command INTERFACE_ajout_procedure
-    #pack .panel.ajout_procedure -fill x
-    label .panel.entites -text $LOCALE(entites_de_la_base) -justify left
-    pack .panel.entites -fill x
-    # Arbre des entités du MCD
-    frame .panel.arbre
-        canvas .panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand {.panel.arbre.vs set} -scrollregion "0 0 250 4000" -background #F5F5F5
-        scrollbar .panel.arbre.vs -command {.panel.arbre.c yview}
-        pack .panel.arbre.c .panel.arbre.vs -side left -fill both
-    pack .panel.arbre
-pack .panel -side left
-frame .mcd
-    # Infos de la base de données
-    frame .mcd.infos_bdd
-        label .mcd.infos_bdd.nom_bdd -text "Nom de la base de données : $MCD(nom)"
-        label .mcd.infos_bdd.sgbd -text "SGBD cible : $MCD(sgbd)"
-        # Bouton d'édition
-        button .mcd.infos_bdd.edit -text $LOCALE(editer) -image $IMG(editer) -compound right -command INTERFACE_config_bdd
-        # Bouton de génération du script SQL pour le SGBD par défaut
-        button .mcd.infos_bdd.gen -text $MCD(sgbd) -image $IMG(gen_sql) -compound right -command {
-            global MCD
-            if {[Katyusha_verification_mcd] == 1} {
-                set res_info [tk_messageBox -icon warning -type ok -message "Il y a une erreur dans le MCD qui empêche la génération du script SQL pour $MCD(sgbd)"]
-            } else {
-                set SQL [Katyusha_generation_sql $MCD(sgbd)]
-                INTERFACE_script_SQL [lindex $SQL 0] [lindex $SQL 1]
-            }
-        }
-        #pack .mcd.infos_bdd.gen .mcd.infos_bdd.edit -fill x -side right
-        #pack .mcd.infos_bdd.nom_bdd .mcd.infos_bdd.sgbd -fill x -side left -padx 50
-        button .mcd.infos_bdd.zoom_plus -text "+" -image $IMG(zoom_plus) -command Katyusha_zoom_plus
-        button .mcd.infos_bdd.zoom_moins -text "-" -image $IMG(zoom_moins) -command Katyusha_zoom_moins
-        button .mcd.infos_bdd.zoom_initial -text "1:1" -image $IMG(zoom_initial) -command Katyusha_zoom_initial
-        button .mcd.infos_bdd.defaire -text "défaire" -image $IMG(defaire) -command Katyusha_Historique_defaire
-        button .mcd.infos_bdd.refaire -text "refaire" -image $IMG(refaire) -command Katyusha_Historique_refaire
-        pack .mcd.infos_bdd.zoom_plus .mcd.infos_bdd.zoom_moins .mcd.infos_bdd.zoom_initial .mcd.infos_bdd.defaire .mcd.infos_bdd.refaire -side left
-    pack .mcd.infos_bdd -fill x
-    # Canvas principal
-    frame .mcd.canvas
-        # C'est pas parfait, mais ça marche
-        # À revoir completement
-        scrollbar .mcd.canvas.vs -command {.mcd.canvas.c yview}
-        set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
-        set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
-        canvas .mcd.canvas.c -background white -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand {.mcd.hs set} -yscrollcommand {.mcd.canvas.vs set} -scrollregion "0 0 $xbcanvas $ybcanvas"
-        pack .mcd.canvas.c -side left -expand 1
-        pack .mcd.canvas.vs -side left -fill y
-        #.mcd.canvas.c configure -scrollregion [.mcd.canvas.c bbox all]
-    pack .mcd.canvas -fill x
-        scrollbar .mcd.hs -orient horiz -command {.mcd.canvas.c xview}
-        pack .mcd.hs -side top -fill x
-    # Position X / Y dur curseur et splash
-    frame .mcd.infos
-        frame .mcd.infos.s
-            if {$OS == "Windows" || $OS == "Win"} {
-                button .mcd.infos.s.splash -text $LOCALE(attention_os) -foreground red -activeforeground red -command INTERFACE_mise_en_garde
-            } else {
-                label .mcd.infos.s.splash -text $splash
-            }
-            label .mcd.infos.s.position_curseur -text ""
-            pack .mcd.infos.s.position_curseur -padx 1 -side right
-            pack .mcd.infos.s.splash -padx 1 -side right
-        pack .mcd.infos.s -fill x
-        label .mcd.infos.fichier -text $fichier_sauvegarde
-        pack .mcd.infos.fichier -fill x
-    pack .mcd.infos
-pack .mcd -side left
+##
+# Le 4/5/2022 : Ajout d'un widget ttk::notebook qui contiendra deux élément :
+# Le premier avec l'interface de modélisation MCD
+# Le deuxième avec l'interface de modélisation UML en course de développement
+##
+ttk::notebook .editeurs
+.editeurs add [Katyusha_Interface_editeur_MCD ".editeurs" $canvas_x $canvas_y] -text "MCD"
+.editeurs add [ttk::frame .editeurs.notebook_uml] -text "UML"
+pack .editeurs -fill both -expand 1
 
-Katyusha_grille
-maj_arbre_entites
+Katyusha_grille $ZONE_MCD.canvas.c
+#maj_arbre_entites
 
+}
+
+proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
+    global LOCALE
+    global IMG
+    global CONFIGS
+    global ZONE_MCD
+    
+    set f [ttk::frame $parent.notebook_mcd]
+    
+    frame $parent.notebook_mcd.panel
+    frame $parent.notebook_mcd.panel.commandes
+        # Bouton on/off d'ajout de table
+        button $parent.notebook_mcd.panel.commandes.ajout_table -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_action_boutons_ajout "table"}
+        tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_table $LOCALE(ajouter_table)
+        # Bouton on/off d'ajout d'une relation
+        button $parent.notebook_mcd.panel.commandes.ajout_relation -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_action_boutons_ajout "relation"}
+        tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_relation $LOCALE(ajouter_relation)
+        # Bouton on/off d'ajout d'un héritage
+        button $parent.notebook_mcd.panel.commandes.ajout_heritage -text $LOCALE(ajouter_heritage) -image $IMG(ajouter_heritage) -command {Katyusha_action_boutons_ajout "heritage"}
+        tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_heritage $LOCALE(ajouter_heritage)
+        # Bouton on/off d'ajout d'une étiquette
+        button $parent.notebook_mcd.panel.commandes.ajout_etiquette -text $LOCALE(ajouter_etiquette) -image $IMG(ajouter_etiquette) -command {Katyusha_action_boutons_ajout "etiquette"}
+        tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_etiquette $LOCALE(ajouter_etiquette)
+        pack $parent.notebook_mcd.panel.commandes.ajout_table $parent.notebook_mcd.panel.commandes.ajout_relation $parent.notebook_mcd.panel.commandes.ajout_etiquette $parent.notebook_mcd.panel.commandes.ajout_heritage -side left
+    pack $parent.notebook_mcd.panel.commandes
+        label $parent.notebook_mcd.panel.entites -text $LOCALE(entites_de_la_base) -justify left
+        pack $parent.notebook_mcd.panel.entites -fill x
+        # Arbre des entités du MCD
+        frame $parent.notebook_mcd.panel.arbre
+            canvas $parent.notebook_mcd.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_mcd.panel.arbre.vs set" -scrollregion "0 0 250 4000" -background #F5F5F5
+            scrollbar $parent.notebook_mcd.panel.arbre.vs -command "$parent.notebook_mcd.panel.arbre.c yview"
+            pack $parent.notebook_mcd.panel.arbre.c $parent.notebook_mcd.panel.arbre.vs -side left -fill both
+        pack $parent.notebook_mcd.panel.arbre
+    pack $parent.notebook_mcd.panel -side left
+    frame $parent.notebook_mcd.mcd
+        # Infos de la base de données
+        frame $parent.notebook_mcd.mcd.infos_bdd
+            button $parent.notebook_mcd.mcd.infos_bdd.zoom_plus -text "+" -image $IMG(zoom_plus) -command "Katyusha_zoom_plus $ZONE_MCD.canvas.c"
+            button $parent.notebook_mcd.mcd.infos_bdd.zoom_moins -text "-" -image $IMG(zoom_moins) -command "Katyusha_zoom_moins $ZONE_MCD.canvas.c"
+            button $parent.notebook_mcd.mcd.infos_bdd.zoom_initial -text "1:1" -image $IMG(zoom_initial) -command "Katyusha_zoom_initial $ZONE_MCD.canvas.c"
+            button $parent.notebook_mcd.mcd.infos_bdd.defaire -text "défaire" -image $IMG(defaire) -command Katyusha_Historique_defaire
+            button $parent.notebook_mcd.mcd.infos_bdd.refaire -text "refaire" -image $IMG(refaire) -command Katyusha_Historique_refaire
+            pack $parent.notebook_mcd.mcd.infos_bdd.zoom_plus $parent.notebook_mcd.mcd.infos_bdd.zoom_moins $parent.notebook_mcd.mcd.infos_bdd.zoom_initial $parent.notebook_mcd.mcd.infos_bdd.defaire $parent.notebook_mcd.mcd.infos_bdd.refaire -side left
+        pack $parent.notebook_mcd.mcd.infos_bdd -fill x
+        # Canvas principal
+        frame $parent.notebook_mcd.mcd.canvas
+            # C'est pas parfait, mais ça marche
+            # À revoir completement
+            scrollbar $parent.notebook_mcd.mcd.canvas.vs -command "$parent.notebook_mcd.mcd.canvas.c yview"
+            set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+            set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+            canvas $parent.notebook_mcd.mcd.canvas.c -background white -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand "$parent.notebook_mcd.mcd.hs set" -yscrollcommand "$parent.notebook_mcd.mcd.canvas.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas"
+            pack $parent.notebook_mcd.mcd.canvas.c -side left -fill both -expand 1
+            pack $parent.notebook_mcd.mcd.canvas.vs -side left -fill y
+            #.mcd.canvas.c configure -scrollregion [.mcd.canvas.c bbox all]
+        pack $parent.notebook_mcd.mcd.canvas -fill x
+            scrollbar $parent.notebook_mcd.mcd.hs -orient horiz -command "$parent.notebook_mcd.mcd.canvas.c xview"
+            pack $parent.notebook_mcd.mcd.hs -side top -fill x
+        # Position X / Y dur curseur et splash
+        frame $parent.notebook_mcd.mcd.infos
+            frame $parent.notebook_mcd.mcd.infos.s
+                #if {$OS == "Windows" || $OS == "Win"} {
+                #    button $parent.notebook_mcd.mcd.infos.s.splash -text $LOCALE(attention_os) -foreground red -activeforeground red -command INTERFACE_mise_en_garde
+                #} else {
+                #    label $parent.notebook_mcd.mcd.infos.s.splash -text $splash
+                #}
+                #label $parent.notebook_mcd.mcd.infos.s.position_curseur -text ""
+                #pack $parent.notebook_mcd.mcd.infos.s.position_curseur -padx 1 -side right
+                #pack $parent.notebook_mcd.mcd.infos.s.splash -padx 1 -side right
+            pack $parent.notebook_mcd.mcd.infos.s -fill x
+            #label $parent.notebook_mcd.mcd.infos.fichier -text $fichier_sauvegarde
+            #pack $parent.notebook_mcd.mcd.infos.fichier -fill x
+        pack $parent.notebook_mcd.mcd.infos
+    pack $parent.notebook_mcd.mcd -side left
+    
+    return $f
 }

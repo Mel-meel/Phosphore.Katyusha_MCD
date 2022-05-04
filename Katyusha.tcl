@@ -96,7 +96,7 @@ set id_projet -1
 
 Katyusha_MCD_init
 
-set version 0.4.4
+set version 0.4.5
 set splash [lindex [list "Катюша!" "Katyusha!" "!کاتیوشا" "Катюша!"] [expr int((rand() * 4) + 1) - 1]]
 set sgbd 0
 # Fichier dans lequel toutes les sauvegardes simples se feronts
@@ -124,6 +124,9 @@ puts "v$version"
 puts "OK!"
 
 set OS [lindex $tcl_platform(os) 0]
+set NOTEBOOK_MCD ".editeurs.notebook_mcd"
+set ZONE_MCD ".editeurs.notebook_mcd.mcd"
+set ZONE_UML ".editeurs.notebook_uml.uml"
 puts "OS : $OS"
 
 after 1000

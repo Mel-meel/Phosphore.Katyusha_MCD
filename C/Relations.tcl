@@ -45,6 +45,7 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
     global rpr
     global IMG
     global CONFIGS
+    global ZONE_MCD
     
     # Récupère le nom de la relation
     set nom [dict get $relation "nom"]
@@ -84,8 +85,8 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
     set x [lindex [dict get $relation "coords"] 0]
     set y [lindex [dict get $relation "coords"] 1]
     
-    lappend graph [.mcd.canvas.c create oval [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 30] -width 2 -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond"] -tag [list relation $ID]]
-    lappend graph [.mcd.canvas.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y - ($hauteur / 2) + 20] -fill [dict get $couleurs "texte"] -anchor w -text $nom -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
+    lappend graph [$ZONE_MCD.canvas.c create oval [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 30] -width 2 -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond"] -tag [list relation $ID]]
+    lappend graph [$ZONE_MCD.canvas.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y - ($hauteur / 2) + 20] -fill [dict get $couleurs "texte"] -anchor w -text $nom -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
         # Affiche les éléments des attributs selon la configuration
     set taille 0
     set x2 [expr $x - ($largeur / 2) + 10]
@@ -102,12 +103,12 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
         } else {
             set col [dict get $couleurs "texte"]
         }
-        lappend graph [.mcd.canvas.c create text $x2 [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones $element] -fill $col -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
+        lappend graph [$ZONE_MCD.canvas.c create text $x2 [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones $element] -fill $col -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
         set taille [dict get $tailles_colones $element]
     }
     # Créé les images de clefs primaires
     foreach pk $pks {
-        lappend graph [.mcd.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 30 + $pk] -image $IMG(pk) -tag [list relation $ID]]
+        lappend graph [$ZONE_MCD.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 30 + $pk] -image $IMG(pk) -tag [list relation $ID]]
     }
     unset x y hauteur largeur nom relation ID
     return $graph
@@ -195,6 +196,7 @@ proc Katyusha_Relations_modification_relation {id relation} {
     global relations
     global lignes_graphique
     global textes_cardinalites
+    global ZONE_MCD
     
     suppression_relation $id
     dict set relations $id $relation
@@ -203,7 +205,7 @@ proc Katyusha_Relations_modification_relation {id relation} {
     foreach {k ligne} $lignes_graphique {
         set id_relation_tmp [lindex $ligne 2]
         if {$id == $id_relation_tmp} {
-            .mcd.canvas.c delete [lindex $ligne 0]
+            $ZONE_MCD.canvas.c delete [lindex $ligne 0]
             dict unset lignes_graphique $k
             dict unset textes_cardinalites $k
         }
@@ -233,10 +235,11 @@ proc Katyusha_Relations_lignes_relation_tables {relation id_relation} {
     global lignes_graphique
     global textes_cardinalites
     global MCD
+    global ZONE_MCD
     
     # Détermine les coordonnées des lignes à tracer
     set id_graphique [lindex [dict get $relations_graphique $id_relation] 0]
-    set coords [.mcd.canvas.c coords $id_graphique]
+    set coords [$ZONE_MCD.canvas.c coords $id_graphique]
     # Taille de la relation en pixels
     set largeur_relation [expr [lindex $coords 2] - [lindex $coords 0]]
     set hauteur_relation [expr [lindex $coords 3] - [lindex $coords 1]]
@@ -284,7 +287,7 @@ proc Katyusha_Relations_lignes_relation_tables {relation id_relation} {
                 }
             }
             set id [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1]
-            dict set lignes_graphique $id [list "relation" [.mcd.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" $id_table]] $id_table $id_relation]
+            dict set lignes_graphique $id [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" $id_table]] $id_table $id_relation]
             #dict set textes_cardinalites $id [list $id_table [.mcd.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_table] -tag [list "texte_cardinalite" $id_table]]]
             }
         }
@@ -301,10 +304,11 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
     global relations_graphique
     global textes_cardinalites
     global MCD
+    global ZONE_MCD
     
     # Détermine les coordonnées des lignes à tracer
     set id_graphique [lindex [dict get $relations_graphique $id_relation] 0]
-    set coords [.mcd.canvas.c coords $id_graphique]
+    set coords [$ZONE_MCD.canvas.c coords $id_graphique]
     # Taille de la relation en pixels
     set largeur_relation [expr [lindex $coords 2] - [lindex $coords 0]]
     set hauteur_relation [expr [lindex $coords 3] - [lindex $coords 1]]
@@ -317,7 +321,7 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
         set id_relation_tmp [lindex $ligne 3]
         if {$id_relation_tmp == $id_relation} {
             # Récupère les anciennes coordonnées de la ligne
-            set acoords [.mcd.canvas.c coords [lindex $ligne 1]]
+            set acoords [$ZONE_MCD.canvas.c coords [lindex $ligne 1]]
             # Créé les nouvelles coordonnées :
             #           [nouveau_x_origine nouveau_y_origine ancien_x_cible ancien_y_cible]
             set ncoords [list $x $y [lindex $acoords 2] [lindex $acoords 3]]
@@ -357,18 +361,18 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
             # Si la relation est par dessus l'objet ou touche l'objet auquel elle est liée, pas de ligne
             if {$x_origine != "" && $y_origine != "" && $x_arrivee != "" && $y_arrivee != ""} {
                 # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "relation" [.mcd.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" $id_table]] $id_table $id_relation]
+                dict set lignes_graphique $k [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" $id_table]] $id_table $id_relation]
                 # Et supprimme l'ancienne
-                .mcd.canvas.c delete [lindex $ligne 1]
+                $ZONE_MCD.canvas.c delete [lindex $ligne 1]
                 # Créé les textes des cardinalités
                 #.mcd.canvas.c delete [dict get $textes_cardinalites $k]
                 foreach {kk texte_cardinalite} $textes_cardinalites {
                     if {[lindex $texte_cardinalite 0] == $id_table && [lindex $texte_cardinalite 1] == $id_relation} {
-                        .mcd.canvas.c delete [lindex $texte_cardinalite 2]
+                        $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
                         dict unset $textes_cardinalites $kk
                     }
                 }
-                dict set textes_cardinalites $k [list $id_table $id_relation [.mcd.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_table] -tag [list "texte_cardinalite" $id_table]]]
+                dict set textes_cardinalites $k [list $id_table $id_relation [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_table] -tag [list "texte_cardinalite" $id_table]]]
             }
         }
     }
@@ -383,12 +387,13 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
 proc Katyusha_Relations_suppression_lignes {id_relation} {
     global lignes_graphique
     global textes_cardinalites
+    global ZONE_MCD
     
     # Supprime les lignes
     foreach {k ligne} $lignes_graphique {
         if {[lindex $ligne 0] == "relation"} {
             if {[lindex $ligne 3] == $id_relation} {
-                .mcd.canvas.c delete [lindex $ligne 1]
+                $ZONE_MCD.canvas.c delete [lindex $ligne 1]
                 dict unset lignes_graphique $k
             }
         }
@@ -396,7 +401,7 @@ proc Katyusha_Relations_suppression_lignes {id_relation} {
     # Supprime les cardinalités
     foreach {kk texte_cardinalite} $textes_cardinalites {
         if {[lindex $texte_cardinalite 1] == $id_relation} {
-            .mcd.canvas.c delete [lindex $texte_cardinalite 2]
+            $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
              dict unset $textes_cardinalites $kk
         }
     }
