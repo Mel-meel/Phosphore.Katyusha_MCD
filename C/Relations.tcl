@@ -537,13 +537,15 @@ proc suppression_relation {relation} {
     global LOCALE
     global relations
     global relations_graphique
+    global ZONE_MCD
+    
     # Récupère le nom de la relation
     set nom [dict get [dict get $relations $relation] "nom"]
     # Supprime la relation du tableau général
     dict unset relations $relation
     # Supprime l'affichage de la relation
     foreach c [dict get $relations_graphique $relation] {
-        .mcd.canvas.c delete $c
+        $ZONE_MCD.canvas.c delete $c
     }
     # Supprime les lignes qui pointent vers la relation
     Katyusha_Relations_suppression_lignes $relation

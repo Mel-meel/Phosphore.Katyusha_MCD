@@ -51,6 +51,7 @@ proc Katyusha_Etiquettes_ajout_etiquette {etiquette_tmp} {
 
 proc Katyusha_Etiquettes_creer_affichage_graphique {ID etiquette} {
     global rpr
+    global ZONE_MCD
     
     # Récupère le nom de l'étiquette
     set nom [dict get $etiquette "nom"]
@@ -61,8 +62,8 @@ proc Katyusha_Etiquettes_creer_affichage_graphique {ID etiquette} {
     # Créé l'affichage graphique de la nouvelle étiquette dans une liste temporaire
     set x [lindex [dict get $etiquette "coords"] 0]
     set y [lindex [dict get $etiquette "coords"] 1]
-    lappend graph [.mcd.canvas.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2)] -outline #FF7000 -fill #FFE3CD -tag [list etiquette $ID]]
-    lappend graph [.mcd.canvas.c create text [expr $x] [expr $y + 10] -fill black -justify center -text $texte -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list etiquette $ID]]
+    lappend graph [$ZONE_MCD.canvas.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2)] -outline #FF7000 -fill #FFE3CD -tag [list etiquette $ID]]
+    lappend graph [$ZONE_MCD.canvas.c create text [expr $x] [expr $y + 10] -fill black -justify center -text $texte -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list etiquette $ID]]
     return $graph
 }
 
@@ -104,13 +105,15 @@ proc Etiquettes_supression_etiquette {etiquette} {
     global LOCALE
     global etiquettes
     global etiquettes_graphique
+    global ZONE_MCD
+    
     # Récupère le nom de l'étiquette
     set nom [dict get [dict get $etiquettes $etiquette] nom]
     # Supprime l'étiquette du tableau général
     dict unset etiquettes $etiquette
     # Supprime l'affichage de l'étiquette
     for {set c 0} {$c < 2} {incr c} {
-        .mcd.canvas.c delete [lindex [dict get $etiquettes_graphique $etiquette] $c]
+        $ZONE_MCD.canvas.c delete [lindex [dict get $etiquettes_graphique $etiquette] $c]
     }
     dict unset etiquettes_graphique $etiquette
     maj_arbre_entites

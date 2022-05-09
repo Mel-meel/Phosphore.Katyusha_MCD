@@ -213,10 +213,11 @@ proc ajout_table {table_tmp} {
 proc Katyusha_Tables_modification_table {id table} {
     global tables
     global tables_graphique
+    global ZONE_MCD
     
     # Supprime l'affichage de la table
     foreach c [dict get $tables_graphique $id] {
-        .mcd.canvas.c delete $c
+        $ZONE_MCD.canvas.c delete $c
     }
     Katyusha_Relations_modification_nom_table [dict get $tables $id] $table
     dict set tables $id $table
@@ -234,6 +235,7 @@ proc suppression_table {{table "null"}} {
     global tables
     global tables_graphique
     global id_entite
+    global ZONE_MCD
     
     # Supprime les liens de la table dans toutes les relations
     Katyusha_Relations_suppression_table_toutes $table
@@ -244,7 +246,7 @@ proc suppression_table {{table "null"}} {
     dict unset tables $table
     # Supprime l'affichage de la table
     foreach c [dict get $tables_graphique $table] {
-        .mcd.canvas.c delete $c
+        $ZONE_MCD.canvas.c delete $c
     }
     # Supprime les lignes de la table
     Katyusha_Tables_suppression_lignes $table
@@ -361,7 +363,7 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_table coords} {
             set largeur_relation [expr [lindex $coords_relation_lien 2] - [lindex $coords_relation_lien 0]]
             set hauteur_relation [expr [lindex $coords_relation_lien 3] - [lindex $coords_relation_lien 1]]
             # Récupère les anciennes coordonnées de la ligne
-            set acoords [.mcd.canvas.c coords [lindex $ligne 1]]
+            set acoords [$ZONE_MCD.canvas.c coords [lindex $ligne 1]]
             # Créé les nouvelles coordonnées
             set ncoords [list $x $y [lindex $acoords 2] [lindex $acoords 3]]
             #set id_relation [lindex $ligne 1]

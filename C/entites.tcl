@@ -17,8 +17,9 @@ proc maj_arbre_entites {} {
     global heritages
     global procedures
     global LOCALE
+    global NOTEBOOK_MCD
     
-    set c ".panel.arbre.c"
+    set c "$NOTEBOOK_MCD.panel.arbre.c"
     set hauteur 20
     set x 20
     # Efface tout ce qui se trouve dans le canvas
