@@ -121,6 +121,9 @@ set zoom_compteur 0
 
 # Initialisation de la traduction
 puts "Chargement de la langue locale"
+phgt::source "$rpr/locale" "fr"
+
+
 # Par défaut, français
 if {![file exists "$rpr/locale/$CONFIGS(LANG).tcl"]} {
     source "$rpr/locale/fr.tcl"
