@@ -34,6 +34,8 @@
 ./libs/canvas2svg.tcl
 ./libs/arabe.tcl
 ./libs/general_font.ttf
+./libs/phgettext/pkgIndex.tcl
+./libs/phgettext/phgettext.tcl
 
 ./packages/tooltip.tcl
 

@@ -35,7 +35,7 @@ proc Katyusha_sauvegarder_sous {} {
         } else {
             set fichier_sauvegarde $fichier
         }
-        .mcd.infos.fichier configure -text $fichier_sauvegarde
+        .infos.fichier configure -text $fichier_sauvegarde
         if {$fichier_sauvegarde != ""} {
             Katyusha_Sauvegarde
         }
@@ -57,6 +57,7 @@ proc Katyusha_Sauvegarde_base {} {
 ##
 proc Katyusha_Sauvegarde_table {id table} {
     global tables_graphique
+    global ZONE_MCD
     
     set nom_table [dict get $table nom]
     set xml "\t<table id=$id>\n\t\t<nom>$nom_table</nom>\n\t\t<attributs>\n"
@@ -94,7 +95,7 @@ proc Katyusha_Sauvegarde_table {id table} {
     set xml "$xml\t\t</couleurs>\n"
     # Coordonnées de la table graphique
     set id_graphique [lindex [dict get $tables_graphique $id] 0]
-    set coords [.mcd.canvas.c coords $id_graphique]
+    set coords [$ZONE_MCD.canvas.c coords $id_graphique]
     set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
     set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
     #set coords [dict get $table coords]
@@ -122,6 +123,7 @@ proc Katyusha_Sauvegarde_tables {tables} {
 
 proc Katyusha_Sauvegarde_relation {id relation} {
     global relations_graphique
+    global ZONE_MCD
     
     set nom_relation [dict get $relation nom]
     set xml "\t<relation id=$id>\n\t\t<nom>$nom_relation</nom>\n\t\t<attributs>\n"
@@ -169,7 +171,7 @@ proc Katyusha_Sauvegarde_relation {id relation} {
     set xml "$xml\t\t</couleurs>\n"
     # Coordonnées de la relation graphique
     set id_graphique [lindex [dict get $relations_graphique $id] 0]
-    set coords [.mcd.canvas.c coords $id_graphique]
+    set coords [$ZONE_MCD.canvas.c coords $id_graphique]
     set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
     set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 15]
     #set coords [dict get $relation coords]
@@ -230,6 +232,7 @@ proc Katyusha_Sauvegarde_etiquettes {etiquettes} {
 ##
 proc Katyusha_Sauvegarde_heritage {id heritage} {
     global heritages_graphique
+    global ZONE_MCD
     
     set xml "\t<heritage id=$id>\n"
     # Sauvegarde des tables concernées par l'héritage
@@ -250,7 +253,7 @@ proc Katyusha_Sauvegarde_heritage {id heritage} {
     set xml "$xml\t\t</couleurs>\n"
     # Coordonnées de l'héritage graphique
     set id_graphique [lindex [dict get $heritages_graphique $id] 0]
-    set coords [.mcd.canvas.c coords $id_graphique]
+    set coords [$ZONE_MCD.canvas.c coords $id_graphique]
     set x [lindex $coords 4]
     set y [expr [lindex $coords 5] + 45]
     set xml "$xml\t\t<coords>$x/$y</coords>\n\t</heritage>\n"

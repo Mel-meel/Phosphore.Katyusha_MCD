@@ -394,7 +394,7 @@ proc Katyusha_Charge {fichier} {
         Katyusha_MCD_nouveau
         set fichier_sauvegarde $fichier
         set MCD(rep) [file dirname $fichier_sauvegarde]
-        .mcd.infos.fichier configure -text $fichier_sauvegarde
+        .infos.fichier configure -text $fichier_sauvegarde
         # Nettoie le fichier
         set stream [string map [list "\t" ""] $stream]
         # Version de Katyusha! qui à enregistré le fichier

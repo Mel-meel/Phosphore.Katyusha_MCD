@@ -13,6 +13,9 @@ set rpr [file dirname [info script]]
 # Répertoire racine de l'exécutable
 #set rpr [file dirname [file normalize [info nameofexecutable]]]
 
+# Pour les packages embarqués
+lappend auto_path [file join [file dirname [file normalize [info script]]] "$rpr/libs"]
+
 
 source "$rpr/C/fonctions_interface.tcl"
 source "$rpr/C/Images.tcl"
@@ -58,6 +61,15 @@ source "$rpr/libs/arabe.tcl"
 puts -nonewline "Chargement de Tk"
 if {[catch {package require Tk}]} {
     puts " # TK obligatoire pour ce programme!"
+    exit
+} else {
+    puts " # OK!"
+}
+
+# TCL gettext
+puts -nonewline "Chargement de TCL gettext"
+if {[catch {package require phgettext}]} {
+    puts " # TCL gettext obligatoire pour ce programme!"
     exit
 } else {
     puts " # OK!"
@@ -127,6 +139,8 @@ set OS [lindex $tcl_platform(os) 0]
 set NOTEBOOK_MCD ".editeurs.notebook_mcd"
 set ZONE_MCD ".editeurs.notebook_mcd.mcd"
 set ZONE_UML ".editeurs.notebook_uml.uml"
+
+
 puts "OS : $OS"
 
 after 1000

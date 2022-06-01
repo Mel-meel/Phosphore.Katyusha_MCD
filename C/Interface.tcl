@@ -128,9 +128,23 @@ foreach fichier [Katyusha_fichiers_recents] {
 # Le deuxième avec l'interface de modélisation UML en course de développement
 ##
 ttk::notebook .editeurs
-.editeurs add [Katyusha_Interface_editeur_MCD ".editeurs" $canvas_x $canvas_y] -text "MCD"
+.editeurs add [Katyusha_Interface_editeur_MCD ".editeurs" $canvas_x $canvas_y] -text "Merise"
 .editeurs add [ttk::frame .editeurs.notebook_uml] -text "UML"
 pack .editeurs -fill both -expand 1
+    frame .infos
+        frame .infos.s
+            if {$OS == "Windows" || $OS == "Win"} {
+                button .infos.s.splash -text $LOCALE(attention_os) -foreground red -activeforeground red -command INTERFACE_mise_en_garde
+            } else {
+                label .infos.s.splash -text $splash
+            }
+            label .infos.s.position_curseur -text ""
+            pack .infos.s.position_curseur -padx 1 -side right
+            pack .infos.s.splash -padx 1 -side right
+        pack .infos.s -fill x
+        label .infos.fichier -text $fichier_sauvegarde
+        pack .infos.fichier -fill x
+    pack .infos
 
 Katyusha_grille $ZONE_MCD.canvas.c
 #maj_arbre_entites
@@ -142,6 +156,8 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
     global IMG
     global CONFIGS
     global ZONE_MCD
+    global OS
+    global splash
     
     set f [ttk::frame $parent.notebook_mcd]
     
@@ -194,21 +210,6 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
         pack $parent.notebook_mcd.mcd.canvas -fill x
             scrollbar $parent.notebook_mcd.mcd.hs -orient horiz -command "$parent.notebook_mcd.mcd.canvas.c xview"
             pack $parent.notebook_mcd.mcd.hs -side top -fill x
-        # Position X / Y dur curseur et splash
-        frame $parent.notebook_mcd.mcd.infos
-            frame $parent.notebook_mcd.mcd.infos.s
-                #if {$OS == "Windows" || $OS == "Win"} {
-                #    button $parent.notebook_mcd.mcd.infos.s.splash -text $LOCALE(attention_os) -foreground red -activeforeground red -command INTERFACE_mise_en_garde
-                #} else {
-                #    label $parent.notebook_mcd.mcd.infos.s.splash -text $splash
-                #}
-                #label $parent.notebook_mcd.mcd.infos.s.position_curseur -text ""
-                #pack $parent.notebook_mcd.mcd.infos.s.position_curseur -padx 1 -side right
-                #pack $parent.notebook_mcd.mcd.infos.s.splash -padx 1 -side right
-            pack $parent.notebook_mcd.mcd.infos.s -fill x
-            #label $parent.notebook_mcd.mcd.infos.fichier -text $fichier_sauvegarde
-            #pack $parent.notebook_mcd.mcd.infos.fichier -fill x
-        pack $parent.notebook_mcd.mcd.infos
     pack $parent.notebook_mcd.mcd -side left
     
     return $f

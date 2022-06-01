@@ -56,14 +56,13 @@ proc Katyusha_GenerationSQL_attribut {id attribut sgbd si_pk} {
     
     # Si l'attribut est en incrémentation automatique, le type est modifié selon le SGBD
     if {$auto_attribut == 1} {
-        set type_attribut [Katyusha_SQL_auto_increment_type $sgbd]
-    }
-    set sql_type " [string toupper $type_attribut]"
-    
-    if {$auto_attribut == 1} {
-        set sql_type "$sql_type [lindex [Katyusha_SQL_auto_increment $sgbd] 0]"
+        set sql_auto " [lindex [Katyusha_SQL_auto_increment $sgbd] 0]"
         set null_attribut 0
+    } else {
+        set sql_auto ""
     }
+    
+    set sql_type " [string toupper $type_attribut]"
     
     if {$ctype_attribut != ""} {
         set sql_ctype "($ctype_attribut)"
@@ -73,7 +72,7 @@ proc Katyusha_GenerationSQL_attribut {id attribut sgbd si_pk} {
     set sql_taille [Katyusha_GenerationSQL_sql_taille_attribut $attribut]
     
     # Détermine si un attribut est nul
-    if {$valeur_attribut != "null" || $pk_attribut == 1 || $null_attribut == 0} {
+    if {$valeur_attribut != "null" && $pk_attribut == 0 || $null_attribut == 0 && $pk_attribut == 0} {
         set sql_null " NOT NULL"
     } else {
         set sql_null ""
@@ -91,7 +90,7 @@ proc Katyusha_GenerationSQL_attribut {id attribut sgbd si_pk} {
     } else {
         set sql_valeur ""
     }
-    set SQL "$sql_nom$sql_type$sql_taille$sql_ctype$sql_null$sql_pk$sql_valeur"
+    set SQL "$sql_nom$sql_type$sql_taille$sql_ctype$sql_null$sql_pk$sql_valeur$sql_auto"
     return $SQL
 }
 
