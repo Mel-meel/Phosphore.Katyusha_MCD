@@ -26,7 +26,7 @@
 ##
 
 namespace eval phgt {
-    variable version 0.0.1
+    variable version 0.0.2
     variable langue
     variable sources
     variable traduction [dict create]
@@ -105,7 +105,7 @@ proc phgt::_chaine {curseur contenu} {
     return [list $fin_chaine $chaine]
 }
 
-proc phgt::mc {clef {variables [list]}} {
+proc phgt::mc {clef {variables ""}} {
     # Si aucune clef ne correspond à celle spécifiée, on prend la clef passée en paramètre comme valeur
     if {[lsearch [dict keys $phgt::traduction] $clef] >= 0} {
         set valeur [dict get $phgt::traduction $clef]
@@ -113,12 +113,14 @@ proc phgt::mc {clef {variables [list]}} {
         set valeur $clef
     }
     
-    # Remplace tous les %s par les variables de la liste
-    foreach var $variables {
-        set pos [string first "\%s" $valeur]
-        set debut [string range $valeur 0 [expr $pos - 1]]
-        set fin [string range $valeur [expr $pos + 2] [expr [string length $valeur] - 1]]
-        set valeur "$debut$var$fin"
+    if {[llength $variables] > 0} {
+        # Remplace tous les %s par les variables de la liste
+        foreach var $variables {
+            set pos [string first "\%s" $valeur]
+            set debut [string range $valeur 0 [expr $pos - 1]]
+            set fin [string range $valeur [expr $pos + 2] [expr [string length $valeur] - 1]]
+            set valeur "$debut$var$fin"
+        }
     }
     
     # Renvoie, si tout s'est bien passé, la valeur correspondant à la clef dans le dictionnaire de traduction, ayant tous les %s remplacés par les variables de la liste

@@ -14,7 +14,7 @@ set rpr [file dirname [info script]]
 #set rpr [file dirname [file normalize [info nameofexecutable]]]
 
 # Pour les packages embarqués
-lappend auto_path [file join [file dirname [file normalize [info script]]] "$rpr/libs"]
+lappend auto_path [file join [file dirname [file normalize [info script]]] "$rpr/packages"]
 
 
 source "$rpr/C/fonctions_interface.tcl"

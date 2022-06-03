@@ -55,13 +55,15 @@ menu .mb.katyusha -tearoff 0
 menu .mb.fichier -tearoff 0
 menu .mb.bdd -tearoff 0
 menu .mb.mcd -tearoff 0
+menu .mb.uml -tearoff 0
 menu .mb.code -tearoff 0
 menu .mb.aide -tearoff 0
 menu .mb.fichier.recents -tearoff 0
 . configure -menu .mb
-.mb add cascade -menu .mb.katyusha -label $LOCALE(menu_katyusha)
-.mb add cascade -menu .mb.fichier -label $LOCALE(menu_fichier)
-.mb add cascade -menu .mb.mcd -label $LOCALE(menu_mcd)
+.mb add cascade -menu .mb.katyusha -label [phgt::mc "Katyusha!"]
+.mb add cascade -menu .mb.fichier -label [phgt::mc "Projet"]
+.mb add cascade -menu .mb.mcd -label [phgt::mc "Modèle Merise"]
+.mb add cascade -menu .mb.uml -label [phgt::mc "Diagramme de classe UML"]
 .mb add cascade -menu .mb.bdd -label $LOCALE(menu_bdd)
 .mb add cascade -menu .mb.code -label $LOCALE(menu_code)
 .mb add cascade -menu .mb.aide -label $LOCALE(menu_aide)
@@ -88,7 +90,7 @@ foreach fichier [Katyusha_fichiers_recents] {
 .mb.fichier add command -label $LOCALE(menu_charger) -command Katyusha_charger
 .mb.fichier add command -label $LOCALE(menu_prefs) -command INTERFACE_config_bdd
 
-# Menu MCD
+# Menu modèle Merise
 .mb.mcd add command -label $LOCALE(menu_mcd_entites) -command INTERFACE_liste_entites
 .mb.mcd add command -label $LOCALE(menu_mcd_ajout_table) -command "INTERFACE_ajout_table 100 100"
 #.mb.mcd add command -label $LOCALE(menu_mcd_edit_table) -command INTERFACE_edit_table_liste
@@ -107,6 +109,9 @@ foreach fichier [Katyusha_fichiers_recents] {
 }
 .mb.mcd add command -label $LOCALE(menu_mcd_exporter_svg) -command INTERFACE_exporter_svg
 .mb.mcd add command -label $LOCALE(menu_mcd_imprimer) -command INTERFACE_imprimer
+
+# Menu diagramme de classe UML
+.mb.uml add command -label [phgt::mc "Modèle Merise"] -command INTERFACE_liste_entites
 
 # Menu base de donnée
 #.mb.bdd add command -label $LOCALE(menu_config_bdd) -command INTERFACE_config_bdd
@@ -128,8 +133,8 @@ foreach fichier [Katyusha_fichiers_recents] {
 # Le deuxième avec l'interface de modélisation UML en course de développement
 ##
 ttk::notebook .editeurs
-.editeurs add [Katyusha_Interface_editeur_MCD ".editeurs" $canvas_x $canvas_y] -text "Merise"
-.editeurs add [ttk::frame .editeurs.notebook_uml] -text "UML"
+.editeurs add [Katyusha_Interface_editeur_MCD ".editeurs" $canvas_x $canvas_y] -text [phgt::mc "Modèle Merise"]
+.editeurs add [ttk::frame .editeurs.notebook_uml] -text [phgt::mc "Diagramme de classe UML"]
 pack .editeurs -fill both -expand 1
     frame .infos
         frame .infos.s
