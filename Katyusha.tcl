@@ -14,7 +14,7 @@ set rpr [file dirname [info script]]
 #set rpr [file dirname [file normalize [info nameofexecutable]]]
 
 # Pour les packages embarqués
-lappend auto_path [file join [file dirname [file normalize [info script]]] "$rpr/packages"]
+#lappend auto_path [file join "$rpr/packages"]
 
 
 source "$rpr/C/fonctions_interface.tcl"
@@ -66,17 +66,9 @@ if {[catch {package require Tk}]} {
     puts " # OK!"
 }
 
-# TCL gettext
-puts -nonewline "Chargement de TCL gettext"
-if {[catch {package require phgettext}]} {
-    puts " # TCL gettext obligatoire pour ce programme!"
-    exit
-} else {
-    puts " # OK!"
-}
-
-
+# FreeWrap ne supporte pas l'importation de packages traditionnel
 source "$rpr/packages/tooltip.tcl"
+source "$rpr/packages/phgettext/phgettext.tcl"
 
 # Img
 #package ifneeded Img 1.4.13 [list load [file join "$rpr/libs/Img1.4.13" pkgIndex.tcl] Img]
@@ -121,7 +113,7 @@ set zoom_compteur 0
 
 # Initialisation de la traduction
 puts "Chargement de la langue locale"
-phgt::source "$rpr/locale" "fr"
+phgt::src "$rpr/locale" "fr"
 
 
 # Par défaut, français

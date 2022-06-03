@@ -17,10 +17,10 @@ iconv -f UTF-8 -t ISO-8859-1 locale/de.o.tcl > ./locale/de.tcl
 
 # Windows
 # 64 bits
-~/Logiciels/FreeWrap/linux64/freewrap -w ~/Logiciels/FreeWrap/win64/freewrap.exe ./Katyusha.tcl -f ./sources.txt -o ./KatyushaMCD_WIN_x64.exe -9 -i ./images/katyusha_mcd_icone.ico
+wine ~/Logiciels/FreeWrap/win64/freewrap.exe ./Katyusha.tcl -f ./sources.txt -o ./KatyushaMCD_WIN_x64.exe -9 -i ./images/katyusha_mcd_icone.ico
 zip -r ./OUT/KatyushaMCD_WIN_x64_$1.zip ./KatyushaMCD_WIN_x64.exe ./gpl-3.0.txt
 # 32 bits
-wine ~/Logiciels/FreeWrap/win32/freewrap.exe ./Katyusha.tcl -f ./sources.txt -o ./KatyushaMCD_WIN_x32.exe -9 -i ./images/katyusha_mcd_icone.ico
+wine ~/Logiciels/FreeWrap/win64/freewrap.exe -w ~/Logiciels/FreeWrap/win32/freewrap.exe ./Katyusha.tcl -f ./sources.txt -o ./KatyushaMCD_WIN_x32.exe -9 -i ./images/katyusha_mcd_icone.ico
 zip -r ./OUT/KatyushaMCD_WIN_x32_$1.zip ./KatyushaMCD_WIN_x32.exe ./gpl-3.0.txt
 
 rm ./locale/fr.tcl

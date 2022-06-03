@@ -26,30 +26,35 @@
 ##
 
 namespace eval phgt {
-    variable version 0.0.2
-    variable langue
+    namespace export -clear phgt
     variable sources
     variable traduction [dict create]
 }
 
-proc phgt::source {dossier langue} {
+proc phgt::src {dossier langue_i} {
+    variable sources
+    
     set ok 0
     if {[file isdirectory $dossier] == 1} {
-        set phgt::sources $dossier
+        set sources $dossier
         set ok 1
     } else {
         puts "!O $dossier"
     }
     
-    if {[file exists "$phgt::sources/$langue.po"] && $ok == 1} {
-        set phgt::langue $langue
+    if {$ok == 1} {
+        if {[file exists "$sources/$langue_i.po"]} {
+            set ok 1
+        } else {
+            set ok 0
+        }
     } else {
-        puts "!K $langue"
-        set ok = 0
+        puts "!K $langue_i"
+        set ok 0
     }
 
     if {$ok == 1} {
-        set fp [open "$phgt::sources/$langue.po" r]
+        set fp [open "$sources/$langue_i.po" r]
         set contenu [read $fp]
         close $fp
         if {$contenu != ""} {
@@ -83,11 +88,9 @@ proc phgt::source {dossier langue} {
 }
 
 proc phgt::_gettraduction {} {
-    return $phgt::traduction
-}
-
-proc phgt::_getlangue {} {
-    return $phgt::langue
+    variable traduction
+    
+    return $traduction
 }
 
 proc phgt::_chaine {curseur contenu} {
@@ -127,4 +130,4 @@ proc phgt::mc {clef {variables ""}} {
     return $valeur
 }
 
-package provide phgettext $phgt::version
+package provide phgettext 0.0.3
