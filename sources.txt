@@ -5,7 +5,7 @@
 ./C/Code.tcl
 ./C/Configurations.tcl
 ./C/C.tcl
-./C/entites.tcl
+./C/Objets.tcl
 ./C/Etiquettes.tcl
 ./C/fonctions_interface.tcl
 ./C/Heritages.tcl
@@ -20,7 +20,7 @@
 ./C/Interface.tcl
 ./C/MCD.tcl
 ./C/MLD.tcl
-./C/Relations.tcl
+./C/Associations.tcl
 ./C/Reseau.tcl
 ./C/Sauvegarde.a.tcl
 ./C/sauvegarde_charge.tcl
@@ -29,7 +29,7 @@
 ./C/SQL_gen.tcl
 ./C/SQL.tcl
 ./C/SVG.tcl
-./C/Tables.tcl
+./C/Entites.tcl
 ./C/verification_mcd.tcl
 ./C/XML.tcl
 

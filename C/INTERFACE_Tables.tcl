@@ -67,7 +67,7 @@ proc INTERFACE_ajout_table {x y {id "null"}} {
         pack $f.attributs.commandes -side left -fill x
         
         # Attributs dans un canvas pour pouvoir utiliser une scrollbar
-        canvas $f.attributs.c -width 1032 -height 400 -yscrollcommand "$f.attributs.yscroll set"
+        canvas $f.attributs.c -width 1200 -height 400 -yscrollcommand "$f.attributs.yscroll set"
         frame $f.attributs.c.f
             # Liste des attributs
             frame $f.attributs.c.f.liste
@@ -99,8 +99,10 @@ proc INTERFACE_ajout_table {x y {id "null"}} {
                                 label $f.attributs.c.f.corps.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -height 2 -background white -relief solid
                                 label $f.attributs.c.f.corps.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -height 2 -background white -relief solid
                                 label $f.attributs.c.f.corps.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -height 2 -background white -relief solid
+                                button $f.attributs.c.f.corps.$id_attribut_graphique.haut -text "Remonter" -command ""
+                                button $f.attributs.c.f.corps.$id_attribut_graphique.bas -text "Descendre" -command ""
                                 button $f.attributs.c.f.corps.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_attribut table $id_attribut_graphique"
-                                pack $f.attributs.c.f.corps.$id_attribut_graphique.nom $f.attributs.c.f.corps.$id_attribut_graphique.type $f.attributs.c.f.corps.$id_attribut_graphique.taille $f.attributs.c.f.corps.$id_attribut_graphique.valeur $f.attributs.c.f.corps.$id_attribut_graphique.auto $f.attributs.c.f.corps.$id_attribut_graphique.pk $f.attributs.c.f.corps.$id_attribut_graphique.edit -side left
+                                pack $f.attributs.c.f.corps.$id_attribut_graphique.nom $f.attributs.c.f.corps.$id_attribut_graphique.type $f.attributs.c.f.corps.$id_attribut_graphique.taille $f.attributs.c.f.corps.$id_attribut_graphique.valeur $f.attributs.c.f.corps.$id_attribut_graphique.auto $f.attributs.c.f.corps.$id_attribut_graphique.pk $f.attributs.c.f.corps.$id_attribut_graphique.haut $f.attributs.c.f.corps.$id_attribut_graphique.bas $f.attributs.c.f.corps.$id_attribut_graphique.edit -side left
                             pack $f.attributs.c.f.corps.$id_attribut_graphique -fill x
                         }
                     }

@@ -30,14 +30,14 @@ source "$rpr/C/C.tcl"
 source "$rpr/C/SQL_gen.tcl"
 source "$rpr/C/XML.tcl"
 source "$rpr/C/sauvegarde_charge.tcl"
-source "$rpr/C/entites.tcl"
+source "$rpr/C/Objets.tcl"
 source "$rpr/C/Configurations.tcl"
 source "$rpr/C/verification_mcd.tcl"
 source "$rpr/C/Interface.tcl"
 source "$rpr/C/SQL.tcl"
-source "$rpr/C/Relations.tcl"
+source "$rpr/C/Associations.tcl"
 source "$rpr/C/Etiquettes.tcl"
-source "$rpr/C/Tables.tcl"
+source "$rpr/C/Entites.tcl"
 source "$rpr/C/Sauvegarde.tcl"
 source "$rpr/C/Charge.tcl"
 source "$rpr/C/MCD.tcl"
@@ -100,7 +100,7 @@ set id_projet -1
 
 Katyusha_MCD_init
 
-set version 0.4.5
+set version 0.4.6
 set splash [lindex [list "Катюша!" "Katyusha!" "!کاتیوشا" "कात्युषा" "კატიუშა" "Կատյուշա" "Катюша!"] [expr int((rand() * 7) + 1) - 1]]
 set sgbd 0
 # Fichier dans lequel toutes les sauvegardes simples se feronts
@@ -138,7 +138,7 @@ set ZONE_UML ".editeurs.notebook_uml.uml"
 
 puts "OS : $OS"
 
-after 1000
+after 100
 
 Katyusha_Interface
 source "$rpr/C/bind.tcl"
