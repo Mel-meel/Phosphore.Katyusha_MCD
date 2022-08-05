@@ -12,7 +12,7 @@
 ./C/Historique.tcl
 ./C/Images.tcl
 ./C/INTERFACE_Code.tcl
-./C/INTERFACE_Entites.tcl
+./C/MCD/INTERFACE_MCD_Objets.tcl
 ./C/INTERFACE_Etiquettes.tcl
 ./C/INTERFACE_Heritages.tcl
 ./C/INTERFACE_Relations.tcl
@@ -50,6 +50,8 @@
 ./images/ajouter_relation.png
 ./images/ajouter_table.png
 ./images/editer.png
+./images/fleche_haut.png
+./images/fleche_bas.png
 ./images/editer-x24.png
 ./images/editer-x32.png
 ./images/defaire_x24.png

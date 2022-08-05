@@ -84,29 +84,15 @@ proc INTERFACE_ajout_table {x y {id "null"}} {
                     pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.auto $f.attributs.c.f.tete.pk -fill x -side left
                 pack $f.attributs.c.f.tete -fill x
                 frame $f.attributs.c.f.corps
+                
+                pack $f.attributs.c.f.corps -fill x
                     ##
                     # Ici viennent s'insérer les attributs
                     ##
                     # Si la table est en édition, on affiche la liste des attributs déjà existants
                     if {$id != "null"} {
-                        set attributs [dict get $table "attributs"]
-                        foreach {id_attribut_graphique attribut} $attributs {
-                            #set nom_attribut_graphique [dict get $attribut "nom"]
-                            frame $f.attributs.c.f.corps.$id_attribut_graphique
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 20 -height 2 -background white -relief solid
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 20 -height 2 -background white -relief solid
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 20 -height 2 -background white -relief solid
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -height 2 -background white -relief solid
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -height 2 -background white -relief solid
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -height 2 -background white -relief solid
-                                button $f.attributs.c.f.corps.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command ""
-                                button $f.attributs.c.f.corps.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command ""
-                                button $f.attributs.c.f.corps.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_attribut table $id_attribut_graphique"
-                                pack $f.attributs.c.f.corps.$id_attribut_graphique.nom $f.attributs.c.f.corps.$id_attribut_graphique.type $f.attributs.c.f.corps.$id_attribut_graphique.taille $f.attributs.c.f.corps.$id_attribut_graphique.valeur $f.attributs.c.f.corps.$id_attribut_graphique.auto $f.attributs.c.f.corps.$id_attribut_graphique.pk $f.attributs.c.f.corps.$id_attribut_graphique.haut $f.attributs.c.f.corps.$id_attribut_graphique.bas $f.attributs.c.f.corps.$id_attribut_graphique.edit -side left
-                            pack $f.attributs.c.f.corps.$id_attribut_graphique -fill x
-                        }
+                        Katyusha_INTERFACE_Entites_MAJ_attributs $f.attributs.c.f.corps $table
                     }
-                pack $f.attributs.c.f.corps -fill x
             pack $f.attributs.c.f.liste -side left -fill x
         pack $f.attributs.c -side left
         $f.attributs.c create window 0 0 -anchor nw -window $f.attributs.c.f
@@ -148,6 +134,33 @@ proc INTERFACE_ajout_table {x y {id "null"}} {
         wm title $f "$LOCALE(editer_la_table) : $E_nom_table"
     }
     
+    # Mise à jour forcée de l'affichage graphique
+    update
+}
+
+##
+# Met à jour l'affichage graphique des attributs de l'entité dans la fenêtre d'édition
+##
+proc Katyusha_INTERFACE_Entites_MAJ_attributs {f entite} {
+    global IMG
+    global LOCALE
+    
+    set attributs [dict get $entite "attributs"]
+    foreach {id_attribut_graphique attribut} $attributs {
+        #set nom_attribut_graphique [dict get $attribut "nom"]
+        frame $f.$id_attribut_graphique
+            label $f.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 20 -height 2 -background white -relief solid
+            label $f.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 20 -height 2 -background white -relief solid
+            label $f.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 20 -height 2 -background white -relief solid
+            label $f.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -height 2 -background white -relief solid
+            label $f.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -height 2 -background white -relief solid
+            label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -height 2 -background white -relief solid
+            button $f.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command ""
+            button $f.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command ""
+            button $f.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_attribut table $id_attribut_graphique"
+            pack $f.$id_attribut_graphique.nom $f.$id_attribut_graphique.type $f.$id_attribut_graphique.taille $f.$id_attribut_graphique.valeur $f.$id_attribut_graphique.auto $f.$id_attribut_graphique.pk $f.$id_attribut_graphique.haut $f.$id_attribut_graphique.bas $f.$id_attribut_graphique.edit -side left
+        pack $f.$id_attribut_graphique -fill x
+                        }
     # Mise à jour forcée de l'affichage graphique
     update
 }

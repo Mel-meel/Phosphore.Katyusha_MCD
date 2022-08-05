@@ -20,7 +20,7 @@ set rpr [file dirname [info script]]
 source "$rpr/C/fonctions_interface.tcl"
 source "$rpr/C/Images.tcl"
 source "$rpr/C/Splash.tcl"
-source "$rpr/C/INTERFACE_Entites.tcl"
+source "$rpr/C/MCD/INTERFACE_MCD_Objets.tcl"
 source "$rpr/C/INTERFACE_Etiquettes.tcl"
 source "$rpr/C/INTERFACE_Tables.tcl"
 source "$rpr/C/INTERFACE_Relations.tcl"
