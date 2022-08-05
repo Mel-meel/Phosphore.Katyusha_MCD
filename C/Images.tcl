@@ -31,4 +31,6 @@ proc Katyusha_Images {} {
     set IMG(refaire) [image create photo -file "$rpr/images/refaire_x48.png"]
     set IMG(pk) [image create photo -file "$rpr/images/pk.png"]
     set IMG(GNU) [image create photo -file "$rpr/images/license.png"]
+    set IMG(fleche_haut) [image create photo -file "$rpr/images/fleche_haut.png"]
+    set IMG(fleche_bas) [image create photo -file "$rpr/images/fleche_bas.png"]
 }
