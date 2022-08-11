@@ -67,7 +67,7 @@ proc INTERFACE_ajout_table {x y {id "null"}} {
         pack $f.attributs.commandes -side left -fill x
         
         # Attributs dans un canvas pour pouvoir utiliser une scrollbar
-        canvas $f.attributs.c -width 1200 -height 400 -yscrollcommand "$f.attributs.yscroll set"
+        canvas $f.attributs.c -width 1200 -height 400
         frame $f.attributs.c.f
             # Liste des attributs
             frame $f.attributs.c.f.liste
@@ -91,7 +91,7 @@ proc INTERFACE_ajout_table {x y {id "null"}} {
                     ##
                     # Si la table est en édition, on affiche la liste des attributs déjà existants
                     if {$id != "null"} {
-                        Katyusha_INTERFACE_Entites_MAJ_attributs $f.attributs.c.f.corps $table
+                        Katyusha_MCD_INTERFACE_Entites_MAJ_attributs $f.attributs.c.f.corps $table
                     }
             pack $f.attributs.c.f.liste -side left -fill x
         pack $f.attributs.c -side left
@@ -101,22 +101,12 @@ proc INTERFACE_ajout_table {x y {id "null"}} {
         $f.attributs.c configure -scrollregion "0 0 1000 10000"
     pack $f.attributs -fill x -padx 10
     
+    # Ajout de la commande de scroll du canvas des attributs ici, sinon erreur mais fonctionne.
+    # À voir pour faire fonctionner correctement plus tard
+    $f.attributs.c configure -yscrollcommand "$f.attributs.yscroll set"
+    
     frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
-            global table_tmp
-            set f ".fen_ajout_table"
-            set id [dict get $table_tmp "id"]
-            dict set table_tmp "nom" [$f.nom.e get]
-            dict set table_tmp "description" ""
-            set ok [Katyusha_Tables_controle_table $table_tmp]
-            if {$id == "null" && $ok == 1} {
-                ajout_table $table_tmp
-                destroy $f
-            } elseif {$id != "null" && $ok == 1} {
-                Katyusha_Tables_modification_table $id $table_tmp
-                destroy $f
-            }
-        }
+        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table
         button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {
             if {[winfo exists .fen_ajout_attribut]} {
                 destroy .fen_ajout_attribut
@@ -138,31 +128,25 @@ proc INTERFACE_ajout_table {x y {id "null"}} {
     update
 }
 
+
 ##
-# Met à jour l'affichage graphique des attributs de l'entité dans la fenêtre d'édition
+# Action de la procédure INTERFACE_ajout_table
 ##
-proc Katyusha_INTERFACE_Entites_MAJ_attributs {f entite} {
-    global IMG
-    global LOCALE
+proc Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table {} {
+    global table_tmp
     
-    set attributs [dict get $entite "attributs"]
-    foreach {id_attribut_graphique attribut} $attributs {
-        #set nom_attribut_graphique [dict get $attribut "nom"]
-        frame $f.$id_attribut_graphique
-            label $f.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 20 -height 2 -background white -relief solid
-            label $f.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 20 -height 2 -background white -relief solid
-            label $f.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 20 -height 2 -background white -relief solid
-            label $f.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -height 2 -background white -relief solid
-            label $f.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -height 2 -background white -relief solid
-            label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -height 2 -background white -relief solid
-            button $f.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command ""
-            button $f.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command ""
-            button $f.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_attribut table $id_attribut_graphique"
-            pack $f.$id_attribut_graphique.nom $f.$id_attribut_graphique.type $f.$id_attribut_graphique.taille $f.$id_attribut_graphique.valeur $f.$id_attribut_graphique.auto $f.$id_attribut_graphique.pk $f.$id_attribut_graphique.haut $f.$id_attribut_graphique.bas $f.$id_attribut_graphique.edit -side left
-        pack $f.$id_attribut_graphique -fill x
-                        }
-    # Mise à jour forcée de l'affichage graphique
-    update
+    set f ".fen_ajout_table"
+    set id [dict get $table_tmp "id"]
+    dict set table_tmp "nom" [$f.nom.e get]
+    dict set table_tmp "description" ""
+    set ok [Katyusha_Tables_controle_table $table_tmp]
+    if {$id == "null" && $ok == 1} {
+        ajout_table $table_tmp
+        destroy $f
+    } elseif {$id != "null" && $ok == 1} {
+        Katyusha_Tables_modification_table $id $table_tmp
+        destroy $f
+    }
 }
 
 proc INTERFACE_Tables_choix_table {nombre_tables_possibles} {

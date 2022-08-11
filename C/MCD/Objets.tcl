@@ -221,3 +221,18 @@ proc Katyusha_Entites_controle_entite {entite} {
     
     return $ok
 }
+
+##
+# Échange la place de deux attributs
+##
+proc Katyusha_MCD_Objets_deplacer_attribut {objet id_ancien id_nouveau} {
+    set attributs [dict get $objet "attributs"]
+    
+    set ancien [dict get $attributs $id_ancien]
+    set nouveau [dict get $attributs $id_nouveau]
+    
+    dict set attributs $id_ancien $nouveau
+    dict set attributs $id_nouveau $ancien
+    
+    return $objet
+}

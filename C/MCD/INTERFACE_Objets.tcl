@@ -9,6 +9,36 @@
 ######################################################
 
 
+
+
+##
+# Met à jour l'affichage graphique des attributs de l'entité dans la fenêtre d'édition
+##
+proc Katyusha_MCD_INTERFACE_Entites_MAJ_attributs {f entite} {
+    global IMG
+    global LOCALE
+    
+    set attributs [dict get $entite "attributs"]
+    foreach {id_attribut_graphique attribut} $attributs {
+        #set nom_attribut_graphique [dict get $attribut "nom"]
+        frame $f.$id_attribut_graphique
+            label $f.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 20 -height 2 -background white -relief solid
+            label $f.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 20 -height 2 -background white -relief solid
+            label $f.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 20 -height 2 -background white -relief solid
+            label $f.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -height 2 -background white -relief solid
+            label $f.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -height 2 -background white -relief solid
+            label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -height 2 -background white -relief solid
+            button $f.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_Objets_deplacer_attribut $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            button $f.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_Objets_deplacer_attribut $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            button $f.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_attribut table $id_attribut_graphique"
+            pack $f.$id_attribut_graphique.nom $f.$id_attribut_graphique.type $f.$id_attribut_graphique.taille $f.$id_attribut_graphique.valeur $f.$id_attribut_graphique.auto $f.$id_attribut_graphique.pk $f.$id_attribut_graphique.haut $f.$id_attribut_graphique.bas $f.$id_attribut_graphique.edit -side left
+        pack $f.$id_attribut_graphique -fill x
+                        }
+    # Mise à jour forcée de l'affichage graphique
+    update
+}
+
+
 ##
 # Fenêtre d'ajout d'un attribut à une table ou une relation
 # Si l'ID d'un attribut est passé en paramètre, il s'agira alors de l'éditer
