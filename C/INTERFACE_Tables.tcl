@@ -153,7 +153,7 @@ proc INTERFACE_Tables_choix_table {nombre_tables_possibles} {
     global tables
     global LOCALE
     global IMG
-            global table_choisie
+    global table_choisie
     
     set f ".fen_choix_table"
     
