@@ -14,7 +14,7 @@
 
 
 ##
-# Met à jour l'affichage graphique des attributs de l'entité dans la fenêtre d'édition
+# Met à jour l'affichage graphique des attributs de l'objet dans la fenêtre d'édition
 ##
 proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f entite} {
     global IMG
@@ -43,10 +43,10 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f entite} {
 proc 
 
 ##
-# Fenêtre d'ajout d'un attribut à une table ou une relation
+# Fenêtre d'ajout d'un attribut à une entité ou une association
 # Si l'ID d'un attribut est passé en paramètre, il s'agira alors de l'éditer
 ##
-proc INTERFACE_ajout_attribut {entite {id "null"}} {
+proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
     global table_tmp
     global relation_tmp
     global LOCALE
