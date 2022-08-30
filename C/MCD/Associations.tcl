@@ -24,7 +24,7 @@ proc Katyusha_Relations_maj {} {
         Katyusha_Relations_MAJ_ligne_coords $id [list]
         unset graph id relation
         # Met à jour l'arbre des entités
-        maj_arbre_entites
+        Katyusha_MCD_Objets_maj_arbre_objets
     }
 }
 
@@ -175,7 +175,7 @@ proc Katyusha_ajout_relation {relation_tmp} {
     puts "Ajout de la relation : [dict get $relation_tmp nom]"
     set ID [expr $ID + 1]
     unset graph relation_tmp nom hauteur largeur texte_attributs
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     Katyusha_Historique_maj
 }
 
@@ -212,7 +212,7 @@ proc Katyusha_Relations_modification_relation {id relation} {
             #.mcd.canvas.c delete [dict get $textes_cardinalites $k]
     }
     Katyusha_Relations_lignes_relation_tables $relation $id
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     Katyusha_Historique_maj
 }
 
@@ -550,7 +550,7 @@ proc suppression_relation {relation} {
     # Supprime les lignes qui pointent vers la relation
     Katyusha_Relations_suppression_lignes $relation
     dict unset relations_graphique $relation
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     puts "Relation $nom supprimée"
     unset nom
 }

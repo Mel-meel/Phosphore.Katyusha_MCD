@@ -89,9 +89,9 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
                     ##
                     # Ici viennent s'insérer les attributs
                     ##
-                    # Si la table est en édition, on affiche la liste des attributs déjà existants
+                    # Si l'entité est en édition, on affiche la liste des attributs déjà existants
                     if {$id != "null"} {
-                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $table
+                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $table "entite"
                     }
             pack $f.attributs.c.f.liste -side left -fill x
         pack $f.attributs.c -side left

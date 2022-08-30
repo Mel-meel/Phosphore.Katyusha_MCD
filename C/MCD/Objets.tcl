@@ -11,7 +11,7 @@
 ##
 # Met à jour l'arbre des entités
 ##
-proc maj_arbre_entites {} {
+proc Katyusha_MCD_Objets_maj_arbre_objets {} {
     global tables
     global relations
     global heritages
@@ -35,7 +35,6 @@ proc maj_arbre_entites {} {
         set nom [dict get $table "nom"]
         $c create text [expr $x + 0] $hauteur -fill black -justify left -text "$id : $nom" -anchor w -tag "entite"
         set hauteur [expr $hauteur + 20]
-        #puts "$id : $nom"
     }
     # Saut de ligne
     set hauteur [expr $hauteur + 10]
@@ -75,18 +74,6 @@ proc maj_arbre_entites {} {
     # Saut de ligne
     set hauteur [expr $hauteur + 10]
     # Remet y à sa position initiale
-    set x [expr $x - 20]
-    # Affiche les procédure stockées
-    #$c create text [expr $x + 0] $hauteur -fill black -justify left -text "Procédure stockées" -anchor w -fill blue -tag "entite"
-    set hauteur [expr $hauteur + 20]
-    set x [expr $x + 20]
-    foreach {id relation} $procedures {
-        set nom [dict get $procedure "nom"]
-        #$c create rect [expr $x - 5] [expr $hauteur - 9] [expr (($x + (3.1 * [string length $nom])) * 1.5) + 5] [expr $hauteur + 9] -outline #F5F5F5 -fill #F5F5F5 -tag "entite"
-        #$c create text [expr $x + 0] $hauteur -fill black -justify left -text "$id : $nom" -anchor w -tag "entite"
-        set hauteur [expr $hauteur + 20]
-        #puts "$id : $nom"
-    }
     set x [expr $x - 20]
     $c configure -scrollregion [$c bbox all]
 }
@@ -226,6 +213,7 @@ proc Katyusha_Entites_controle_entite {entite} {
 # Échange la place de deux attributs
 ##
 proc Katyusha_MCD_Objets_deplacer_attribut {objet id_ancien id_nouveau} {
+puts $objet
     set attributs [dict get $objet "attributs"]
     
     # Si l'attribut à déplacer n'est pas en début ou en fin de liste, bah il bouge

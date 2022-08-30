@@ -22,7 +22,7 @@ proc Katyusha_Etiquettes_maj {} {
         puts "Ajout de l'étiquette : [dict get $etiquette nom]"
         unset graph id etiquette
         # Met à jour l'arbre des entités
-        maj_arbre_entites
+        Katyusha_MCD_Objets_maj_arbre_objets
     }
 }
 
@@ -45,7 +45,7 @@ proc Katyusha_Etiquettes_ajout_etiquette {etiquette_tmp} {
     set ID [expr $ID + 1]
     #unset graph id
     # Met à jour l'arbre des entités
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     Katyusha_Historique_maj
 }
 
@@ -87,7 +87,6 @@ proc Katyusha_Etiquettes_hauteur {texte} {
     }
     set hauteur [expr [llength $lignes] * 20]
     set hauteur [expr $hauteur + 20]
-puts $hauteur
     return $hauteur
 }
 
@@ -116,7 +115,7 @@ proc Etiquettes_supression_etiquette {etiquette} {
         $ZONE_MCD.canvas.c delete [lindex [dict get $etiquettes_graphique $etiquette] $c]
     }
     dict unset etiquettes_graphique $etiquette
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     puts "Étiquette $nom supprimée"
     unset nom
 }

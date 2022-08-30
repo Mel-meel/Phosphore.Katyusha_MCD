@@ -92,7 +92,7 @@ proc Katyusha_MCD_init {} {
 proc Katyusha_MCD_nouveau {} {
     Katyusha_MCD_canvas_effacer
     Katyusha_MCD_init
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
 }
 
 proc Katyusha_MCD_canvas_effacer {} {

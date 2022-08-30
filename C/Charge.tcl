@@ -390,7 +390,7 @@ proc Katyusha_Charge {fichier} {
         set ok [tk_messageBox -message "Le fichier n'est pas correcte.\nLe charger quand même?" -type yesno -icon warning]
     }
     if {$ok == "yes"} {
-        # Réinitialise le MCD avant des créer les tables, relations, ...
+        # Réinitialise le MCD avant des créer les entités, associations, ...
         Katyusha_MCD_nouveau
         set fichier_sauvegarde $fichier
         set MCD(rep) [file dirname $fichier_sauvegarde]
@@ -400,14 +400,14 @@ proc Katyusha_Charge {fichier} {
         # Version de Katyusha! qui à enregistré le fichier
         set version_a [Katyusha_Charge_balise "version" $stream]
         # Découpe le fichier en plusieurs parties :
-        #       Tables
-        #       Relations
+        #       Entités
+        #       Associations
         #       Étiquettes
         #       Héritages
-        # Tables
+        # Entités
         set bloc_tables [Katyusha_Charge_bloc_entite $stream "tables"]
         set tables [Katyusha_Charge_tables $bloc_tables $version_a]
-        # Relations
+        # Associations
         set bloc_relations [Katyusha_Charge_bloc_entite $stream "relations"]
         set relations [Katyusha_Charge_relations $bloc_relations $version_a]
         # Étiquettes
@@ -416,7 +416,7 @@ proc Katyusha_Charge {fichier} {
         # Héritages
         set bloc_heritages [Katyusha_Charge_bloc_entite $stream "heritages"]
         set heritages [Katyusha_Charge_heritages $bloc_heritages $version_a]
-        # Mise à jour graphique des entités
+        # Mise à jour graphique des objets
         maj_tables
         Katyusha_Relations_maj
         Katyusha_Relations_MAJ_lignes_relations
@@ -431,7 +431,7 @@ proc Katyusha_Charge {fichier} {
 proc Katyusha_Charge_XML_verif {xml} {
     # Vérifie s'il y a du contenu hors balises
     # TODO
-    # Si il y a des tables
+    # Si il y a des entités
     if {[string first "<tables>" $xml] != -1 && [string first "</tables>" $xml] != -1} {
         set bloc_tables [Katyusha_Charge_bloc_entite $xml "tables"]
     }

@@ -27,7 +27,7 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
     
     set f ".fen_ajout_relation"
     
-    # Initialise la relation temporaire
+    # Initialise l'association temporaire
     if {$id == "null"} {
         # Transfert des coordonnées
         set coords [list $x $y]
@@ -49,7 +49,7 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
     # Icone de la fenêtre
     wm iconphoto $f $IMG(logo)
     
-    # Frame de choix du nom de la table
+    # Frame de choix du nom de l'entité
     frame $f.nom
         label $f.nom.l -text $LOCALE(nom_relation)
         entry $f.nom.e -textvariable E_nom_relation
@@ -57,15 +57,15 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
     pack $f.nom -pady 10 -padx 50
     
     ##
-    # Liens de la relation
+    # Liens de l'association
     ##
     frame $f.liens
         # Commandes des liens
         frame $f.liens.commandes
             # Bouton d'ajout d'un nouveau lien
-            button $f.liens.commandes.ajout -text "+" -image $IMG(ajouter) -command {INTERFACE_ajout_lien_relation}
+            button $f.liens.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyuusha_MCD_INTERFACE_Association_ajout_lien_association}
             # Bouton de supression d'un lien
-            button $f.liens.commandes.supp -text "-" -image $IMG(supprimer) -command {INTERFACE_suppression_lien_relation}
+            button $f.liens.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_MCD_INTERFACE_Association_suppression_lien_association}
             pack $f.liens.commandes.ajout $f.liens.commandes.supp -padx 10
         pack $f.liens.commandes -side left -fill x
         # Liste des liens
@@ -73,7 +73,7 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
             label $f.liens.liste.titre -text $LOCALE(liste_attributs_relation)
             pack $f.liens.liste.titre -fill x
             frame $f.liens.liste.tete
-                label $f.liens.liste.tete.nom -text "Table concernée" -width 20 -height 2 -background white -relief solid
+                label $f.liens.liste.tete.nom -text "Entité concernée" -width 20 -height 2 -background white -relief solid
                 label $f.liens.liste.tete.type -text "Type" -width 20 -height 2 -background white -relief solid
                 label $f.liens.liste.tete.relatif -text "Identifiant relatif?" -width 25 -height 2 -background white -relief solid
                 pack $f.liens.liste.tete.nom $f.liens.liste.tete.type $f.liens.liste.tete.relatif -fill x -side left
@@ -113,11 +113,11 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
         pack $f.attributs.commandes -side left -fill x
 
         # Attributs dans un canvas pour pouvoir utiliser une scrollbar
-        canvas $f.attributs.c -width 1032 -height 200 -yscrollcommand "$f.attributs.yscroll set"
+        canvas $f.attributs.c -width 1200 -height 200
         frame $f.attributs.c.f
             # Liste des attributs
             frame $f.attributs.c.f.liste
-                label $f.attributs.c.f.titre -text "Liste des attributs de la table"
+                label $f.attributs.c.f.titre -text "Liste des attributs de l'association"
                 pack $f.attributs.c.f.titre -fill x
                 frame $f.attributs.c.f.tete
                     label $f.attributs.c.f.tete.nom -text $LOCALE(nom) -width 20 -height 2 -background white -relief solid
@@ -130,25 +130,15 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
                     pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.auto $f.attributs.c.f.tete.pk -fill x -side left
                 pack $f.attributs.c.f.tete -fill x
                 frame $f.attributs.c.f.corps
+                    
+                pack $f.attributs.c.f.corps -fill x
                     ##
                     # Ici viennent s'insérer les attributs
                     ##
-                    # Si la table est en édition, on affiche la liste des attributs déjà existants
+                    # Si l'association est en édition, on affiche la liste des attributs déjà existants
                     if {$id != "null"} {
-                        set attributs [dict get $relation "attributs"]
-                        foreach {id_attribut_graphique attribut} $attributs {
-                            #set nom_attribut_graphique [dict get $attribut "nom"]
-                            frame $f.attributs.c.f.corps.$id_attribut_graphique
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 20 -height 2 -background white -relief solid
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 20 -height 2 -background white -relief solid
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 20 -height 2 -background white -relief solid
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -height 2 -background white -relief solid
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -height 2 -background white -relief solid
-                                label $f.attributs.c.f.corps.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -height 2 -background white -relief solid
-                                button $f.attributs.c.f.corps.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_attribut relation $id_attribut_graphique"
-                                pack $f.attributs.c.f.corps.$id_attribut_graphique.nom $f.attributs.c.f.corps.$id_attribut_graphique.type $f.attributs.c.f.corps.$id_attribut_graphique.taille $f.attributs.c.f.corps.$id_attribut_graphique.valeur $f.attributs.c.f.corps.$id_attribut_graphique.auto $f.attributs.c.f.corps.$id_attribut_graphique.pk $f.attributs.c.f.corps.$id_attribut_graphique.edit -side left
-                            pack $f.attributs.c.f.corps.$id_attribut_graphique -fill x
-                        }
+                    puts $relation
+                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $relation "association"
                     }
                 pack $f.attributs.c.f.corps -fill x
             pack $f.attributs.c.f.liste -side left -fill x
@@ -158,6 +148,10 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
         pack $f.attributs.yscroll -side right -fill y
         $f.attributs.c configure -scrollregion "0 0 1000 10000"
     pack $f.attributs -fill x -padx 10
+    
+    # Ajout de la commande de scroll du canvas des attributs ici, sinon erreur mais fonctionne.
+    # À voir pour faire fonctionner correctement plus tard
+    $f.attributs.c configure -yscrollcommand "$f.attributs.yscroll set"
     
     frame $f.commandes
         button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
@@ -197,9 +191,9 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
 }
 
 ##
-# Fenêtre d'ajout de lien à une relation
+# Fenêtre d'ajout de lien à une association
 ##
-proc INTERFACE_ajout_lien_relation {{id_lien "null"}} {
+proc Katyuusha_MCD_INTERFACE_Association_ajout_lien_association {{id_lien "null"}} {
     global relation_tmp
     global tables
     global IMG
@@ -254,7 +248,7 @@ proc INTERFACE_ajout_lien_relation {{id_lien "null"}} {
         }
     pack $f.tables -pady 10 -padx 20
     frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "INTERFACE_COMMANDE_ajout_lien $id_lien"
+        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "Katyuusha_MCD_INTERFACE_COMMANDE_Association_ajout_lien_association $id_lien"
         button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
@@ -275,7 +269,7 @@ proc INTERFACE_ajout_lien_relation {{id_lien "null"}} {
     }
 }
 
-proc INTERFACE_COMMANDE_ajout_lien {id_lien} {
+proc Katyuusha_MCD_INTERFACE_COMMANDE_Association_ajout_lien_association {id_lien} {
     global relation_tmp
     global E_relatif
     
@@ -296,7 +290,7 @@ proc INTERFACE_COMMANDE_ajout_lien {id_lien} {
 ##
 # Supprime un lien de l'association temporaire
 ##
-proc INTERFACE_suppression_lien_relation {} {
+proc Katyusha_MCD_INTERFACE_Association_suppression_lien_association {} {
     global relation_tmp
     global LOCALE
     global IMG

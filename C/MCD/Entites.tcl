@@ -23,7 +23,7 @@ proc maj_tables {} {
         puts "Ajout de la table : [dict get $table nom]"
         unset graph id table
         # Met à jour l'arbre des entités
-        maj_arbre_entites
+        Katyusha_MCD_Objets_maj_arbre_objets
     }
 }
 
@@ -203,7 +203,7 @@ proc ajout_table {table_tmp} {
     #puts [.mcd.canvas.c coords [lindex $graph 0]]
     unset graph id
     # Met à jour l'arbre des entités
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     Katyusha_Historique_maj
 }
 
@@ -223,7 +223,7 @@ proc Katyusha_Tables_modification_table {id table} {
     dict set tables $id $table
     dict unset tables_graphique $id
     Katyusha_Tables_modification_graphique $id $table
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     Katyusha_Historique_maj
 }
 
@@ -251,7 +251,7 @@ proc suppression_table {{table "null"}} {
     # Supprime les lignes de la table
     Katyusha_Tables_suppression_lignes $table
     dict unset tables_graphique $table
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     puts "Table $nom supprimée"
     unset nom
 }

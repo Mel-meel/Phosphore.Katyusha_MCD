@@ -14,11 +14,11 @@
 ##
 # Met à jour l'affichage graphique des attributs de l'objet dans la fenêtre d'édition
 ##
-proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f entite} {
+proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f objet type_objet} {
     global IMG
     global LOCALE
     
-    set attributs [dict get $entite "attributs"]
+    set attributs [dict get $objet "attributs"]
     
     
     foreach {id_attribut_graphique attribut} $attributs {
@@ -33,8 +33,8 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f entite} {
             label $f.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -height 2 -background white -relief solid
             label $f.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -height 2 -background white -relief solid
             label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -height 2 -background white -relief solid
-            button $f.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $id_attribut_graphique [expr $id_attribut_graphique - 1]"
-            button $f.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $id_attribut_graphique [expr $id_attribut_graphique + 1]"
+            button $f.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            button $f.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique + 1]"
             button $f.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
             pack $f.$id_attribut_graphique.nom $f.$id_attribut_graphique.type $f.$id_attribut_graphique.taille $f.$id_attribut_graphique.valeur $f.$id_attribut_graphique.auto $f.$id_attribut_graphique.pk $f.$id_attribut_graphique.haut $f.$id_attribut_graphique.bas $f.$id_attribut_graphique.edit -side left
         pack $f.$id_attribut_graphique -fill x
@@ -43,10 +43,15 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f entite} {
     update
 }
 
-proc Katyusha_MCD_INTERFACE_Objets_deplacer_attribut {f id_ancien id_nouveau} {
+proc Katyusha_MCD_INTERFACE_Objets_deplacer_attribut {f type_objet id_ancien id_nouveau} {
     global table_tmp
+    global relation_tmp
     
-    set table_tmp [Katyusha_MCD_Objets_deplacer_attribut $table_tmp $id_ancien $id_nouveau]
+    if {$type_objet == "entite"} {
+        set table_tmp [Katyusha_MCD_Objets_deplacer_attribut $table_tmp $id_ancien $id_nouveau]
+    } elseif {$type_objet == "association"} {
+        set relation_tmp [Katyusha_MCD_Objets_deplacer_attribut $table_tmp $id_ancien $id_nouveau]
+    }
     
     Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f $table_tmp
 }

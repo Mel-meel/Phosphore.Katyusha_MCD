@@ -23,7 +23,7 @@ proc Katyusha_Heritages_maj {} {
         puts "Ajout de l'héritage : [dict get $heritage mere]"
         unset graph id heritage
         # Met à jour l'arbre des entités
-        maj_arbre_entites
+        Katyusha_MCD_Objets_maj_arbre_objets
     }
 }
 
@@ -74,7 +74,7 @@ proc Katyusha_Heritages_ajout {heritage_tmp} {
     set ID [expr $ID + 1]
     unset graph id
     # Met à jour l'arbre des entités
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     Katyusha_Historique_maj
     # Créé les lignes vers les tables
     #Katyusha_Heritages_MAJ_lignes_table_mere [expr $ID - 1]
@@ -90,7 +90,7 @@ proc Katyusha_Heritages_modification_heritage {id heritage} {
     Heritages_supression_heritage $id
     dict set heritages $id $heritage
     Katyusha_Heritages_modification_graphique $id $heritage
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     Katyusha_Historique_maj
     Katyusha_Heritages_lignes $id
 }
@@ -111,7 +111,7 @@ proc Heritages_supression_heritage {id_heritage} {
     }
     Katyusha_Heritages_suppression_lignes $id_heritage
     dict unset heritages_graphique $id_heritage
-    maj_arbre_entites
+    Katyusha_MCD_Objets_maj_arbre_objets
     puts "Héritage $id_heritage supprimée"
 }
 
