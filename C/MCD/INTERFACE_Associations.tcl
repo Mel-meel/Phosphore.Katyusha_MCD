@@ -10,18 +10,17 @@
 
 
 ##
-# Si aucune relation n'est spécifiée en argument, il s'agira d'un ajout de relation.
-# Si une relations est passée en argument, il s'agira alors de l'éditer.
+# Si aucune association n'est spécifiée en argument, il s'agira d'un ajout d'association.
+# Si une association est passée en argument, il s'agira alors de l'éditer.
 # Pour un ajout, spécifier uniquement les coordonnées.
 # Pour une édition, indiquer en coordonnées 0:0 et passer son id
 ##
-proc INTERFACE_ajout_relation {x y {id "null"}} {
+proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
     global relation_tmp
     global relations
     global tables
     global LOCALE
     global IMG
-    #global id_attribut_graphique
     global E_nom_relation
     
     set liste_type_relations [list "0.1" "1.1" "0.n" "1.n" "n.n"]
@@ -101,7 +100,7 @@ proc INTERFACE_ajout_relation {x y {id "null"}} {
     pack $f.liens -fill x -padx 10
     
     ##
-    # Attributs de la relation
+    # Attributs de l'association
     ##
     frame $f.attributs
         # Commandes des attributs

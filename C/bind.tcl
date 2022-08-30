@@ -31,15 +31,15 @@ bind $ZONE_MCD.canvas.c <Button-1> {
     if {$ACTION_B1 == "null"} {
         puts "Rien à faire en position $px : $py"
     } elseif {$ACTION_B1 == "ajout_table"} {
-        # Si la fenêtre d'ajout de table n'existe pas déjà, la créer
+        # Si la fenêtre d'ajout d'entité n'existe pas déjà, la créer
         if {![winfo exists .fen_ajout_table]} {
-            INTERFACE_ajout_table $px $py
+            Katyusha_MCD_INTERFACE_Entite_ajout_entite $px $py
             Katyusha_boutons_ajout_off
         }
     } elseif {$ACTION_B1 == "ajout_relation"} {
-        # Si la fenêtre d'ajout de relation n'existe pas déjà, la créer
+        # Si la fenêtre d'ajout d'association n'existe pas déjà, la créer
         if {![winfo exists .fen_ajout_relation]} {
-            INTERFACE_ajout_relation $px $py
+            Katyusha_MCD_INTERFACE_Association_ajout_association $px $py
             Katyusha_boutons_ajout_off
         }
     } elseif {$ACTION_B1 == "ajout_etiquette"} {
@@ -97,18 +97,18 @@ $ZONE_MCD.canvas.c bind table <B1-Motion> {
     if {$tag != ""} {
         set changed_x [expr [expr %x + ($scrollbar_x_debut * $xbcanvas)] - $atx]
         set changed_y [expr [expr %y + ($scrollbar_y_debut * $ybcanvas)] - $aty]
-        # Vérifie que la table ne dépasse pas les limites du mcd
+        # Vérifie que l'entité ne dépasse pas les limites du mcd
         # TODO : À revoir, la limitation de déplacement ne fonctionne pas correctement
         #if {$changed_x < $xbcanvas && $changed_x > 0 && $changed_y < $ybcanvas && $changed_y > 0} {
             foreach c [dict get $tables_graphique $tag] {
                 $ZONE_MCD.canvas.c move $c $changed_x $changed_y
             }
             set coords [$ZONE_MCD.canvas.c coords $id_graphique]
-            # MAJ des coordonnées de la table
+            # MAJ des coordonnées de l'entité
             set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
             set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
             Katyusha_Tables_MAJ_coords $tag [list $x $y]
-            # MAJ de la ligne reliant la table à sa relation
+            # MAJ de la ligne reliant l'entité à son association
             Katyusha_Tables_MAJ_ligne_coords $tag [list [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
         #}
         set atx [expr %x + ($scrollbar_x_debut * $xbcanvas)]
@@ -121,7 +121,7 @@ $ZONE_MCD.canvas.c bind table <B1-Motion> {
 
 
 ##
-# Bouger une relation avec la souris
+# Bouger une association avec la souris
 ##
 $ZONE_MCD.canvas.c bind relation <Button-1> {
     global relations_graphique
@@ -154,13 +154,15 @@ $ZONE_MCD.canvas.c bind relation <B1-Motion> {
     
     set changed_x [expr [expr %x + ($scrollbar_x_debut * $xbcanvas)] - $atx]
     set changed_y [expr [expr %y + ($scrollbar_y_debut * $ybcanvas)] - $aty]
+    
     foreach c [dict get $relations_graphique $tag] {
         $ZONE_MCD.canvas.c move $c $changed_x $changed_y
     }
-            set coords [$ZONE_MCD.canvas.c coords $id_graphique]
-            # MAJ des coordonnées de la table
-            set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
-            set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
+    
+    set coords [$ZONE_MCD.canvas.c coords $id_graphique]
+    # MAJ des coordonnées de l'association
+    set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
+    set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
     Katyusha_Relations_MAJ_coords $tag [list $x $y]
     Katyusha_Relations_MAJ_ligne_coords $tag [list [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
     set atx [expr %x + ($scrollbar_x_debut * $xbcanvas)]
@@ -263,7 +265,7 @@ $ZONE_MCD.canvas.c bind heritage <B1-Motion> {
 }
 
 ##
-# Menu de clic droit des tables
+# Menu de clic droit des entités
 ##
 $ZONE_MCD.canvas.c bind table <Button-3> {
     global CONFIGS
@@ -285,11 +287,11 @@ $ZONE_MCD.canvas.c bind table <Button-3> {
 }
 
 menu .menu_table -tearoff 0
-.menu_table add command -label $LOCALE(editer) -command {INTERFACE_ajout_table 0 0 [lindex $selected 1]}
+.menu_table add command -label $LOCALE(editer) -command {Katyusha_MCD_INTERFACE_Entite_ajout_entite 0 0 [lindex $selected 1]}
 .menu_table add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_COMMANDE_supprimer_objet "table" [lindex $selected 1]}
 
 ##
-# Menu de clic droit des relations
+# Menu de clic droit des associations
 ##
 $ZONE_MCD.canvas.c bind relation <Button-3> {
     global CONFIGS
@@ -311,7 +313,7 @@ $ZONE_MCD.canvas.c bind relation <Button-3> {
 }
 
 menu .menu_relation -tearoff 0
-.menu_relation add command -label $LOCALE(editer) -command {INTERFACE_ajout_relation 0 0 [lindex $selected 1]}
+.menu_relation add command -label $LOCALE(editer) -command {Katyusha_MCD_INTERFACE_Association_ajout_association 0 0 [lindex $selected 1]}
 .menu_relation add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_COMMANDE_supprimer_objet "relation" [lindex $selected 1]}
 
 ##

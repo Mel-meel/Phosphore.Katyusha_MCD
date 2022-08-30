@@ -14,7 +14,7 @@
 # Pour un ajout, spécifier uniquement les coordonnées.
 # Pour une édition, indiquer en coordonnées 0:0 et passer son id
 ##
-proc INTERFACE_ajout_table {x y {id "null"}} {
+proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
     global LOCALE
     global coords
     global IMG
@@ -91,7 +91,7 @@ proc INTERFACE_ajout_table {x y {id "null"}} {
                     ##
                     # Si la table est en édition, on affiche la liste des attributs déjà existants
                     if {$id != "null"} {
-                        Katyusha_MCD_INTERFACE_Entites_MAJ_attributs $f.attributs.c.f.corps $table
+                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $table
                     }
             pack $f.attributs.c.f.liste -side left -fill x
         pack $f.attributs.c -side left
