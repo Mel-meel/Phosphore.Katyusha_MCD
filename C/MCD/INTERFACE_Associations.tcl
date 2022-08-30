@@ -96,7 +96,6 @@ proc INTERFACE_ajout_relation {x y {id "null"}} {
                         pack $f.liens.liste.corps.$k
                     }
                 }
-                # TODO
             pack $f.liens.liste.corps -fill x
         pack $f.liens.liste -fill x
     pack $f.liens -fill x -padx 10
