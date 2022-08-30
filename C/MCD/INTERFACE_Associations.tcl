@@ -137,7 +137,6 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
                     ##
                     # Si l'association est en édition, on affiche la liste des attributs déjà existants
                     if {$id != "null"} {
-                    puts $relation
                         Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $relation "association"
                     }
                 pack $f.attributs.c.f.corps -fill x

@@ -20,7 +20,6 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f objet type_objet} {
     
     set attributs [dict get $objet "attributs"]
     
-    
     foreach {id_attribut_graphique attribut} $attributs {
         if {[winfo exists $f]} {
             destroy $f.$id_attribut_graphique
@@ -49,11 +48,11 @@ proc Katyusha_MCD_INTERFACE_Objets_deplacer_attribut {f type_objet id_ancien id_
     
     if {$type_objet == "entite"} {
         set table_tmp [Katyusha_MCD_Objets_deplacer_attribut $table_tmp $id_ancien $id_nouveau]
+        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f $table_tmp $type_objet
     } elseif {$type_objet == "association"} {
-        set relation_tmp [Katyusha_MCD_Objets_deplacer_attribut $table_tmp $id_ancien $id_nouveau]
+        set relation_tmp [Katyusha_MCD_Objets_deplacer_attribut $relation_tmp $id_ancien $id_nouveau]
+        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f $relation_tmp $type_objet
     }
-    
-    Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f $table_tmp
 }
 
 ##
@@ -484,7 +483,6 @@ proc Katyusha_MCD_INTERFACE_COMMANDE_supprimer_objet {type_entite liste} {
     set f ".fen_liste_entites"
     set entite [$f.liste.$type_entite\s.lb curselection]
     set id_entite [lindex [split [lindex $liste $entite] " : "] 0]
-    puts $id_entite
     
     if {$type_entite == "table"} {
         suppression_table $id_entite
@@ -502,7 +500,6 @@ proc INTERFACE_COMMANDE_editer_entite {type_entite liste} {
     set f ".fen_liste_entites"
     set entite [$f.liste.$type_entite\s.lb curselection]
     set id_entite [lindex [split [lindex $liste $entite] " : "] 0]
-    puts $entite
     
     if {$type_entite == "table"} {
         INTERFACE_ajout_table 0 0 $id_entite
