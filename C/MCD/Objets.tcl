@@ -49,7 +49,6 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
         $c create rect [expr $x - 5] [expr $hauteur - 9] [expr (($x + (3.1 * [string length $nom])) * 1.5) + 5] [expr $hauteur + 9] -outline #F5F5F5 -fill #F5F5F5 -tag "entite"
         $c create text [expr $x + 0] $hauteur -fill black -justify left -text "$id : $nom" -anchor w -tag "entite"
         set hauteur [expr $hauteur + 20]
-        #puts "$id : $nom"
     }
     # Saut de ligne
     set hauteur [expr $hauteur + 10]
@@ -69,7 +68,6 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
         $c create rect [expr $x - 5] [expr $hauteur - 9] [expr (($x + (3.1 * [string length $nom])) * 1.5) + 5] [expr $hauteur + 9] -outline #F5F5F5 -fill #F5F5F5 -tag "entite"
         $c create text [expr $x + 0] $hauteur -fill black -justify left -text "$id : Table mère '$nom_table'" -anchor w -tag "entite"
         set hauteur [expr $hauteur + 20]
-        #puts "$id : $nom"
     }
     # Saut de ligne
     set hauteur [expr $hauteur + 10]
@@ -213,7 +211,6 @@ proc Katyusha_Entites_controle_entite {entite} {
 # Échange la place de deux attributs
 ##
 proc Katyusha_MCD_Objets_deplacer_attribut {objet id_ancien id_nouveau} {
-puts $objet
     set attributs [dict get $objet "attributs"]
     
     # Si l'attribut à déplacer n'est pas en début ou en fin de liste, bah il bouge
