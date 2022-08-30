@@ -35,7 +35,7 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f entite} {
             label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -height 2 -background white -relief solid
             button $f.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $id_attribut_graphique [expr $id_attribut_graphique - 1]"
             button $f.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $id_attribut_graphique [expr $id_attribut_graphique + 1]"
-            button $f.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_attribut table $id_attribut_graphique"
+            button $f.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
             pack $f.$id_attribut_graphique.nom $f.$id_attribut_graphique.type $f.$id_attribut_graphique.taille $f.$id_attribut_graphique.valeur $f.$id_attribut_graphique.auto $f.$id_attribut_graphique.pk $f.$id_attribut_graphique.haut $f.$id_attribut_graphique.bas $f.$id_attribut_graphique.edit -side left
         pack $f.$id_attribut_graphique -fill x
     }
@@ -48,7 +48,7 @@ proc Katyusha_MCD_INTERFACE_Objets_deplacer_attribut {f id_ancien id_nouveau} {
     
     set table_tmp [Katyusha_MCD_Objets_deplacer_attribut $table_tmp $id_ancien $id_nouveau]
     
-    Katyusha_MCD_INTERFACE_Entites_MAJ_attributs $f $table_tmp
+    Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f $table_tmp
 }
 
 ##
@@ -173,6 +173,7 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
             pack $f.prop.auto.l $f.prop.auto.cb -side left -fill x
         pack $f.prop.auto -fill x
         # Si l'attribut est en incrémentation utomatique, il ne peut pas être null
+        # TODO : Sortir le bind de là, c'est pas propre
         bind $f.prop.auto.cb <Button-1> {
             global E_auto_attribut
             global E_null_attribut
@@ -355,8 +356,8 @@ proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {type_entite id_entite} 
 }
 
 ##
-# Affiche la liste de toutes les entités du MCD
-# TODO : l'édition des coordonnées, corriger les bugs
+# Affiche la liste de tous les objets du MCD
+# TODO : l'édition des coordonnées, corriger les bugs et grosse mise à jour nécessaire
 ##
 proc INTERFACE_liste_objets {} {
     global relations

@@ -91,11 +91,11 @@ foreach fichier [Katyusha_fichiers_recents] {
 .mb.fichier add command -label $LOCALE(menu_prefs) -command INTERFACE_config_bdd
 
 # Menu modèle Merise
-.mb.mcd add command -label $LOCALE(menu_mcd_entites) -command INTERFACE_liste_entites
-.mb.mcd add command -label $LOCALE(menu_mcd_ajout_table) -command "INTERFACE_ajout_table 100 100"
+#.mb.mcd add command -label $LOCALE(menu_mcd_entites) -command INTERFACE_liste_entites
+.mb.mcd add command -label $LOCALE(menu_mcd_ajout_table) -command "Katyusha_MCD_INTERFACE_Association_ajout_association 100 100"
 #.mb.mcd add command -label $LOCALE(menu_mcd_edit_table) -command INTERFACE_edit_table_liste
 #.mb.mcd add command -label $LOCALE(menu_mcd_sup_table) -command INTERFACE_liste_entites
-.mb.mcd add command -label $LOCALE(menu_mcd_ajout_relation) -command "INTERFACE_ajout_relation 100 100"
+.mb.mcd add command -label $LOCALE(menu_mcd_ajout_relation) -command "Katyusha_MCD_INTERFACE_Entite_ajout_entite 100 100"
 #.mb.mcd add command -label $LOCALE(menu_mcd_sup_relation) -command INTERFACE_liste_entitesv
 .mb.mcd add command -label $LOCALE(menu_mcd_verifier) -command {
     global LOCALE
@@ -163,7 +163,14 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
     global CONFIGS
     global ZONE_MCD
     global OS
-
+    
+    set f [ttk::frame $parent.notebook_uml]
+    
+    frame $parent.notebook_uml_panel
+    
+    pack $parent.notebook_uml_panel
+    
+    return $f
 }
 
 
@@ -179,10 +186,10 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
     
     frame $parent.notebook_mcd.panel
         frame $parent.notebook_mcd.panel.commandes
-            # Bouton on/off d'ajout de table
+            # Bouton on/off d'ajout d'une entité
             button $parent.notebook_mcd.panel.commandes.ajout_table -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_action_boutons_ajout "table"}
             tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_table $LOCALE(ajouter_table)
-            # Bouton on/off d'ajout d'une relation
+            # Bouton on/off d'ajout d'une association
             button $parent.notebook_mcd.panel.commandes.ajout_relation -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_action_boutons_ajout "relation"}
             tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_relation $LOCALE(ajouter_relation)
             # Bouton on/off d'ajout d'un héritage
@@ -204,7 +211,6 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
     pack $parent.notebook_mcd.panel -side left
     frame $parent.notebook_mcd.mcd
         # Infos de la base de données
-        # TODO : À remanier, devennu obsolète en l'état
         frame $parent.notebook_mcd.mcd.infos_bdd
             button $parent.notebook_mcd.mcd.infos_bdd.zoom_plus -text "+" -image $IMG(zoom_plus) -command "Katyusha_zoom_plus $ZONE_MCD.canvas.c"
             button $parent.notebook_mcd.mcd.infos_bdd.zoom_moins -text "-" -image $IMG(zoom_moins) -command "Katyusha_zoom_moins $ZONE_MCD.canvas.c"
