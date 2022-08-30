@@ -12,7 +12,7 @@
 
 
 ##
-# Met à jour l'affichage graphique des attributs de l'entité dans la fenêtre d'édition
+# Met à jour l'affichage graphique des attributs de l'objet dans la fenêtre d'édition
 ##
 proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f entite} {
     global IMG
@@ -52,7 +52,7 @@ proc Katyusha_MCD_INTERFACE_Objets_deplacer_attribut {f id_ancien id_nouveau} {
 }
 
 ##
-# Fenêtre d'ajout d'un attribut à une table ou une relation
+# Fenêtre d'ajout d'un attribut à une entité ou une association
 # Si l'ID d'un attribut est passé en paramètre, il s'agira alors de l'éditer
 ##
 proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
@@ -202,7 +202,7 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
     pack $f.prop -fill x -padx 20
     
     frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "INTERFACE_COMMANDE_ajout_attribut $entite $id"
+        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "Katyusha_MCD_INTERFACE_COMMANDE_Objets_ajout_attribut $entite $id"
         button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
@@ -213,7 +213,7 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
     update
 }
 
-proc INTERFACE_COMMANDE_ajout_attribut {entite {id "null"}} {
+proc Katyusha_MCD_INTERFACE_COMMANDE_Objets_ajout_attribut {entite {id "null"}} {
     global E_auto_attribut
     global E_pk_attribut
     global E_null_attribut
@@ -249,7 +249,7 @@ proc INTERFACE_COMMANDE_ajout_attribut {entite {id "null"}} {
 }
 
 ##
-# Fenêtre de choix d'un attribut à supprimer pour le type d'entité passé en paramètre
+# Fenêtre de choix d'un attribut à supprimer pour le type d'objet passé en paramètre
 ##
 proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {entite} {
     global table_tmp
@@ -337,7 +337,7 @@ proc Katyusha_MCD_INTERFACE_COMANDE_Objets_suppression_attribut {entite} {
 ##
 # Confirme pour supprimer l'objet sélectionné
 ##
-proc INTERFACE_suppression_entite {type_entite id_entite} {
+proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {type_entite id_entite} {
     global LOCALE
     
     set rep [tk_messageBox -message "$LOCALE(sure_supprimer_entite)$type_entite" -type "yesno"]
@@ -358,7 +358,7 @@ proc INTERFACE_suppression_entite {type_entite id_entite} {
 # Affiche la liste de toutes les entités du MCD
 # TODO : l'édition des coordonnées, corriger les bugs
 ##
-proc INTERFACE_liste_entites {} {
+proc INTERFACE_liste_objets {} {
     global relations
     global tables
     global IMG
@@ -471,7 +471,7 @@ proc INTERFACE_liste_entites {} {
     update
 }
 
-proc INTERFACE_COMMANDE_supprimer_entite {type_entite liste} {
+proc Katyusha_MCD_INTERFACE_COMMANDE_supprimer_objet {type_entite liste} {
     global tables
     global relations
     

@@ -286,7 +286,7 @@ $ZONE_MCD.canvas.c bind table <Button-3> {
 
 menu .menu_table -tearoff 0
 .menu_table add command -label $LOCALE(editer) -command {INTERFACE_ajout_table 0 0 [lindex $selected 1]}
-.menu_table add command -label $LOCALE(supprimer) -command {INTERFACE_suppression_entite "table" [lindex $selected 1]}
+.menu_table add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_COMMANDE_supprimer_objet "table" [lindex $selected 1]}
 
 ##
 # Menu de clic droit des relations
@@ -312,7 +312,7 @@ $ZONE_MCD.canvas.c bind relation <Button-3> {
 
 menu .menu_relation -tearoff 0
 .menu_relation add command -label $LOCALE(editer) -command {INTERFACE_ajout_relation 0 0 [lindex $selected 1]}
-.menu_relation add command -label $LOCALE(supprimer) -command {INTERFACE_suppression_entite "relation" [lindex $selected 1]}
+.menu_relation add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_COMMANDE_supprimer_objet "relation" [lindex $selected 1]}
 
 ##
 # Menu de clic droit des étiquettes
@@ -338,7 +338,7 @@ $ZONE_MCD.canvas.c bind etiquette <Button-3> {
 
 menu .menu_etiquette -tearoff 0
 .menu_etiquette add command -label $LOCALE(editer) -command {INTERFACE_Etiquettes_ajout 0 0 [lindex $selected 1]}
-.menu_etiquette add command -label $LOCALE(supprimer) -command {INTERFACE_suppression_entite "etiquette" [lindex $selected 1]}
+.menu_etiquette add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_COMMANDE_supprimer_objet "etiquette" [lindex $selected 1]}
 
 
 ##
@@ -365,7 +365,7 @@ $ZONE_MCD.canvas.c bind heritage <Button-3> {
 
 menu .menu_heritage -tearoff 0
 .menu_heritage add command -label $LOCALE(editer) -command {INTERFACE_Heritages_ajout 0 0 [lindex $selected 1]}
-.menu_heritage add command -label $LOCALE(supprimer) -command {INTERFACE_suppression_entite "heritage" [lindex $selected 1]}
+.menu_heritage add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_COMMANDE_supprimer_objet "heritage" [lindex $selected 1]}
 
 proc popupMenu {theMenu theX theY} {
     global ZONE_MCD
