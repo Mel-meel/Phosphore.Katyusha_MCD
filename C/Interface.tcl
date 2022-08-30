@@ -111,7 +111,8 @@ foreach fichier [Katyusha_fichiers_recents] {
 .mb.mcd add command -label $LOCALE(menu_mcd_imprimer) -command INTERFACE_imprimer
 
 # Menu diagramme de classe UML
-.mb.uml add command -label [phgt::mc "Modèle Merise"] -command INTERFACE_liste_entites
+#.mb.uml add command -label [phgt::mc "Modèle Merise"] -command INTERFACE_liste_entites
+.mb.uml add command -label [phgt::mc "En travaux, arrivera en version 0.5.x"]
 
 # Menu base de donnée
 #.mb.bdd add command -label $LOCALE(menu_config_bdd) -command INTERFACE_config_bdd
@@ -134,7 +135,7 @@ foreach fichier [Katyusha_fichiers_recents] {
 ##
 ttk::notebook .editeurs
 .editeurs add [Katyusha_Interface_editeur_MCD ".editeurs" $canvas_x $canvas_y] -text [phgt::mc "Modèle Merise"]
-.editeurs add [ttk::frame .editeurs.notebook_uml] -text [phgt::mc "Diagramme de classe UML"]
+.editeurs add [Katyusha_Interface_editeur_UML ".editeurs" $canvas_x $canvas_y] -text [phgt::mc "Diagramme de classe UML"]
 pack .editeurs -fill both -expand 1
     frame .infos
         frame .infos.s
@@ -166,9 +167,10 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
     
     set f [ttk::frame $parent.notebook_uml]
     
-    frame $parent.notebook_uml_panel
-    
-    pack $parent.notebook_uml_panel
+    frame $f.notebook_uml_panel
+        label $f.notebook_uml_panel.tmp -text [phgt::mc "En travaux, arrivera en version 0.5.x"]
+        pack $f.notebook_uml_panel.tmp
+    pack $f.notebook_uml_panel
     
     return $f
 }

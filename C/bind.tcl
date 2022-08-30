@@ -59,7 +59,7 @@ bind $ZONE_MCD.canvas.c <Button-1> {
 
 
 ##
-# Bouger une table avec la souris
+# Bouger une entité avec la souris
 ##
 $ZONE_MCD.canvas.c bind table <Button-1> {
     global tables_graphique
@@ -253,7 +253,7 @@ $ZONE_MCD.canvas.c bind heritage <B1-Motion> {
         $ZONE_MCD.canvas.c move [lindex [dict get $heritages_graphique $tag] $c] $changed_x $changed_y
     }
     set coords [$ZONE_MCD.canvas.c coords $id_graphique]
-    # MAJ des coordonnées de la table
+    # MAJ des coordonnées de l'entité
     set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
     set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
     Katyusha_Heritages_MAJ_coords $tag [list $atx $aty]

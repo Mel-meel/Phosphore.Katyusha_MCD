@@ -82,7 +82,7 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
                 ##
                 # Ici viennent s'insérer les liens
                 ##
-                # Si la relation est en édition, on affiche la liste des liens déjà existants
+                # Si l'association est en édition, on affiche la liste des liens déjà existants
                 if {$id != "null"} {
                     set liens [dict get $relation "liens"]
                     foreach {k lien} $liens {
@@ -225,7 +225,7 @@ proc INTERFACE_ajout_lien_relation {{id_lien "null"}} {
     toplevel $f
     # Icone de la fenêtre
     wm iconphoto $f $IMG(logo)
-    # Choix des tables concernées par la relation
+    # Choix des tables concernées par l'association
     frame $f.tables
         label $f.tables.info -text $LOCALE(table_concernee_lien)
         pack $f.tables.info
@@ -294,7 +294,7 @@ proc INTERFACE_COMMANDE_ajout_lien {id_lien} {
 }
 
 ##
-# Supprime un lien de la relation temporaire
+# Supprime un lien de l'association temporaire
 ##
 proc INTERFACE_suppression_lien_relation {} {
     global relation_tmp
