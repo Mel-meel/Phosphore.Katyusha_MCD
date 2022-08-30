@@ -60,9 +60,9 @@ proc INTERFACE_ajout_table {x y {id "null"}} {
         # Commandes des attributs
         frame $f.attributs.commandes
             # Bouton d'ajout d'un nouvel attribut
-            button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {INTERFACE_ajout_attribut "table"}
+            button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_MCD_INTERFACE_Objets_ajout_attribut "table"}
             # Bouton de supression d'un nouvel attribut
-            button $f.attributs.commandes.supp -text "-" -image $IMG(supprimer) -command {INTERFACE_suppression_attribut "table"}
+            button $f.attributs.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_attribut "table"}
             pack $f.attributs.commandes.ajout $f.attributs.commandes.supp -padx 10
         pack $f.attributs.commandes -side left -fill x
         

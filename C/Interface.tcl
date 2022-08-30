@@ -156,6 +156,17 @@ Katyusha_grille $ZONE_MCD.canvas.c
 
 }
 
+
+proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
+    global LOCALE
+    global IMG
+    global CONFIGS
+    global ZONE_MCD
+    global OS
+
+}
+
+
 proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
     global LOCALE
     global IMG
@@ -167,24 +178,24 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
     set f [ttk::frame $parent.notebook_mcd]
     
     frame $parent.notebook_mcd.panel
-    frame $parent.notebook_mcd.panel.commandes
-        # Bouton on/off d'ajout de table
-        button $parent.notebook_mcd.panel.commandes.ajout_table -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_action_boutons_ajout "table"}
-        tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_table $LOCALE(ajouter_table)
-        # Bouton on/off d'ajout d'une relation
-        button $parent.notebook_mcd.panel.commandes.ajout_relation -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_action_boutons_ajout "relation"}
-        tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_relation $LOCALE(ajouter_relation)
-        # Bouton on/off d'ajout d'un héritage
-        button $parent.notebook_mcd.panel.commandes.ajout_heritage -text $LOCALE(ajouter_heritage) -image $IMG(ajouter_heritage) -command {Katyusha_action_boutons_ajout "heritage"}
-        tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_heritage $LOCALE(ajouter_heritage)
-        # Bouton on/off d'ajout d'une étiquette
-        button $parent.notebook_mcd.panel.commandes.ajout_etiquette -text $LOCALE(ajouter_etiquette) -image $IMG(ajouter_etiquette) -command {Katyusha_action_boutons_ajout "etiquette"}
-        tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_etiquette $LOCALE(ajouter_etiquette)
-        pack $parent.notebook_mcd.panel.commandes.ajout_table $parent.notebook_mcd.panel.commandes.ajout_relation $parent.notebook_mcd.panel.commandes.ajout_etiquette $parent.notebook_mcd.panel.commandes.ajout_heritage -side left
-    pack $parent.notebook_mcd.panel.commandes
+        frame $parent.notebook_mcd.panel.commandes
+            # Bouton on/off d'ajout de table
+            button $parent.notebook_mcd.panel.commandes.ajout_table -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_action_boutons_ajout "table"}
+            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_table $LOCALE(ajouter_table)
+            # Bouton on/off d'ajout d'une relation
+            button $parent.notebook_mcd.panel.commandes.ajout_relation -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_action_boutons_ajout "relation"}
+            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_relation $LOCALE(ajouter_relation)
+            # Bouton on/off d'ajout d'un héritage
+            button $parent.notebook_mcd.panel.commandes.ajout_heritage -text $LOCALE(ajouter_heritage) -image $IMG(ajouter_heritage) -command {Katyusha_action_boutons_ajout "heritage"}
+            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_heritage $LOCALE(ajouter_heritage)
+            # Bouton on/off d'ajout d'une étiquette
+            button $parent.notebook_mcd.panel.commandes.ajout_etiquette -text $LOCALE(ajouter_etiquette) -image $IMG(ajouter_etiquette) -command {Katyusha_action_boutons_ajout "etiquette"}
+            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_etiquette $LOCALE(ajouter_etiquette)
+            pack $parent.notebook_mcd.panel.commandes.ajout_table $parent.notebook_mcd.panel.commandes.ajout_relation $parent.notebook_mcd.panel.commandes.ajout_etiquette $parent.notebook_mcd.panel.commandes.ajout_heritage -side left
+        pack $parent.notebook_mcd.panel.commandes
         label $parent.notebook_mcd.panel.entites -text $LOCALE(entites_de_la_base) -justify left
         pack $parent.notebook_mcd.panel.entites -fill x
-        # Arbre des entités du MCD
+        # Arbre des objets du MCD
         frame $parent.notebook_mcd.panel.arbre
             canvas $parent.notebook_mcd.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_mcd.panel.arbre.vs set" -scrollregion "0 0 250 4000" -background #F5F5F5
             scrollbar $parent.notebook_mcd.panel.arbre.vs -command "$parent.notebook_mcd.panel.arbre.c yview"
@@ -193,6 +204,7 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
     pack $parent.notebook_mcd.panel -side left
     frame $parent.notebook_mcd.mcd
         # Infos de la base de données
+        # TODO : À remanier, devennu obsolète en l'état
         frame $parent.notebook_mcd.mcd.infos_bdd
             button $parent.notebook_mcd.mcd.infos_bdd.zoom_plus -text "+" -image $IMG(zoom_plus) -command "Katyusha_zoom_plus $ZONE_MCD.canvas.c"
             button $parent.notebook_mcd.mcd.infos_bdd.zoom_moins -text "-" -image $IMG(zoom_moins) -command "Katyusha_zoom_moins $ZONE_MCD.canvas.c"

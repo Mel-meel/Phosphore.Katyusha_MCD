@@ -14,7 +14,7 @@
 ##
 # Met à jour l'affichage graphique des attributs de l'entité dans la fenêtre d'édition
 ##
-proc Katyusha_MCD_INTERFACE_Entites_MAJ_attributs {f entite} {
+proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f entite} {
     global IMG
     global LOCALE
     
@@ -55,7 +55,7 @@ proc Katyusha_MCD_INTERFACE_Objets_deplacer_attribut {f id_ancien id_nouveau} {
 # Fenêtre d'ajout d'un attribut à une table ou une relation
 # Si l'ID d'un attribut est passé en paramètre, il s'agira alors de l'éditer
 ##
-proc INTERFACE_ajout_attribut {entite {id "null"}} {
+proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
     global table_tmp
     global relation_tmp
     global LOCALE
@@ -251,7 +251,7 @@ proc INTERFACE_COMMANDE_ajout_attribut {entite {id "null"}} {
 ##
 # Fenêtre de choix d'un attribut à supprimer pour le type d'entité passé en paramètre
 ##
-proc INTERFACE_suppression_attribut {entite} {
+proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {entite} {
     global table_tmp
     global relation_tmp
     global LOCALE
@@ -288,7 +288,7 @@ proc INTERFACE_suppression_attribut {entite} {
     ttk::combobox $f.cb -value $liste_attributs -width 50
     pack $f.cb
     frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "INTERFACE_COMMANDE_suppression_attribut $entite"
+        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "Katyusha_MCD_INTERFACE_COMANDE_Objets_suppression_attribut $entite"
         button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {destroy .fen_supp_attribut}
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
@@ -299,7 +299,7 @@ proc INTERFACE_suppression_attribut {entite} {
     update
 }
 
-proc INTERFACE_COMMANDE_suppression_attribut {entite} {
+proc Katyusha_MCD_INTERFACE_COMANDE_Objets_suppression_attribut {entite} {
     global table_tmp
     global relation_tmp
     global LOCALE
