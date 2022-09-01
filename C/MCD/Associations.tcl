@@ -654,6 +654,7 @@ proc Katyusha_Relations_init_relation {} {
 ##
 proc Katyusha_Relations_modification_attribut {id_attribut nom type complement_type taille null valeur auto pk description {graphique 1}} {
     Katyusha_Entites_modification_attribut $id_attribut $nom $type $complement_type $taille $null $valeur $auto $pk $description "relation" $graphique
+    unset id_attribut nom type complement_type taille null valeur auto pk description graphique
 }
 
 ##

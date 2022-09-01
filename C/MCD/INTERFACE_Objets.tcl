@@ -397,7 +397,7 @@ proc INTERFACE_liste_objets {} {
     # Liste des entités
     ##
     frame $f.liste
-        # Tables
+        # Entités
         frame $f.liste.tables
             label $f.liste.tables.l -text "Tables"
             listbox $f.liste.tables.lb -listvariable $liste_tables -height 20 -selectmode browse -yscrollcommand [list $f.liste.st set]
@@ -430,7 +430,7 @@ proc INTERFACE_liste_objets {} {
             set nom_table [dict get $table "nom"]
             $f.liste.tables.lb insert end "$k : $nom_table"
         }
-        # Relations
+        # Associations
         frame $f.liste.relations
             label $f.liste.relations.l -text "Relations"
             listbox $f.liste.relations.lb -listvariable $liste_relations -height 20 -selectmode browse -yscrollcommand [list $f.liste.sr set]
@@ -502,9 +502,9 @@ proc INTERFACE_COMMANDE_editer_entite {type_entite liste} {
     set id_entite [lindex [split [lindex $liste $entite] " : "] 0]
     
     if {$type_entite == "table"} {
-        INTERFACE_ajout_table 0 0 $id_entite
+        Katyusha_MCD_INTERFACE_Entite_ajout_entite 0 0 $id_entite
     } elseif {$type_entite == "relation"} {
-        INTERFACE_ajout_relation 0 0 $id_entite
+        Katyusha_MCD_INTERFACE_Association_ajout_association 0 0 $id_entite
     } elseif {$type_entite == "etiquette"} {
         INTERFACE_Etiquette_ajout 0 0 $id_entite
     }
