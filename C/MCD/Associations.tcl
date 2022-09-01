@@ -310,14 +310,17 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
     set id_graphique [lindex [dict get $relations_graphique $id_relation] 0]
     set coords [$ZONE_MCD.canvas.c coords $id_graphique]
     # Taille de l'association en pixels
-    set largeur_relation [expr [lindex $coords 2] - [lindex $coords 0]]
-    set hauteur_relation [expr [lindex $coords 3] - [lindex $coords 1]]
+    set largeur_association [expr [lindex $coords 2] - [lindex $coords 0]]
+    set hauteur_association [expr [lindex $coords 3] - [lindex $coords 1]]
     # Origines des lignes
     set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
     set y [expr [lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)]
     
     set relation [dict get $relations $id_relation]
-    set liste_liens_doubles [Katyusha_Associations_double_entite $relation]
+    set dict_liens_doubles [Katyusha_Associations_double_entite $relation]
+    set dict_liens_doubles_decompte [Katyusha_Associations_double_entite $relation]
+    
+    #set dict_liens_doubles [dict create]
     
     # Balayage des lignes à la recharche de celles concernants l'association spécifiée
     foreach {k ligne} $lignes_graphique {
@@ -328,8 +331,8 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
             # Créé les nouvelles coordonnées :
             #           [nouveau_x_origine nouveau_y_origine ancien_x_cible ancien_y_cible]
             set ncoords [list $x $y [lindex $acoords 2] [lindex $acoords 3]]
-            set id_table [lindex $ligne 2]
-            set coords_table_lien [Katyusha_Tables_coords_ID $id_table]
+            set id_entite [lindex $ligne 2]
+            set coords_table_lien [Katyusha_Tables_coords_ID $id_entite]
             # Taille de la table en pixels
             set largeur_table [expr [lindex $coords_table_lien 4] - [lindex $coords_table_lien 2]]
             set hauteur_table [expr [lindex $coords_table_lien 5] - [lindex $coords_table_lien 3]]
@@ -338,48 +341,80 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
             set x_arrivee [lindex $ncoords 2]
             set y_arrivee [lindex $ncoords 3]
             
-            if {[lsearch $liste_liens_doubles $id_table] == -1} {
+            if {[lsearch [dict keys $dict_liens_doubles] $id_entite] == -1} {
                 if {[lindex $coords 2] < [lindex $coords_table_lien 2]} {
                     set x_origine [lindex $coords 2]
-                    set y_origine [expr [lindex $coords 1] + ($hauteur_relation / 2)]
+                    set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
                     set x_arrivee [lindex $coords_table_lien 2]
                     set y_arrivee [expr [lindex $coords_table_lien 3] + ($hauteur_table / 2)]
                 } elseif {[lindex $coords 0] > [lindex $coords_table_lien 4]} {
                     set x_origine [lindex $coords 0]
-                    set y_origine [expr [lindex $coords 1] + ($hauteur_relation / 2)]
+                    set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
                     set x_arrivee [lindex $coords_table_lien 4]
                     set y_arrivee [expr [lindex $coords_table_lien 3] + ($hauteur_table / 2)]
                 } else {
                     if {[lindex $coords 1] > [lindex $coords_table_lien 5]} {
-                        set x_origine [expr [lindex $coords 0] + ($largeur_relation / 2)]
+                        set x_origine [expr [lindex $coords 0] + ($largeur_association / 2)]
                         set y_origine [lindex $coords 1]
                         set x_arrivee [expr [lindex $coords_table_lien 4] - ($largeur_table / 2) ]
                         set y_arrivee [lindex $coords_table_lien 5]
                     } elseif {[lindex $coords 3] < [lindex $coords_table_lien 3]} {
-                        set x_origine [expr [lindex $coords 0] + ($largeur_relation / 2)]
+                        set x_origine [expr [lindex $coords 0] + ($largeur_association / 2)]
                         set y_origine [lindex $coords 3]
                         set x_arrivee [expr [lindex $coords_table_lien 4] - ($largeur_table / 2) ]
                         set y_arrivee [lindex $coords_table_lien 3]
                     }
                 }
             } else {
-                puts [expr [llength [lsearch -all $liste_liens_doubles $id_table]] + 1]
+                
+                set nombre_dict_liens_doubles [dict get $dict_liens_doubles $id_entite]
+                set actuel_dict_liens_doubles [dict get $dict_liens_doubles_decompte $id_entite]
+                
+                puts $nombre_dict_liens_doubles
+                
+                if {[lindex $coords 2] < [lindex $coords_table_lien 2]} {
+                    set x_origine [lindex $coords 2]
+                    set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
+                    set x_arrivee [lindex $coords_table_lien 2]
+                    set y_arrivee [expr [lindex $coords_table_lien 3] + $actuel_dict_liens_doubles * ($hauteur_table / $nombre_dict_liens_doubles)]
+                } elseif {[lindex $coords 0] > [lindex $coords_table_lien 4]} {
+                    set x_origine [lindex $coords 0]
+                    set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
+                    set x_arrivee [lindex $coords_table_lien 4]
+                    set y_arrivee [expr [lindex $coords_table_lien 3] + $actuel_dict_liens_doubles * ($hauteur_table / $nombre_dict_liens_doubles)]
+                } else {
+                    if {[lindex $coords 1] > [lindex $coords_table_lien 5]} {
+                        set x_origine [expr [lindex $coords 0] + ($largeur_association / 2)]
+                        set y_origine [lindex $coords 1]
+                        set x_arrivee [expr [lindex $coords_table_lien 4] - $actuel_dict_liens_doubles * ($largeur_table / $nombre_dict_liens_doubles)]
+                        set y_arrivee [lindex $coords_table_lien 5]
+                    } elseif {[lindex $coords 3] < [lindex $coords_table_lien 3]} {
+                        set x_origine [expr [lindex $coords 0] + ($largeur_association / 2)]
+                        set y_origine [lindex $coords 3]
+                        set x_arrivee [expr [lindex $coords_table_lien 4] - $actuel_dict_liens_doubles * ($largeur_table / $nombre_dict_liens_doubles)]
+                        set y_arrivee [lindex $coords_table_lien 3]
+                    }
+                }
+                
+                dict set dict_liens_doubles_decompte $id_entite [expr $actuel_dict_liens_doubles - 1]
+                
             }
             
-            # Si l'association est par dessus l'objet ou touche l'objet auquel elle est liée, pas de ligne
+            # Si l'association est par dessus l'entité ou touche l'entité auquel elle est liée, pas de ligne
             if {$x_origine != "" && $y_origine != "" && $x_arrivee != "" && $y_arrivee != ""} {
                 # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" $id_table]] $id_table $id_relation]
+                dict set lignes_graphique $k [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" $id_entite]] $id_entite $id_relation]
                 # Et supprimme l'ancienne
+                puts [lindex $ligne 1]
                 $ZONE_MCD.canvas.c delete [lindex $ligne 1]
                 # Créé les textes des cardinalités
                 foreach {kk texte_cardinalite} $textes_cardinalites {
-                    if {[lindex $texte_cardinalite 0] == $id_table && [lindex $texte_cardinalite 1] == $id_relation} {
+                    if {[lindex $texte_cardinalite 0] == $id_entite && [lindex $texte_cardinalite 1] == $id_relation} {
                         $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
                         dict unset $textes_cardinalites $kk
                     }
                 }
-                dict set textes_cardinalites $k [list $id_table $id_relation [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_table] -tag [list "texte_cardinalite" $id_table]]]
+                dict set textes_cardinalites $k [list $id_entite $id_relation [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_entite] -tag [list "texte_cardinalite" $id_entite]]]
             }
         }
     }
@@ -395,20 +430,27 @@ proc Katyusha_Associations_double_entite {association} {
     set liens [dict get $association "liens"]
     
     set liste_liens [list]
-    set liste_liens_double [list]
+    set dict_liens_doubles [dict create]
     
     # Pour chaque lien :
     # Si l'entité n'est pas déjà présente dans la liste "liste_liens", elle y est ajoutée,
-    # sinon, c'est que l'association est liée au moins deux fois à l'entité, donc le nom de l'entité est ajouté à la liste "liste_liens_double"
+    # sinon, c'est que l'association est liée au moins deux fois à l'entité, donc le nom de l'entité est ajouté à le dictionnaire "dict_liens_doubles"
     foreach {k lien} $liens {
+        
+        set id_table [Katyusha_Tables_ID_table [lindex $lien 0]]
+        
         if {[lsearch $liste_liens [lindex $lien 0]] == -1} {
             lappend liste_liens [lindex $lien 0]
         } else {
-            lappend liste_liens_doubles [Katyusha_Tables_ID_table [lindex $lien 0]]
+            if {[lsearch [dict keys $dict_liens_doubles] $id_table] == -1} {
+                dict set dict_liens_doubles $id_table 2
+            } else {
+                dict set dict_liens_doubles $id_table [expr [dict get $dict_liens_doubles $id_table] + 1]
+            }
         }
     }
     
-    return $liste_liens_doubles
+    return $dict_liens_doubles
 }
 
 ##
