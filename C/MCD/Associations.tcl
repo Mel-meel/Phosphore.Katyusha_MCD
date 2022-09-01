@@ -339,29 +339,31 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
             set y_arrivee [lindex $ncoords 3]
             
             if {[lsearch $liste_liens_doubles $id_table] == -1} {
-            if {[lindex $coords 2] < [lindex $coords_table_lien 2]} {
-                set x_origine [lindex $coords 2]
-                set y_origine [expr [lindex $coords 1] + ($hauteur_relation / 2)]
-                set x_arrivee [lindex $coords_table_lien 2]
-                set y_arrivee [expr [lindex $coords_table_lien 3] + ($hauteur_table / 2)]
-            } elseif {[lindex $coords 0] > [lindex $coords_table_lien 4]} {
-                set x_origine [lindex $coords 0]
-                set y_origine [expr [lindex $coords 1] + ($hauteur_relation / 2)]
-                set x_arrivee [lindex $coords_table_lien 4]
-                set y_arrivee [expr [lindex $coords_table_lien 3] + ($hauteur_table / 2)]
-            } else {
-                if {[lindex $coords 1] > [lindex $coords_table_lien 5]} {
-                    set x_origine [expr [lindex $coords 0] + ($largeur_relation / 2)]
-                    set y_origine [lindex $coords 1]
-                    set x_arrivee [expr [lindex $coords_table_lien 4] - ($largeur_table / 2) ]
-                    set y_arrivee [lindex $coords_table_lien 5]
-                } elseif {[lindex $coords 3] < [lindex $coords_table_lien 3]} {
-                    set x_origine [expr [lindex $coords 0] + ($largeur_relation / 2)]
-                    set y_origine [lindex $coords 3]
-                    set x_arrivee [expr [lindex $coords_table_lien 4] - ($largeur_table / 2) ]
-                    set y_arrivee [lindex $coords_table_lien 3]
+                if {[lindex $coords 2] < [lindex $coords_table_lien 2]} {
+                    set x_origine [lindex $coords 2]
+                    set y_origine [expr [lindex $coords 1] + ($hauteur_relation / 2)]
+                    set x_arrivee [lindex $coords_table_lien 2]
+                    set y_arrivee [expr [lindex $coords_table_lien 3] + ($hauteur_table / 2)]
+                } elseif {[lindex $coords 0] > [lindex $coords_table_lien 4]} {
+                    set x_origine [lindex $coords 0]
+                    set y_origine [expr [lindex $coords 1] + ($hauteur_relation / 2)]
+                    set x_arrivee [lindex $coords_table_lien 4]
+                    set y_arrivee [expr [lindex $coords_table_lien 3] + ($hauteur_table / 2)]
+                } else {
+                    if {[lindex $coords 1] > [lindex $coords_table_lien 5]} {
+                        set x_origine [expr [lindex $coords 0] + ($largeur_relation / 2)]
+                        set y_origine [lindex $coords 1]
+                        set x_arrivee [expr [lindex $coords_table_lien 4] - ($largeur_table / 2) ]
+                        set y_arrivee [lindex $coords_table_lien 5]
+                    } elseif {[lindex $coords 3] < [lindex $coords_table_lien 3]} {
+                        set x_origine [expr [lindex $coords 0] + ($largeur_relation / 2)]
+                        set y_origine [lindex $coords 3]
+                        set x_arrivee [expr [lindex $coords_table_lien 4] - ($largeur_table / 2) ]
+                        set y_arrivee [lindex $coords_table_lien 3]
+                    }
                 }
-            }
+            } else {
+                puts [expr [llength [lsearch -all $liste_liens_doubles $id_table]] + 1]
             }
             
             # Si l'association est par dessus l'objet ou touche l'objet auquel elle est liée, pas de ligne
