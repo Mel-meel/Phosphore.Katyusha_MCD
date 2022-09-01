@@ -9,17 +9,17 @@
 ######################################################
 
 ##
-# Met à jour l'affichage graphique des relations (après le chargement d'un projet par exemple)
+# Met à jour l'affichage graphique des associations (après le chargement d'un projet par exemple)
 ##
 proc Katyusha_Relations_maj {} {
     global relations
     global relations_graphique
     foreach {id relation} $relations {
         set graph [Katyusha_Relations_creer_affichage_graphique $id $relation]
-        # Ajoute la liste temporaire au dictionnaire graphique des relations
+        # Ajoute la liste temporaire au dictionnaire graphique des associations
         dict set relations_graphique $id $graph
         puts "Ajout de la relation : [dict get $relation nom]"
-        # Créé les lignes reliant la relation aux tables concernées
+        # Créé les lignes reliant l'association aux entités concernées
         Katyusha_Relations_lignes_relation_tables $relation $id
         Katyusha_Relations_MAJ_ligne_coords $id [list]
         unset graph id relation
@@ -29,7 +29,7 @@ proc Katyusha_Relations_maj {} {
 }
 
 ##
-# Met à jour les lignes reliant les relations aux tables
+# Met à jour les lignes reliant les associations aux entités
 ##
 proc Katyusha_Relations_MAJ_lignes_relations {} {
     global relations
@@ -39,7 +39,7 @@ proc Katyusha_Relations_MAJ_lignes_relations {} {
 }
 
 ##
-# Créé l'affichage graphique d'une relation
+# Créé l'affichage graphique d'une association
 ##
 proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
     global rpr
@@ -47,7 +47,7 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
     global CONFIGS
     global ZONE_MCD
     
-    # Récupère le nom de la relation
+    # Récupère le nom de l'association
     set nom [dict get $relation "nom"]
     set couleurs [dict get $relation "couleurs"]
     # Créé le texte d'affichage des attributs
@@ -67,7 +67,7 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
     }
     
     set hauteur [expr $hauteur + 18]
-    # Calcul la taille de la relation sur le canvas
+    # Calcul la taille de l'association sur le canvas
     set largeur_nom [expr ([string length $nom] * 10) + 20]
     set largeur_atts 0
     foreach {k el} $tailles_colones {
@@ -81,7 +81,7 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
         set largeur $largeur_nom
     }
     
-    # Créé l'affichage graphique de la nouvelle relation dans une liste temporaire
+    # Créé l'affichage graphique de la nouvelle association dans une liste temporaire
     set x [lindex [dict get $relation "coords"] 0]
     set y [lindex [dict get $relation "coords"] 1]
     
@@ -115,7 +115,7 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
 }
 
 ##
-# Détermine la taille en nombre de caractères d'une relation pour l'affichage graphique
+# Détermine la taille en nombre de caractères d'une association pour l'affichage graphique
 ##
 proc Katyusha_Relations_taille_table_graphique {relation} {
     set taille 0
@@ -141,16 +141,16 @@ proc Katyusha_Relations_taille_table_graphique {relation} {
 }
 
 ##
-# Ajout d'une relation entre plusieurs tables
+# Ajout d'une association entre plusieurs entités
 ##
 proc Katyusha_ajout_relation {relation_tmp} {
-    # Charge les variables nécessaires à l'ajout d'une nouvelle relation
+    # Charge les variables nécessaires à l'ajout d'une nouvelle association
     global relations
     global relations_graphique
     global ID
-    # Créé un id pour la nouvelle relation
+    # Créé un id pour la nouvelle association
     set id [expr [dict size $relations]]
-    # Récupère le nom de la relation
+    # Récupère le nom de l'association
     set nom [dict get $relation_tmp nom]
     # Si le nom est vide
     if {$nom == ""} {
@@ -158,16 +158,16 @@ proc Katyusha_ajout_relation {relation_tmp} {
         dict set relation_tmp "nom" $nom
         dict unset $relation_tmp "id"
     }
-    # Ajoute la nouvelle relation aux relations existantes
+    # Ajoute la nouvelle association aux associations existantes
     dict set relations $ID $relation_tmp
     # Créé le texte d'affichage des attributs
     set texte_attributs ""
     set hauteur 20
-    # Calcul la taille de la relation sur le canvas
+    # Calcul la taille de l'association sur le canvas
     set largeur [expr ([string length $nom] * 8) + 50]
-    # Créé l'affichage graphique de la nouvelle relation
+    # Créé l'affichage graphique de la nouvelle association
     set graph [Katyusha_Relations_creer_affichage_graphique $ID $relation_tmp]
-    # Ajoute la liste temporaire au dictionnaire graphique des tables
+    # Ajoute la liste temporaire au dictionnaire graphique des entités
     dict set relations_graphique $ID $graph
     # Trace les lignes pour plus de visibilité
     Katyusha_Relations_lignes_relation_tables $relation_tmp $ID
@@ -190,7 +190,7 @@ proc Katyusha_Relations_modification_graphique {id relation} {
 }
 
 ##
-# Enregistre les modifications d'une relation
+# Enregistre les modifications d'une association
 ##
 proc Katyusha_Relations_modification_relation {id relation} {
     global relations
@@ -201,7 +201,7 @@ proc Katyusha_Relations_modification_relation {id relation} {
     suppression_relation $id
     dict set relations $id $relation
     Katyusha_Relations_modification_graphique $id $relation
-    # Recalcul les lignes entre la relation et les tables concernées
+    # Recalcul les lignes entre la relation et les entités concernées
     foreach {k ligne} $lignes_graphique {
         set id_relation_tmp [lindex $ligne 2]
         if {$id == $id_relation_tmp} {
@@ -216,7 +216,7 @@ proc Katyusha_Relations_modification_relation {id relation} {
 }
 
 ##
-# Met à jour les coordonnées d'une relation par son ID
+# Met à jour les coordonnées d'une association par son ID
 ##
 proc Katyusha_Relations_MAJ_coords {id_relation coords} {
     global relations
@@ -226,7 +226,7 @@ proc Katyusha_Relations_MAJ_coords {id_relation coords} {
 }
 
 ##
-# Créé les lignes reliant la relation aux tables qu'elle concerne
+# Créé les lignes reliant l'association aux entités qu'elle concerne
 ##
 proc Katyusha_Relations_lignes_relation_tables {relation id_relation} {
     global relations
@@ -287,14 +287,14 @@ proc Katyusha_Relations_lignes_relation_tables {relation id_relation} {
             }
             set id [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1]
             dict set lignes_graphique $id [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" $id_table]] $id_table $id_relation]
-            #dict set textes_cardinalites $id [list $id_table [.mcd.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_table] -tag [list "texte_cardinalite" $id_table]]]
+            #dict set textes_cardinalites $id [list $id_table [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_table] -tag [list "texte_cardinalite" $id_table]]]
             }
         }
     }
 }
 
 ##
-# Met à jour les coordonnées des lignes reliants la relation aux tables
+# Met à jour les coordonnées des lignes reliants l'association aux entités
 # La mise à jour des coordonnées ne fonctionnant pas correctement, à chaque fois
 # les lignes sont supprimées et remplacées par des lignes correspondants aux nouvelles coordonnées
 ##
@@ -387,6 +387,9 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
     update
 }
 
+##
+# Recherche si l'association est liée à plusieurs entités
+##
 proc Katyusha_Associations_double_entite {association} {
     
     set liens [dict get $association "liens"]
@@ -394,6 +397,9 @@ proc Katyusha_Associations_double_entite {association} {
     set liste_liens [list]
     set liste_liens_double [list]
     
+    # Pour chaque lien :
+    # Si l'entité n'est pas déjà présente dans la liste "liste_liens", elle y est ajoutée,
+    # sinon, c'est que l'association est liée au moins deux fois à l'entité, donc le nom de l'entité est ajouté à la liste "liste_liens_double"
     foreach {k lien} $liens {
         if {[lsearch $liste_liens [lindex $lien 0]] == -1} {
             lappend liste_liens [lindex $lien 0]
@@ -427,12 +433,13 @@ proc Katyusha_Relations_suppression_lignes {id_relation} {
     foreach {kk texte_cardinalite} $textes_cardinalites {
         if {[lindex $texte_cardinalite 1] == $id_relation} {
             $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
-             dict unset $textes_cardinalites $kk
+            dict unset $textes_cardinalites $kk
         }
     }
 }
 
 ##
+# Ajout d'un attribut à l'association
 # Ici, on suppose que les données ont été controlée avant injection
 ##
 proc Katyusha_Relations_ajout_attribut {nom type complement_type taille null valeur auto pk description {graphique 1}} {
@@ -479,7 +486,7 @@ proc Katyusha_Relations_ajout_attribut {nom type complement_type taille null val
 }
 
 ##
-# Renvoie la cardinalité liant une table à une relation grâce à leurs ID
+# Renvoie la cardinalité liant une entité à une association grâce à leurs ID
 ##
 proc Katyusha_Relations_cardinalite {id_relation id_table} {
     global tables
@@ -509,7 +516,7 @@ proc Katyusha_Relations_suppression_attribut_relation {relation id_attribut {gra
 }
 
 ##
-# Ajout d'un nouveau lien à la relation tomporaire
+# Ajout d'un nouveau lien à l'association tomporaire
 ##
 proc Katyusha_Relations_ajout_lien {table_liee lien relatif {graphique 1}} {
     global relation_tmp
@@ -561,7 +568,7 @@ proc Katyusha_Relations_controle_relation {relation} {
 }
 
 ##
-# Supprime la relation passée en paramètre
+# Supprime l'association passée en paramètre
 ##
 proc suppression_relation {relation} {
     global LOCALE
@@ -586,7 +593,7 @@ proc suppression_relation {relation} {
 }
 
 ##
-# Initialise une relation
+# Initialise une association
 ##
 proc Katyusha_Relations_init_relation {} {
     global MCD
@@ -629,7 +636,7 @@ proc Katyusha_Relations_modification_nom_table {table ntable} {
 }
 
 ##
-# Supprime dans toutes les relations les liens concernant une table par son ID
+# Supprime dans toutes les associations les liens concernant une table par son ID
 ##
 proc Katyusha_Relations_suppression_table_toutes {id_table} {
     global relations
