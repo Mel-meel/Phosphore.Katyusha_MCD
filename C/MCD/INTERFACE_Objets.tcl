@@ -293,7 +293,7 @@ proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {entite} {
     ttk::combobox $f.cb -value $liste_attributs -width 50
     pack $f.cb
     frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "Katyusha_MCD_INTERFACE_COMANDE_Objets_suppression_attribut $entite"
+        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "Katyusha_MCD_INTERFACE_COMMANDE_Objets_suppression_attribut $entite"
         button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {destroy .fen_supp_attribut}
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
@@ -304,7 +304,7 @@ proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {entite} {
     update
 }
 
-proc Katyusha_MCD_INTERFACE_COMANDE_Objets_suppression_attribut {entite} {
+proc Katyusha_MCD_INTERFACE_COMMANDE_Objets_suppression_attribut {entite} {
     global table_tmp
     global relation_tmp
     global LOCALE
@@ -342,7 +342,7 @@ proc Katyusha_MCD_INTERFACE_COMANDE_Objets_suppression_attribut {entite} {
 ##
 # Confirme pour supprimer l'objet sélectionné
 ##
-proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {type_entite id_entite} {
+proc Katyusha_MCD_INTERFACE_Objets_suppression_objet {type_entite id_entite} {
     global LOCALE
     
     set rep [tk_messageBox -message "$LOCALE(sure_supprimer_entite)$type_entite" -type "yesno"]
