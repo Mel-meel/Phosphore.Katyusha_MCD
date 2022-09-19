@@ -361,7 +361,7 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
             
             set dict_liens_doubles [Katyusha_Associations_double_entite [dict get $relations $id_association]]
             set dict_liens_doubles_decompte [Katyusha_Associations_double_entite [dict get $relations $id_association]]
-            
+            puts $dict_liens_doubles
             
             # Détermine les coordonnées des lignes à tracer
             set id_graphique [lindex [dict get $relations_graphique $id_association] 0]
@@ -380,7 +380,7 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
             set y_arrivee [lindex $ncoords 3]
             
             if {[lsearch [dict keys $dict_liens_doubles] $id_entite] == -1} {
-            # Mouvements si un seul lien par entité
+                # Mouvements si un seul lien par entité
                 if {[lindex $coords_association_lien 2] < [lindex $coords 2]} {
                     set x_origine [lindex $coords_association_lien 2]
                     set y_origine [expr [lindex $coords_association_lien 1] + ($hauteur_association / 2)]
