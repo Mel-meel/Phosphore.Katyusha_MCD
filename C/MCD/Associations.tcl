@@ -321,7 +321,7 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
     set relation [dict get $relations $id_relation]
     set dict_liens_doubles [Katyusha_Associations_double_entite $relation]
     set dict_liens_doubles_decompte [Katyusha_Associations_double_entite $relation]
-    
+    puts $dict_liens_doubles
     #set dict_liens_doubles [dict create]
     
     # Balayage des lignes à la recharche de celles concernants l'association spécifiée
@@ -374,30 +374,30 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
                 
                 
                 if {$actuel_dict_liens_doubles > 0} {
-                if {[lindex $coords 2] < [lindex $coords_table_lien 2]} {
-                    set x_origine [lindex $coords 2]
-                    set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
-                    set x_arrivee [lindex $coords_table_lien 2]
-                    set y_arrivee [expr [lindex $coords_table_lien 3] + $actuel_dict_liens_doubles * ($hauteur_entite / $nombre_dict_liens_doubles) - 0.5 * ($hauteur_entite / $nombre_dict_liens_doubles)]
-                } elseif {[lindex $coords 0] > [lindex $coords_table_lien 4]} {
-                    set x_origine [lindex $coords 0]
-                    set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
-                    set x_arrivee [lindex $coords_table_lien 4]
-                    set y_arrivee [expr [lindex $coords_table_lien 3] + $actuel_dict_liens_doubles * ($hauteur_entite / $nombre_dict_liens_doubles) - 0.5 * ($hauteur_entite / $nombre_dict_liens_doubles)]
-                } else {
-                    if {[lindex $coords 1] > [lindex $coords_table_lien 5]} {
-                        set x_origine [expr [lindex $coords 0] + ($largeur_association / 2)]
-                        set y_origine [lindex $coords 1]
-                        set x_arrivee [expr [lindex $coords_table_lien 4] - $actuel_dict_liens_doubles * ($largeur_entite / $nombre_dict_liens_doubles) + 0.5 * ($largeur_entite / $nombre_dict_liens_doubles)]
-                        set y_arrivee [lindex $coords_table_lien 5]
-                    } elseif {[lindex $coords 3] < [lindex $coords_table_lien 3]} {
-                        set x_origine [expr [lindex $coords 0] + ($largeur_association / 2)]
-                        set y_origine [lindex $coords 3]
-                        set x_arrivee [expr [lindex $coords_table_lien 4] - $actuel_dict_liens_doubles * ($largeur_entite / $nombre_dict_liens_doubles) + 0.5 * ($largeur_entite / $nombre_dict_liens_doubles)]
-                        set y_arrivee [lindex $coords_table_lien 3]
+                    if {[lindex $coords 2] < [lindex $coords_table_lien 2]} {
+                        set x_origine [lindex $coords 2]
+                        set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
+                        set x_arrivee [lindex $coords_table_lien 2]
+                        set y_arrivee [expr [lindex $coords_table_lien 3] + $actuel_dict_liens_doubles * ($hauteur_entite / $nombre_dict_liens_doubles) - 0.5 * ($hauteur_entite / $nombre_dict_liens_doubles)]
+                    } elseif {[lindex $coords 0] > [lindex $coords_table_lien 4]} {
+                        set x_origine [lindex $coords 0]
+                        set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
+                        set x_arrivee [lindex $coords_table_lien 4]
+                        set y_arrivee [expr [lindex $coords_table_lien 3] + $actuel_dict_liens_doubles * ($hauteur_entite / $nombre_dict_liens_doubles) - 0.5 * ($hauteur_entite / $nombre_dict_liens_doubles)]
+                    } else {
+                        if {[lindex $coords 1] > [lindex $coords_table_lien 5]} {
+                            set x_origine [expr [lindex $coords 0] + ($largeur_association / 2)]
+                            set y_origine [lindex $coords 1]
+                            set x_arrivee [expr [lindex $coords_table_lien 4] - $actuel_dict_liens_doubles * ($largeur_entite / $nombre_dict_liens_doubles) + 0.5 * ($largeur_entite / $nombre_dict_liens_doubles)]
+                            set y_arrivee [lindex $coords_table_lien 5]
+                        } elseif {[lindex $coords 3] < [lindex $coords_table_lien 3]} {
+                            set x_origine [expr [lindex $coords 0] + ($largeur_association / 2)]
+                            set y_origine [lindex $coords 3]
+                            set x_arrivee [expr [lindex $coords_table_lien 4] - $actuel_dict_liens_doubles * ($largeur_entite / $nombre_dict_liens_doubles) + 0.5 * ($largeur_entite / $nombre_dict_liens_doubles)]
+                            set y_arrivee [lindex $coords_table_lien 3]
+                        }
                     }
-                }
-                dict set dict_liens_doubles_decompte $id_entite [expr $actuel_dict_liens_doubles - 1]
+                    dict set dict_liens_doubles_decompte $id_entite [expr $actuel_dict_liens_doubles - 1]
                 }
             }
             
