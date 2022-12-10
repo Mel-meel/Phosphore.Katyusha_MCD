@@ -162,7 +162,11 @@ proc Katyusha_Tables_creer_affichage_graphique {ID table} {
         } else {
             set col [dict get $couleurs "texte"]
         }
-        lappend graph [$ZONE_MCD.canvas.c create text $x2 [expr $y + 50] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones $element] -fill $col -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
+        set y2 [expr $y - ($hauteur / 2) + 40]
+        foreach texte [split [dict get $colones $element] "\n"] {
+            set y2 [expr $y2 + 18]
+            lappend graph [$ZONE_MCD.canvas.c create text $x2 $y2 -fill [dict get $couleurs "texte"] -justify left -text $texte -fill $col -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list table $ID]]
+        }
         set taille [dict get $tailles_colones $element]
     }
     # Créé les images de clefs primaires
@@ -372,10 +376,7 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
                 } else {
                     dict set decompte_liens_doubles $id_entite [expr [dict get $decompte_liens_doubles $id_entite] - 1]
                 }
-                puts "decompte : $decompte_liens_doubles"
             }
-            puts $ligne
-            puts $list_liens_doubles
             
             # Détermine les coordonnées des lignes à tracer
             set id_graphique [lindex [dict get $relations_graphique $id_association] 0]

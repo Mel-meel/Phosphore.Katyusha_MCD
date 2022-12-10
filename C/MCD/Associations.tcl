@@ -321,8 +321,6 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
     set relation [dict get $relations $id_relation]
     set dict_liens_doubles [Katyusha_Associations_double_entite $relation]
     set dict_liens_doubles_decompte [Katyusha_Associations_double_entite $relation]
-    puts $dict_liens_doubles
-    #set dict_liens_doubles [dict create]
     
     # Balayage des lignes à la recharche de celles concernants l'association spécifiée
     foreach {k ligne} $lignes_graphique {
