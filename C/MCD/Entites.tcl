@@ -347,6 +347,8 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
     global relations
     global ZONE_MCD
     
+    puts $lignes_graphique
+    
     set x [lindex $coords 0]
     set y [lindex $coords 1]
     set coords [Katyusha_Tables_coords_ID $id_entite]

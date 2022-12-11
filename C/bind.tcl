@@ -95,8 +95,8 @@ $ZONE_MCD.canvas.c bind table <B1-Motion> {
     set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
     
     if {$tag != ""} {
-        set changed_x [expr [expr %x + ($scrollbar_x_debut * $xbcanvas)] - $atx]
-        set changed_y [expr [expr %y + ($scrollbar_y_debut * $ybcanvas)] - $aty]
+        set changed_x [expr (%x + (($scrollbar_x_debut * $xbcanvas)) - $atx)]
+        set changed_y [expr (%y + (($scrollbar_y_debut * $ybcanvas)) - $aty)]
         # Vérifie que l'entité ne dépasse pas les limites du mcd
         # TODO : À revoir, la limitation de déplacement ne fonctionne pas correctement
         #if {$changed_x < $xbcanvas && $changed_x > 0 && $changed_y < $ybcanvas && $changed_y > 0} {

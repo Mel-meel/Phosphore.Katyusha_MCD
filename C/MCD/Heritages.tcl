@@ -33,6 +33,7 @@ proc Katyusha_Heritages_maj {} {
 proc Katyusha_Heritages_creer_affichage_graphique {ID heritage} {
     global MCD
     global rpr
+    global ZONE_MCD
     
     set couleurs [dict get $heritage "couleurs"]
     # Créé l'affichage graphique du nouvel héritage dans une liste temporaire
@@ -41,8 +42,8 @@ proc Katyusha_Heritages_creer_affichage_graphique {ID heritage} {
     # Texte de l'haritage (ID + contrainte)
     set texte_heritage "$ID\n[dict get $heritage contrainte]"
     # Hop! Un petit triangle pour l'héritage
-    lappend graph [.mcd.canvas.c create polygon [list [expr $x - 40] [expr $y + 20] [expr $x + 40] [expr $y + 20] [expr $x - 0] [expr $y - 45]] -width 2 -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond"] -tag [list heritage $ID]]
-    lappend graph [.mcd.canvas.c create text [expr $x + 0] [expr $y - 0] -text $texte_heritage -fill [dict get $couleurs "texte"] -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list heritage $ID]]
+    lappend graph [$ZONE_MCD.canvas.c create polygon [list [expr $x - 40] [expr $y + 20] [expr $x + 40] [expr $y + 20] [expr $x - 0] [expr $y - 45]] -width 2 -outline [dict get $couleurs "ligne"] -fill [dict get $couleurs "fond"] -tag [list heritage $ID]]
+    lappend graph [$ZONE_MCD.canvas.c create text [expr $x + 0] [expr $y - 0] -text $texte_heritage -fill [dict get $couleurs "texte"] -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list heritage $ID]]
     unset x y
     return $graph
 }
@@ -102,12 +103,13 @@ proc Heritages_supression_heritage {id_heritage} {
     global LOCALE
     global heritages
     global heritages_graphique
+    global ZONE_MCD
     
     # Supprime l'haritage du tableau général
     dict unset heritages $id_heritage
     # Supprime l'affichage de l'héritage
     foreach c [dict get $heritages_graphique $id_heritage] {
-        .mcd.canvas.c delete $c
+        $ZONE_MCD.canvas.c delete $c
     }
     Katyusha_Heritages_suppression_lignes $id_heritage
     dict unset heritages_graphique $id_heritage
@@ -156,12 +158,13 @@ proc Katyusha_Heritages_lignes {id_heritage} {
     global tables_graphique
     global lignes_graphique
     global MCD
+    global ZONE_MCD
     
     set heritage [dict get $heritages $id_heritage]
     
     # Récupère l'ID-canvas du triangle de l'affichage graphique de l'héritage pour récupérer ses coordonnées
     set id_graphique [lindex [dict get $heritages_graphique $id_heritage] 0]
-    set coords_heritage [.mcd.canvas.c coords $id_graphique]
+    set coords_heritage [$ZONE_MCD.canvas.c coords $id_graphique]
     
     # Les tables :D
     set filles [dict get $heritage "filles"]
@@ -181,14 +184,14 @@ proc Katyusha_Heritages_lignes {id_heritage} {
     # Si l'héritage comporte une table mère, on créé une ligne
     if {$id_mere != ""} {
         set id_graphique_mere [lindex [dict get $tables_graphique $id_mere] 0]
-        set coords_mere [.mcd.canvas.c coords $id_graphique_mere]
+        set coords_mere [$ZONE_MCD.canvas.c coords $id_graphique_mere]
         
         # Les coordonnées d'arrivées sont au milieu bas de la table mère
         set x_arrivee [expr [lindex $coords_mere 0] + (([lindex $coords_mere 2] - [lindex $coords_mere 0]) / 2)]
         set y_arrivee [lindex $coords_mere 3]
         
         # Créé la nouvelle ligne
-        dict set lignes_graphique [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1] [list "heritage_mere" [.mcd.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_mere $id_heritage]] $id_mere $id_heritage]
+        dict set lignes_graphique [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1] [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_mere $id_heritage]] $id_mere $id_heritage]
     }
     
     ##
@@ -203,7 +206,7 @@ proc Katyusha_Heritages_lignes {id_heritage} {
         set y_origine [lindex $coords_heritage 1]
         
         set id_graphique_fille [lindex [dict get $tables_graphique $id_fille] 0]
-        set coords_fille [.mcd.canvas.c coords $id_graphique_fille]
+        set coords_fille [$ZONE_MCD.canvas.c coords $id_graphique_fille]
         
         if {[lindex $coords_heritage 0] > [lindex $coords_fille 2]} {
             set x_origine [lindex $coords_heritage 0]
@@ -218,7 +221,7 @@ proc Katyusha_Heritages_lignes {id_heritage} {
         set y_arrivee [lindex $coords_fille 1]
         
         # Créé la nouvelle ligne
-        dict set lignes_graphique [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1] [list "heritage_fille" [.mcd.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_fille $id_heritage]] $id_fille $id_heritage]
+        dict set lignes_graphique [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1] [list "heritage_fille" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_fille $id_heritage]] $id_fille $id_heritage]
     }
 }
 
@@ -231,12 +234,13 @@ proc Katyusha_Heritages_MAJ_lignes {id_heritage} {
     global tables_graphique
     global lignes_graphique
     global MCD
+    global ZONE_MCD
     
     set heritage [dict get $heritages $id_heritage]
     
     # Récupère l'ID-canvas du triangle de l'affichage graphique de l'héritage pour récupérer ses coordonnées
     set id_graphique [lindex [dict get $heritages_graphique $id_heritage] 0]
-    set coords_heritage [.mcd.canvas.c coords $id_graphique]
+    set coords_heritage [$ZONE_MCD.canvas.c coords $id_graphique]
     
     # Les tables :D
     set filles [dict get $heritage "filles"]
@@ -256,7 +260,7 @@ proc Katyusha_Heritages_MAJ_lignes {id_heritage} {
     # Si l'héritage comporte une table mère, on créé une ligne
     if {$id_mere != ""} {
     set id_graphique_mere [lindex [dict get $tables_graphique $id_mere] 0]
-    set coords_mere [.mcd.canvas.c coords $id_graphique_mere]
+    set coords_mere [$ZONE_MCD.canvas.c coords $id_graphique_mere]
     
     # Les coordonnées d'arrivées sont au milieu bas de la table mère
     set x_arrivee [expr [lindex $coords_mere 0] + (([lindex $coords_mere 2] - [lindex $coords_mere 0]) / 2)]
@@ -269,7 +273,7 @@ proc Katyusha_Heritages_MAJ_lignes {id_heritage} {
             if {[lindex $ligne 3] == $id_heritage && [lindex $ligne 2] == $id_mere} {
                 .mcd.canvas.c delete [lindex $ligne 1]
                 # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "heritage_mere" [.mcd.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_mere $id_heritage]] $id_mere $id_heritage]
+                dict set lignes_graphique $k [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_mere $id_heritage]] $id_mere $id_heritage]
             }
         }
     }
@@ -288,7 +292,7 @@ proc Katyusha_Heritages_MAJ_lignes {id_heritage} {
         set y_origine [lindex $coords_heritage 1]
         
         set id_graphique_fille [lindex [dict get $tables_graphique $id_fille] 0]
-        set coords_fille [.mcd.canvas.c coords $id_graphique_fille]
+        set coords_fille [$ZONE_MCD.canvas.c coords $id_graphique_fille]
         
         if {[lindex $coords_heritage 0] > [lindex $coords_fille 2]} {
             set x_origine [lindex $coords_heritage 0]
@@ -309,7 +313,7 @@ proc Katyusha_Heritages_MAJ_lignes {id_heritage} {
                 if {[lindex $ligne 3] == $id_heritage && [lindex $ligne 2] == $id_fille} {
                     .mcd.canvas.c delete [lindex $ligne 1]
                     # Créé la nouvelle ligne
-                    dict set lignes_graphique $kk [list "heritage_fille" [.mcd.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_fille $id_heritage]] $id_fille $id_heritage]
+                    dict set lignes_graphique $kk [list "heritage_fille" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_fille $id_heritage]] $id_fille $id_heritage]
                 }
             }
         }
@@ -321,12 +325,13 @@ proc Katyusha_Heritages_MAJ_lignes {id_heritage} {
 ##
 proc Katyusha_Heritages_suppression_lignes {id_heritage} {
     global lignes_graphique
+    global ZONE_MCD
     
     # Cherche les lignes corespondantes
     foreach {k ligne} $lignes_graphique {
         if {[lindex $ligne 0] == "heritage_fille" || [lindex $ligne 0] == "heritage_mere"} {
             if {[lindex $ligne 3] == $id_heritage} {
-                .mcd.canvas.c delete [lindex $ligne 1]
+                $ZONE_MCD.canvas.c delete [lindex $ligne 1]
                 dict unset lignes_graphique $k
             }
         }
