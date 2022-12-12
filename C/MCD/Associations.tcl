@@ -289,10 +289,37 @@ proc Katyusha_Relations_lignes_relation_tables {relation id_relation} {
             }
             set id [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1]
             dict set lignes_graphique $id [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" "entite:$id_table" "association:$id_relation" "ligne:$id"]] $id_table $id_relation]
-            #dict set textes_cardinalites $id [list $id_table [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_table] -tag [list "texte_cardinalite" $id_table]]]
+            dict set textes_cardinalites $id [list $id_table [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_table] -tag [list "texte_cardinalite" $id_table]]]
             }
         }
     }
+}
+
+proc Katyusha_Asscoiations_MAJ_ligne_coords_calcul_coords_lien_simple {coords_association coords_entite_lien hauteur_association largeur_association hauteur_entite largeur_entite} {
+                if {[lindex $coords_association 2] < [lindex $coords_entite_lien 2]} {
+                    set x_origine [lindex $coords_association 2]
+                    set y_origine [expr [lindex $coords_association 1] + ($hauteur_association / 2)]
+                    set x_arrivee [lindex $coords_entite_lien 2]
+                    set y_arrivee [expr [lindex $coords_entite_lien 3] + ($hauteur_entite / 2)]
+                } elseif {[lindex $coords_association 0] > [lindex $coords_entite_lien 4]} {
+                    set x_origine [lindex $coords_association 0]
+                    set y_origine [expr [lindex $coords_association 1] + ($hauteur_association / 2)]
+                    set x_arrivee [lindex $coords_entite_lien 4]
+                    set y_arrivee [expr [lindex $coords_entite_lien 3] + ($hauteur_entite / 2)]
+                } else {
+                    if {[lindex $coords_association 1] > [lindex $coords_entite_lien 5]} {
+                        set x_origine [expr [lindex $coords_association 0] + ($largeur_association / 2)]
+                        set y_origine [lindex $coords_association 1]
+                        set x_arrivee [expr [lindex $coords_entite_lien 4] - ($largeur_entite / 2)]
+                        set y_arrivee [lindex $coords_entite_lien 5]
+                    } elseif {[lindex $coords_association 3] < [lindex $coords_entite_lien 3]} {
+                        set x_origine [expr [lindex $coords_association 0] + ($largeur_association / 2)]
+                        set y_origine [lindex $coords_association 3]
+                        set x_arrivee [expr [lindex $coords_entite_lien 4] - ($largeur_entite / 2)]
+                        set y_arrivee [lindex $coords_entite_lien 3]
+                    }
+                }
+                return [list $x_origine $y_origine $x_arrivee $y_arrivee]
 }
 
 ##
@@ -328,46 +355,23 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
     set tags [$ZONE_MCD.canvas.c gettags $ligne]
         set id_relation_tmp [lindex [split [lindex $tags 2] ":"] 1]
         set k [lindex [split [lindex $tags 3] ":"] 1]
-        if {$id_relation_tmp == $id_relation} {
-            # Récupère les anciennes coordonnées de la ligne
-            set acoords [$ZONE_MCD.canvas.c coords [lindex $ligne 1]]
             # Créé les nouvelles coordonnées :
-            #           [nouveau_x_origine nouveau_y_origine ancien_x_cible ancien_y_cible]
-            set ncoords [list $x $y [lindex $acoords 2] [lindex $acoords 3]]
             set id_entite [lindex [split [lindex $tags 1] ":"] 1]
             set coords_table_lien [Katyusha_Tables_coords_ID $id_entite]
             # Taille de la table en pixels
             set largeur_entite [expr [lindex $coords_table_lien 4] - [lindex $coords_table_lien 2]]
             set hauteur_entite [expr [lindex $coords_table_lien 5] - [lindex $coords_table_lien 3]]
-            set x_origine ""
-            set y_origine ""
-            set x_arrivee ""
-            set y_arrivee ""
+            set x_origine 0
+            set y_origine 0
+            set x_arrivee 0
+            set y_arrivee 0
             
             if {[lsearch [dict keys $dict_liens_doubles] $id_entite] == -1} {
-                if {[lindex $coords 2] < [lindex $coords_table_lien 2]} {
-                    set x_origine [lindex $coords 2]
-                    set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
-                    set x_arrivee [lindex $coords_table_lien 2]
-                    set y_arrivee [expr [lindex $coords_table_lien 3] + ($hauteur_entite / 2)]
-                } elseif {[lindex $coords 0] > [lindex $coords_table_lien 4]} {
-                    set x_origine [lindex $coords 0]
-                    set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
-                    set x_arrivee [lindex $coords_table_lien 4]
-                    set y_arrivee [expr [lindex $coords_table_lien 3] + ($hauteur_entite / 2)]
-                } else {
-                    if {[lindex $coords 1] > [lindex $coords_table_lien 5]} {
-                        set x_origine [expr [lindex $coords 0] + ($largeur_association / 2)]
-                        set y_origine [lindex $coords 1]
-                        set x_arrivee [expr [lindex $coords_table_lien 4] - ($largeur_entite / 2)]
-                        set y_arrivee [lindex $coords_table_lien 5]
-                    } elseif {[lindex $coords 3] < [lindex $coords_table_lien 3]} {
-                        set x_origine [expr [lindex $coords 0] + ($largeur_association / 2)]
-                        set y_origine [lindex $coords 3]
-                        set x_arrivee [expr [lindex $coords_table_lien 4] - ($largeur_entite / 2)]
-                        set y_arrivee [lindex $coords_table_lien 3]
-                    }
-                }
+                set t [Katyusha_Asscoiations_MAJ_ligne_coords_calcul_coords_lien_simple $coords $coords_table_lien $hauteur_association $largeur_association $hauteur_entite $largeur_entite]
+                set x_origine [lindex $t 0]
+                set y_origine [lindex $t 1]
+                set x_arrivee [lindex $t 2]
+                set y_arrivee [lindex $t 3]
             } else {
                 
                 set nombre_dict_liens_doubles [dict get $dict_liens_doubles $id_entite]
@@ -412,15 +416,14 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
                 
                 
                 
-                foreach {kk texte_cardinalite} $textes_cardinalites {
-                    if {[lindex $texte_cardinalite 0] == $id_entite && [lindex $texte_cardinalite 1] == $id_relation} {
-                        $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
-                        dict unset $textes_cardinalites $kk
-                    }
-                }
-                dict set textes_cardinalites $k [list $id_entite $id_relation [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_entite] -tag [list "texte_cardinalite" $id_entite]]]
+                #foreach {kk texte_cardinalite} $textes_cardinalites {
+                #    if {[lindex $texte_cardinalite 0] == $id_entite && [lindex $texte_cardinalite 1] == $id_relation} {
+                #        $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
+                #        dict unset $textes_cardinalites $kk
+                #    }
+                #}
+                #dict set textes_cardinalites $k [list $id_entite $id_relation [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_entite] -tag [list "texte_cardinalite" $id_entite]]]
             }
-        }
     }
     # Mise à jour de l'affichage graphique
     update

@@ -2,7 +2,7 @@
 ./C/MCD/Heritages.tcl
 ./C/MCD/Objets.tcl
 ./C/MCD/Etiquettes.tcl
-./C/MCD/INTERFACE_MCD_Objets.tcl
+./C/MCD/INTERFACE_Objets.tcl
 ./C/MCD/INTERFACE_Etiquettes.tcl
 ./C/MCD/INTERFACE_Heritages.tcl
 ./C/MCD/INTERFACE_Associations.tcl
