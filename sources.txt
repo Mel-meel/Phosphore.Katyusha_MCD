@@ -32,6 +32,7 @@
 ./C/SVG.tcl
 ./C/verification_mcd.tcl
 ./C/XML.tcl
+./C/Liens.tcl
 
 ./libs/canvas2svg.tcl
 ./libs/arabe.tcl

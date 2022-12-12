@@ -50,6 +50,7 @@ source "$rpr/C/SVG.tcl"
 source "$rpr/C/Code.tcl"
 source "$rpr/C/Code_gen.tcl"
 source "$rpr/C/MLD.tcl"
+source "$rpr/C/Liens.tcl"
 
 source "$rpr/libs/canvas2svg.tcl"
 source "$rpr/libs/arabe.tcl"
@@ -140,7 +141,7 @@ set ZONE_UML ".editeurs.notebook_uml.uml"
 
 puts "OS : $OS"
 
-after 100
+after 1000
 
 Katyusha_Interface
 source "$rpr/C/bind.tcl"

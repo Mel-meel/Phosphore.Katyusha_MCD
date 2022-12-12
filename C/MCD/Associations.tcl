@@ -288,7 +288,7 @@ proc Katyusha_Relations_lignes_relation_tables {relation id_relation} {
                 }
             }
             set id [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1]
-            dict set lignes_graphique $id [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" $id_table]] $id_table $id_relation]
+            dict set lignes_graphique $id [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" "entite:$id_table" "association:$id_relation" "ligne:$id"]] $id_table $id_relation]
             #dict set textes_cardinalites $id [list $id_table [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_table] -tag [list "texte_cardinalite" $id_table]]]
             }
         }
@@ -323,15 +323,18 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
     set dict_liens_doubles_decompte [Katyusha_Associations_double_entite $relation]
     
     # Balayage des lignes à la recharche de celles concernants l'association spécifiée
-    foreach {k ligne} $lignes_graphique {
-        set id_relation_tmp [lindex $ligne 3]
+    foreach {ligne} [$ZONE_MCD.canvas.c find withtag "association:$id_relation"] {
+    puts $ligne
+    set tags [$ZONE_MCD.canvas.c gettags $ligne]
+        set id_relation_tmp [lindex [split [lindex $tags 2] ":"] 1]
+        set k [lindex [split [lindex $tags 3] ":"] 1]
         if {$id_relation_tmp == $id_relation} {
             # Récupère les anciennes coordonnées de la ligne
             set acoords [$ZONE_MCD.canvas.c coords [lindex $ligne 1]]
             # Créé les nouvelles coordonnées :
             #           [nouveau_x_origine nouveau_y_origine ancien_x_cible ancien_y_cible]
             set ncoords [list $x $y [lindex $acoords 2] [lindex $acoords 3]]
-            set id_entite [lindex $ligne 2]
+            set id_entite [lindex [split [lindex $tags 1] ":"] 1]
             set coords_table_lien [Katyusha_Tables_coords_ID $id_entite]
             # Taille de la table en pixels
             set largeur_entite [expr [lindex $coords_table_lien 4] - [lindex $coords_table_lien 2]]
@@ -402,10 +405,13 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
             # Si l'association est par dessus l'entité ou touche l'entité auquel elle est liée, pas de ligne
             if {$x_origine != "" && $y_origine != "" && $x_arrivee != "" && $y_arrivee != ""} {
                 # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" $id_entite]] $id_entite $id_relation]
+                dict set lignes_graphique $k [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" "entite:$id_entite" "association:$id_relation" "ligne:$k"]] $id_entite $id_relation]
                 # Et supprimme l'ancienne
-                $ZONE_MCD.canvas.c delete [lindex $ligne 1]
+                $ZONE_MCD.canvas.c delete $ligne
                 # Créé les textes des cardinalités
+                
+                
+                
                 foreach {kk texte_cardinalite} $textes_cardinalites {
                     if {[lindex $texte_cardinalite 0] == $id_entite && [lindex $texte_cardinalite 1] == $id_relation} {
                         $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
