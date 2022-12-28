@@ -334,6 +334,37 @@ proc Katyusha_Tables_MAJ_coords {id_table coords} {
     dict set tables $id_table $table
 }
 
+proc Katyusha_Entites_MAJ_ligne_coords_calcul_coords_lien_simple {coords_entite coords_association_lien hauteur_entite largeur_entite hauteur_association largeur_association} {
+    set x_origine [lindex $coords_entite 2]
+    set y_origine [lindex $coords_entite 1]
+    set x_arrivee [lindex $coords_entite 2]
+    set y_arrivee [lindex $coords_entite 1]
+                if {[lindex $coords_association_lien 2] < [lindex $coords_entite 2]} {
+                    set x_origine [lindex $coords_association_lien 2]
+                    set y_origine [expr [lindex $coords_association_lien 1] + ($hauteur_association / 2)]
+                    set x_arrivee [lindex $coords_entite 2]
+                    set y_arrivee [expr [lindex $coords_entite 3] + ($hauteur_entite / 2)]
+                } elseif {[lindex $coords_association_lien 0] > [lindex $coords_entite 4]} {
+                    set x_origine [lindex $coords_association_lien 0]
+                    set y_origine [expr [lindex $coords_association_lien 1] + ($hauteur_association / 2)]
+                    set x_arrivee [lindex $coords_entite 4]
+                    set y_arrivee [expr [lindex $coords_entite 3] + ($hauteur_entite / 2)]
+                } else {
+                    if {[lindex $coords_association_lien 1] > [lindex $coords_entite 5]} {
+                        set x_origine [expr [lindex $coords_association_lien 0] + ($largeur_association / 2)]
+                        set y_origine [lindex $coords_association_lien 1]
+                        set x_arrivee [expr [lindex $coords_entite 4] - ($largeur_entite / 2) ]
+                        set y_arrivee [lindex $coords_entite 5]
+                    } elseif {[lindex $coords_association_lien 3] < [lindex $coords_entite 3]} {
+                        set x_origine [expr [lindex $coords_association_lien 0] + ($largeur_association / 2)]
+                        set y_origine [lindex $coords_association_lien 3]
+                        set x_arrivee [expr [lindex $coords_entite 4] - ($largeur_entite / 2) ]
+                        set y_arrivee [lindex $coords_entite 3]
+                    }
+                }
+    return [list $x_origine $y_origine $x_arrivee $y_arrivee]
+}
+
 ##
 # Mise à jour des lignes entre une table et les objets auxquels elle est reliée
 # À revoir entièrement, procédure trop longue, pas assez performante
@@ -347,6 +378,7 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
     global relations
     global ZONE_MCD
     
+    puts $lignes_graphique
     
     set x [lindex $coords 0]
     set y [lindex $coords 1]
@@ -355,17 +387,22 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
     set largeur_entite [expr [lindex $coords 4] - [lindex $coords 2]]
     set hauteur_entite [expr [lindex $coords 5] - [lindex $coords 3]]
     
+    set decompte_liens_doubles [dict create]
+    dict set dict_liens_doubles_decompte $id_entite 1
+    set id_association_a -1
+    
     # Balayage des lignes à la recherche de celles concernants l'entité spécifiée
-    foreach ligne [$ZONE_MCD.canvas.c find withtag "entite:$id_entite"] {
+    foreach {ligne} $ZONE_MCD.canvas.c find withtag "entite:$id_entite" {
+        puts $ligne
         set tags [$ZONE_MCD.canvas.c gettags $ligne]
-        set id_entite_tmp [lindex [split [lindex $tags 1] ":"] 1]
+        set id_entite_tmp [lindex [split [lindex $tags 2] ":"] 1]
         set k [lindex [split [lindex $tags 3] ":"] 1]
         set id_entite [lindex [split [lindex $tags 1] ":"] 1]
-        set multiple [lindex [split [lindex $tags 4] ":"] 1]
         # Créé les nouvelles coordonnées :
         # Lignes des relations
+        if {[lindex $ligne 1] == "association"} {
         if {$id_entite_tmp == $id_entite} {
-            set id_association [lindex [split [lindex $tags 2] ":"] 1]
+            set id_association [lindex $ligne 3]
             
             set list_liens_doubles [Katyusha_Associations_double_entite [dict get $relations $id_association]]
             
@@ -385,22 +422,125 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
             # Taille de la relation en pixels
             set largeur_association [expr [lindex $coords_association_lien 2] - [lindex $coords_association_lien 0]]
             set hauteur_association [expr [lindex $coords_association_lien 3] - [lindex $coords_association_lien 1]]
+            # Récupère les anciennes coordonnées de la ligne
+            set acoords [$ZONE_MCD.canvas.c coords [lindex $ligne 1]]
             # Créé les nouvelles coordonnées
+            set ncoords [list $x $y [lindex $acoords 2] [lindex $acoords 3]]
+            #set id_relation [lindex $ligne 1]
+            set x_origine 0
+            set y_origine 0
+            set x_arrivee 0
+            set y_arrivee 0
             
-                set x_origine [expr [lindex $coords_association_lien 2] - ($largeur_association / 2)]
-                set y_origine [expr [lindex $coords_association_lien 1] + ($hauteur_association / 2)]
-                set x_arrivee [expr [lindex $coords 2] + ($largeur_entite / 2)]
-                set y_arrivee [expr [lindex $coords 1] + ($hauteur_entite / 2)]
+            if {[lsearch [dict keys $list_liens_doubles] $id_entite] == -1} {
+                # Mouvements si un seul lien par entité
+                set t [Katyusha_Entites_MAJ_ligne_coords_calcul_coords_lien_simple $coords $coords_association_lien $hauteur_entite $largeur_entite $hauteur_association $largeur_association]
+                set x_origine [lindex $t 0]
+                set y_origine [lindex $t 1]
+                set x_arrivee [lindex $t 2]
+                set y_arrivee [lindex $t 3]
+            } else {
+                if {[lindex $coords_association_lien 2] < [lindex $coords 2]} {
+                    set x_origine [lindex $coords_association_lien 2]
+                    set y_origine [expr [lindex $coords_association_lien 1] + ($hauteur_association / 2)]
+                    set x_arrivee [lindex $coords 2]
+                    set y_arrivee [expr [lindex $coords 3] + [dict get $decompte_liens_doubles $id_entite] * ($hauteur_entite / $nombre_liens_entite) - 0.5 * ($hauteur_entite / $nombre_liens_entite)]
+                } elseif {[lindex $coords_association_lien 0] > [lindex $coords 4]} {
+                    set x_origine [lindex $coords_association_lien 0]
+                    set y_origine [expr [lindex $coords_association_lien 1] + ($hauteur_association / 2)]
+                    set x_arrivee [lindex $coords 4]
+                    set y_arrivee [expr [lindex $coords 3] + [dict get $decompte_liens_doubles $id_entite] * ($hauteur_entite / $nombre_liens_entite) - 0.5 * ($hauteur_entite / $nombre_liens_entite)]
+                } else {
+                    if {[lindex $coords_association_lien 1] > [lindex $coords 5]} {
+                        set x_origine [expr [lindex $coords_association_lien 0] + ($largeur_association / 2)]
+                        set y_origine [lindex $coords_association_lien 1]
+                        set x_arrivee [expr [lindex $coords 4] - [dict get $decompte_liens_doubles $id_entite] * ($largeur_entite / $nombre_liens_entite) + 0.5 * ($largeur_entite / $nombre_liens_entite)]
+                        set y_arrivee [lindex $coords 5]
+                    } elseif {[lindex $coords_association_lien 3] < [lindex $coords 3]} {
+                        set x_origine [expr [lindex $coords_association_lien 0] + ($largeur_association / 2)]
+                        set y_origine [lindex $coords_association_lien 3]
+                        set x_arrivee [expr [lindex $coords 4] - [dict get $decompte_liens_doubles $id_entite] * ($largeur_entite / $nombre_liens_entite) + 0.5 * ($largeur_entite / $nombre_liens_entite)]
+                        set y_arrivee [lindex $coords 3]
+                    }
+                }
+            }
+            # Si la table est par dessus l'objet ou touche l'objet auquel elle est liée, pas de ligne
+            if {$x_origine != "" && $y_origine != "" && $x_arrivee != "" && $y_arrivee != ""} {
                 # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "entite" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 4 -fill $MCD(couleur_liens_relation) -tag [list "ligne" "entite:$id_entite" "association:$id_association" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_liens"]] $id_entite $id_association]
-                # Passe la ligne dessous
-                $ZONE_MCD.canvas.c lower [lindex [dict get $lignes_graphique $k] 1] "table"
+                dict set lignes_graphique $k [list "relation" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list ligne $id_entite]] $id_entite $id_association]
                 # Et supprimme l'ancienne
-                $ZONE_MCD.canvas.c delete $ligne
+                $ZONE_MCD.canvas.c delete [lindex $ligne 1]
+                # Créé les textes des cardinalités
+                #.mcd.canvas.c delete [dict get $textes_cardinalites $k]
+                foreach {kk texte_cardinalite} $textes_cardinalites {
+                    if {[lindex $texte_cardinalite 0] == $id_entite && [lindex $texte_cardinalite 1] == $id_association} {
+                        $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
+                         dict unset $textes_cardinalites $kk
+                    }
+                }
+                dict set textes_cardinalites $k [list $id_entite $id_association [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_association $id_entite] -tag [list "texte_cardinalite" $id_entite]]]
+            }
+        }
+        
+        ##
+        # Si la table est table mère d'un héritage
+        ##
+        } elseif {[lindex $ligne 0] == "heritage_mere"} {
+            set id_table_mere [lindex $ligne 2]
+            set id_heritage [lindex $ligne 3]
+            if {$id_entite == $id_table_mere} {
+                # Détermine les coordonnées du triangle de l'héritage
+                set id_graphique [lindex [dict get $heritages_graphique $id_heritage] 0]
+                set coords_heritage [.mcd.canvas.c coords $id_graphique]
+                
+                # Pour la table mere, on part du haut du triangle
+                set x_origine [lindex $coords_heritage 4]
+                set y_origine [lindex $coords_heritage 5]
+                
+                # Les coordonnées d'arrivées sont au milieu bas de la table mère
+                set x_arrivee [expr [lindex $coords 2] + ($largeur_table / 2)]
+                set y_arrivee [lindex $coords 5]
+                
+                dict set lignes_graphique $k [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_table_mere $id_heritage]] $id_table_mere $id_heritage]
+                # Et supprimme l'ancienne
+                $ZONE_MCD.canvas.c delete [lindex $ligne 1]
+            }
+        
+        ##
+        # Si la table est table fille d'un héritage
+        ##
+        } elseif {[lindex $ligne 0] == "heritage_fille"} {
+            set id_table_fille [lindex $ligne 2]
+            set id_heritage [lindex $ligne 3]
+            if {$id_entite == $id_table_fille} {
+                # Détermine les coordonnées du triangle de l'héritage
+                set id_graphique [lindex [dict get $heritages_graphique $id_heritage] 0]
+                set coords_heritage [.mcd.canvas.c coords $id_graphique]
+                
+                # Pour la table fille, on part du bas du triangle
+                if {[lindex $coords_heritage 0] > [lindex $coords 2]} {
+                    set x_origine [lindex $coords_heritage 0]
+                } elseif {[lindex $coords_heritage 2] < [lindex $coords 0]} {
+                    set x_origine [lindex $coords_heritage 2]
+                } else {
+                    set x_origine [lindex $coords_heritage 4]
+                }
+                set y_origine [lindex $coords_heritage 1]
+                
+                # Les coordonnées d'arrivées sont au milieu haut de la table fille
+                set x_arrivee [expr [lindex $coords 2] + ($largeur_table / 2)]
+                set y_arrivee [lindex $coords 3]
+                
+                dict set lignes_graphique $k [list "heritage_fille" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_table_fille $id_heritage]] $id_table_fille $id_heritage]
+                # Et supprimme l'ancienne
+                $ZONE_MCD.canvas.c delete [lindex $ligne 1]
+            }
+
         }
     }
+    # Mise à jour de l'affichage graphique
+    update
 }
-
 
 ##
 # Détruit les lignes graphiques en lien avec une table
