@@ -362,6 +362,8 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
         set k [lindex [split [lindex $tags 3] ":"] 1]
         set id_entite [lindex [split [lindex $tags 1] ":"] 1]
         set multiple [lindex [split [lindex $tags 4] ":"] 1]
+        set n [lindex [split [lindex [split [lindex $tags 5] ":"] 1] "/"] 0]
+        set nombre_liens [lindex [split [lindex [split [lindex $tags 5] ":"] 1] "/"] 1]
         # Créé les nouvelles coordonnées :
         # Lignes des relations
         if {$id_entite_tmp == $id_entite} {
@@ -392,7 +394,7 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
                 set x_arrivee [expr [lindex $coords 2] + ($largeur_entite / 2)]
                 set y_arrivee [expr [lindex $coords 1] + ($hauteur_entite / 2)]
                 # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "entite" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 4 -fill $MCD(couleur_liens_relation) -tag [list "ligne" "entite:$id_entite" "association:$id_association" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_liens"]] $id_entite $id_association]
+                dict set lignes_graphique $k [list "entite" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" "entite:$id_entite" "association:$id_association" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_liens"]] $id_entite $id_association]
                 # Passe la ligne dessous
                 $ZONE_MCD.canvas.c lower [lindex [dict get $lignes_graphique $k] 1] "table"
                 # Et supprimme l'ancienne
