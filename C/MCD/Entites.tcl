@@ -363,23 +363,13 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
         set id_entite [lindex [split [lindex $tags 1] ":"] 1]
         set multiple [lindex [split [lindex $tags 4] ":"] 1]
         set n [lindex [split [lindex [split [lindex $tags 5] ":"] 1] "/"] 0]
+        puts $n
         set nombre_liens [lindex [split [lindex [split [lindex $tags 5] ":"] 1] "/"] 1]
         # Créé les nouvelles coordonnées :
         # Lignes des relations
         if {$type_ligne == "ligne_association"} {
             set id_association [lindex [split [lindex $tags 2] ":"] 1]
             
-            set list_liens_doubles [Katyusha_Associations_double_entite [dict get $relations $id_association]]
-            
-            # Si le double lien concerne l'entité actuelle
-            if {[lindex $list_liens_doubles 0] == $id_entite} {
-                set nombre_liens_entite [lindex $list_liens_doubles 1]
-                if {[lsearch [dict keys $decompte_liens_doubles] $id_entite] == -1} {
-                    dict set decompte_liens_doubles $id_entite $nombre_liens_entite
-                } else {
-                    dict set decompte_liens_doubles $id_entite [expr [dict get $decompte_liens_doubles $id_entite] - 1]
-                }
-            }
             
             # Détermine les coordonnées des lignes à tracer
             set id_graphique [lindex [dict get $relations_graphique $id_association] 0]
@@ -391,8 +381,14 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
             
             set x_origine [expr [lindex $coords_association_lien 2] - ($largeur_association / 2)]
             set y_origine [expr [lindex $coords_association_lien 1] + ($hauteur_association / 2)]
-            set x_arrivee [expr [lindex $coords 2] + ($largeur_entite / 2)]
-            set y_arrivee [expr [lindex $coords 1] + ($hauteur_entite / 2)]
+            
+            if {$multiple == 0} {
+                set x_arrivee [expr [lindex $coords 2] + ($largeur_entite / 2)]
+                set y_arrivee [expr [lindex $coords 3] + ($hauteur_entite / 2)]
+            } else {
+                set x_arrivee [expr [lindex $coords 2] + ($largeur_entite / 2)]
+                set y_arrivee [expr [lindex $coords 3] + ($n * ($hauteur_entite / ($nombre_liens + 1)))]
+            }
             
             # Créé la nouvelle ligne
             dict set lignes_graphique $k [list "entite" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne_association" "entite:$id_entite" "association:$id_association" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_liens"]] $id_entite $id_association]
