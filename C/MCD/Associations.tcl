@@ -282,7 +282,7 @@ proc Katyusha_Relations_lignes_relation_tables {association id_association} {
                 
                 
             set id [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1]
-            dict set lignes_graphique $id [list "association" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" "entite:$id_entite" "association:$id_association" "ligne:$id" "multiple:$multiple" "n:$n/$nombre_dict_liens_doubles"]] $id_entite $id_association]
+            dict set lignes_graphique $id [list "association" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne_association" "entite:$id_entite" "association:$id_association" "ligne:$id" "multiple:$multiple" "n:$n/$nombre_dict_liens_doubles"]] $id_entite $id_association]
             
             # Passe la ligne dessous
             $ZONE_MCD.canvas.c lower [lindex [dict get $lignes_graphique $id] 1] "table"
@@ -321,13 +321,16 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
     set dict_liens_doubles_decompte [Katyusha_Associations_double_entite $relation]
     
     # Balayage des lignes à la recharche de celles concernants l'association spécifiée
-    foreach {ligne} [$ZONE_MCD.canvas.c find withtag "association:$id_relation"] {
+    foreach ligne [$ZONE_MCD.canvas.c find withtag "association:$id_relation"] {
     
         set tags [$ZONE_MCD.canvas.c gettags $ligne]
         set id_relation_tmp [lindex [split [lindex $tags 2] ":"] 1]
         set k [lindex [split [lindex $tags 3] ":"] 1]
             # Créé les nouvelles coordonnées :
             set id_entite [lindex [split [lindex $tags 1] ":"] 1]
+            set multiple [lindex [split [lindex $tags 4] ":"] 1]
+            set n [lindex [split [lindex [split [lindex $tags 5] ":"] 1] "/"] 0]
+            set nombre_liens [lindex [split [lindex [split [lindex $tags 5] ":"] 1] "/"] 1]
             set coords_table_lien [Katyusha_Tables_coords_ID $id_entite]
             # Taille de la table en pixels
             set largeur_entite [expr [lindex $coords_table_lien 4] - [lindex $coords_table_lien 2]]
@@ -345,7 +348,7 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
             # Si l'association est par dessus l'entité ou touche l'entité auquel elle est liée, pas de ligne
             if {$x_origine != "" && $y_origine != "" && $x_arrivee != "" && $y_arrivee != ""} {
                 # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "association" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" "entite:$id_entite" "association:$id_relation" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_dict_liens_doubles"]] $id_entite $id_relation]
+                dict set lignes_graphique $k [list "association" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne_association" "entite:$id_entite" "association:$id_relation" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_liens"]] $id_entite $id_relation]
                 # Passe la ligne dessous
                 $ZONE_MCD.canvas.c lower [lindex [dict get $lignes_graphique $k] 1] "table"
                 # Et supprimme l'ancienne
@@ -407,7 +410,7 @@ proc Katyusha_Relations_suppression_lignes {id_relation} {
     
     # Supprime les lignes
     foreach {k ligne} $lignes_graphique {
-        if {[lindex $ligne 0] == "relation"} {
+        if {[lindex $ligne 0] == "association"} {
             if {[lindex $ligne 3] == $id_relation} {
                 $ZONE_MCD.canvas.c delete [lindex $ligne 1]
                 dict unset lignes_graphique $k

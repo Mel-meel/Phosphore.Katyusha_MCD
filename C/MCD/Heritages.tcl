@@ -191,7 +191,8 @@ proc Katyusha_Heritages_lignes {id_heritage} {
         set y_arrivee [lindex $coords_mere 3]
         
         # Créé la nouvelle ligne
-        dict set lignes_graphique [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1] [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_mere $id_heritage]] $id_mere $id_heritage]
+        set id [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1]
+        dict set lignes_graphique $id [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list "ligne_heritage_mere" "entite:$id_mere" "heritage:$id_heritage" "ligne:$id"]] $id_mere $id_heritage]
     }
     
     ##
@@ -221,7 +222,7 @@ proc Katyusha_Heritages_lignes {id_heritage} {
         set y_arrivee [lindex $coords_fille 1]
         
         # Créé la nouvelle ligne
-        dict set lignes_graphique [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1] [list "heritage_fille" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_fille $id_heritage]] $id_fille $id_heritage]
+        dict set lignes_graphique [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1] [list "heritage_fille" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list "ligne_heritage_fille" "entite:$id_fille" "heritage:$id_heritage"]] $id_fille $id_heritage]
     }
 }
 
@@ -271,9 +272,9 @@ proc Katyusha_Heritages_MAJ_lignes {id_heritage} {
         if {[lindex $ligne 0] == "heritage_mere"} {
             # Si c'est le cas, on la supprimme pour la recréer aux nouvelles coordonnées
             if {[lindex $ligne 3] == $id_heritage && [lindex $ligne 2] == $id_mere} {
-                .mcd.canvas.c delete [lindex $ligne 1]
+                $ZONE_MCD.canvas.c delete [lindex $ligne 1]
                 # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_mere $id_heritage]] $id_mere $id_heritage]
+                dict set lignes_graphique $k [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list "ligne_heritage_mere" "entite:$id_mere" "heritage:$id_heritage" "ligne:$k"]] $id_mere $id_heritage]
             }
         }
     }
@@ -311,9 +312,9 @@ proc Katyusha_Heritages_MAJ_lignes {id_heritage} {
             if {[lindex $ligne 0] == "heritage_fille"} {
                 # Si c'est le cas, on la supprimme pour la recréer aux nouvelles coordonnées
                 if {[lindex $ligne 3] == $id_heritage && [lindex $ligne 2] == $id_fille} {
-                    .mcd.canvas.c delete [lindex $ligne 1]
+                    $ZONE_MCD.canvas.c delete [lindex $ligne 1]
                     # Créé la nouvelle ligne
-                    dict set lignes_graphique $kk [list "heritage_fille" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list ligne_heritage $id_fille $id_heritage]] $id_fille $id_heritage]
+                    dict set lignes_graphique $kk [list "heritage_fille" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list "ligne_heritage_fille" "entite:$id_fille" "heritage:$id_heritage" "ligne:$k"]] $id_fille $id_heritage]
                 }
             }
         }

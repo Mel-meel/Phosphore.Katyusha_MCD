@@ -358,7 +358,7 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
     # Balayage des lignes à la recherche de celles concernants l'entité spécifiée
     foreach ligne [$ZONE_MCD.canvas.c find withtag "entite:$id_entite"] {
         set tags [$ZONE_MCD.canvas.c gettags $ligne]
-        set id_entite_tmp [lindex [split [lindex $tags 1] ":"] 1]
+        set type_ligne [lindex $tags 0]
         set k [lindex [split [lindex $tags 3] ":"] 1]
         set id_entite [lindex [split [lindex $tags 1] ":"] 1]
         set multiple [lindex [split [lindex $tags 4] ":"] 1]
@@ -366,7 +366,7 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
         set nombre_liens [lindex [split [lindex [split [lindex $tags 5] ":"] 1] "/"] 1]
         # Créé les nouvelles coordonnées :
         # Lignes des relations
-        if {$id_entite_tmp == $id_entite} {
+        if {$type_ligne == "ligne_association"} {
             set id_association [lindex [split [lindex $tags 2] ":"] 1]
             
             set list_liens_doubles [Katyusha_Associations_double_entite [dict get $relations $id_association]]
@@ -389,17 +389,56 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
             set hauteur_association [expr [lindex $coords_association_lien 3] - [lindex $coords_association_lien 1]]
             # Créé les nouvelles coordonnées
             
-                set x_origine [expr [lindex $coords_association_lien 2] - ($largeur_association / 2)]
-                set y_origine [expr [lindex $coords_association_lien 1] + ($hauteur_association / 2)]
-                set x_arrivee [expr [lindex $coords 2] + ($largeur_entite / 2)]
-                set y_arrivee [expr [lindex $coords 1] + ($hauteur_entite / 2)]
-                # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "entite" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne" "entite:$id_entite" "association:$id_association" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_liens"]] $id_entite $id_association]
-                # Passe la ligne dessous
-                $ZONE_MCD.canvas.c lower [lindex [dict get $lignes_graphique $k] 1] "table"
-                # Et supprimme l'ancienne
-                $ZONE_MCD.canvas.c delete $ligne
+            set x_origine [expr [lindex $coords_association_lien 2] - ($largeur_association / 2)]
+            set y_origine [expr [lindex $coords_association_lien 1] + ($hauteur_association / 2)]
+            set x_arrivee [expr [lindex $coords 2] + ($largeur_entite / 2)]
+            set y_arrivee [expr [lindex $coords 1] + ($hauteur_entite / 2)]
+            
+            # Créé la nouvelle ligne
+            dict set lignes_graphique $k [list "entite" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne_association" "entite:$id_entite" "association:$id_association" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_liens"]] $id_entite $id_association]
+        } elseif {$type_ligne == "ligne_heritage_mere"} {
+            set id_heritage [lindex [split [lindex $tags 2] ":"] 1]
+            
+            # Détermine les coordonnées du triangle de l'héritage
+            set id_graphique [lindex [dict get $heritages_graphique $id_heritage] 0]
+            set coords_heritage [$ZONE_MCD.canvas.c coords $id_graphique]
+            
+            # Pour la table mere, on part du haut du triangle
+            set x_arrivee [lindex $coords_heritage 4]
+            set y_arrivee [lindex $coords_heritage 5]
+            
+            # Les coordonnées d'arrivées sont au milieu bas de la table mère
+            set x_origine [expr [lindex $coords 2] + ($largeur_entite / 2)]
+            set y_origine [lindex $coords 5]
+            
+            dict set lignes_graphique $k [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list "ligne_heritage_mere" "entite:$id_entite" "heritage:$id_heritage" "ligne:$k"]] $id_entite $id_heritage]
+        } elseif {$type_ligne == "ligne_heritage_fille"} {
+            set id_heritage [lindex [split [lindex $tags 2] ":"] 1]
+            
+            # Détermine les coordonnées du triangle de l'héritage
+            set id_graphique [lindex [dict get $heritages_graphique $id_heritage] 0]
+            set coords_heritage [$ZONE_MCD.canvas.c coords $id_graphique]
+            
+            # Pour la table fille, on part du bas du triangle
+            if {[lindex $coords_heritage 0] > [lindex $coords 2]} {
+                set x_arrivee [lindex $coords_heritage 0]
+            } elseif {[lindex $coords_heritage 2] < [lindex $coords 0]} {
+                set x_arrivee [lindex $coords_heritage 2]
+            } else {
+                set x_arrivee [lindex $coords_heritage 4]
+            }
+            set y_arrivee [lindex $coords_heritage 1]
+            
+            # Les coordonnées d'arrivées sont au milieu haut de la table fille
+            set x_origine [expr [lindex $coords 2] + ($largeur_entite / 2)]
+            set y_origine [lindex $coords 3]
+            
+            dict set lignes_graphique $k [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list "ligne_heritage_fille" "entite:$id_entite" "heritage:$id_heritage" "ligne:$k"]] $id_entite $id_heritage]
         }
+        # Passe la ligne dessous
+        $ZONE_MCD.canvas.c lower [lindex [dict get $lignes_graphique $k] 1] "table"
+        # Et supprimme l'ancienne
+        $ZONE_MCD.canvas.c delete $ligne
     }
 }
 
@@ -415,7 +454,7 @@ proc Katyusha_Tables_suppression_lignes {id_table} {
     
     # SUpprime les lignes
     foreach {k ligne} $lignes_graphique {
-        if {[lindex $ligne 0] == "relation"} {
+        if {[lindex $ligne 0] == "association"} {
             if {[lindex $ligne 2] == $id_table} {
                 $ZONE_MCD.canvas.c delete [lindex $ligne 1]
                 dict unset lignes_graphique $k
