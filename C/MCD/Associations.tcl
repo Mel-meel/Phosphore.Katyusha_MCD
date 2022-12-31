@@ -372,6 +372,7 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
                 #}
                 #dict set textes_cardinalites $k [list $id_entite $id_relation [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_entite] -tag [list "texte_cardinalite" $id_entite]]]
             }
+            
     }
 }
 
