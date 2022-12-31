@@ -363,7 +363,6 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
         set id_entite [lindex [split [lindex $tags 1] ":"] 1]
         set multiple [lindex [split [lindex $tags 4] ":"] 1]
         set n [lindex [split [lindex [split [lindex $tags 5] ":"] 1] "/"] 0]
-        puts $n
         set nombre_liens [lindex [split [lindex [split [lindex $tags 5] ":"] 1] "/"] 1]
         # Créé les nouvelles coordonnées :
         # Lignes des relations
