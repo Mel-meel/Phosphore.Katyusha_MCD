@@ -145,6 +145,7 @@ after 1000
 
 Katyusha_Interface
 source "$rpr/C/bind.tcl"
+source "$rpr/C/Commandes.tcl"
 
 # Si un projet est passé en paramètre, l'ouvrir
 if { $::argc > 0 } {

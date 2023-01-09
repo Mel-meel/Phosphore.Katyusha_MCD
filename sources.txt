@@ -13,6 +13,7 @@
 ./C/MCD/Entites.tcl
 
 ./C/bind.tcl
+./C/Commandes.tcl
 ./C/Charge.tcl
 ./C/Code_gen.tcl
 ./C/Code.tcl
