@@ -173,7 +173,7 @@ proc Katyusha_Tables_creer_affichage_graphique {ID table} {
     foreach pk $pks {
         lappend graph [$ZONE_MCD.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 40 + $pk] -image $IMG(pk) -tag [list table $ID]]
     }
-    unset x y hauteur largeur nom table ID
+    unset x y x2 y2 hauteur largeur nom table ID
     return $graph
 }
 

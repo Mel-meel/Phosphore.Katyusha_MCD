@@ -20,7 +20,6 @@ proc Katyusha_Relations_maj {} {
         dict set relations_graphique $id $graph
         puts "Ajout de la relation : [dict get $relation nom]"
         # Créé les lignes reliant l'association aux entités concernées
-        #Katyusha_Relations_lignes_relation_tables $relation $id
         Katyusha_Relations_MAJ_ligne_coords $id [list]
         unset graph id relation
         # Met à jour l'arbre des entités
@@ -103,12 +102,17 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
         } else {
             set col [dict get $couleurs "texte"]
         }
-        lappend graph [$ZONE_MCD.canvas.c create text $x2 [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones $element] -fill $col -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
+        set y2 [expr $y - ($hauteur / 2) + 40]
+        foreach texte [split [dict get $colones $element] "\n"] {
+            set y2 [expr $y2 + 18]
+            lappend graph [$ZONE_MCD.canvas.c create text $x2 $y2 -fill [dict get $couleurs "texte"] -justify left -text $texte -fill $col -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list "relation" $ID]]
+        }
+        #lappend graph [$ZONE_MCD.canvas.c create text $x2 [expr $y + 30] -fill [dict get $couleurs "texte"] -justify left -text [dict get $colones $element] -fill $col -anchor w -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list relation $ID]]
         set taille [dict get $tailles_colones $element]
     }
     # Créé les images de clefs primaires
     foreach pk $pks {
-        lappend graph [$ZONE_MCD.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 30 + $pk] -image $IMG(pk) -tag [list relation $ID]]
+        lappend graph [$ZONE_MCD.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 30 + $pk] -image $IMG(pk) -tag [list "relation" $ID]]
     }
     unset x y hauteur largeur nom relation ID
     return $graph
