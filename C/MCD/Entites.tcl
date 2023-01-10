@@ -391,6 +391,16 @@ proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
             
             # Créé la nouvelle ligne
             dict set lignes_graphique $k [list "entite" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne_association" "entite:$id_entite" "association:$id_association" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_liens"]] $id_entite $id_association]
+            
+            # Texte des cardinalités, temporaire à revoir
+            foreach {kk texte_cardinalite} $textes_cardinalites {
+                if {[lindex $texte_cardinalite 0] == $id_entite && [lindex $texte_cardinalite 1] == $id_association} {
+                    $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
+                     dict unset $textes_cardinalites $kk
+                }
+            }
+            dict set textes_cardinalites $k [list $id_entite $id_association [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_association $id_entite] -tag [list "texte_cardinalite" $id_entite]]]
+            
         } elseif {$type_ligne == "ligne_heritage_mere"} {
             set id_heritage [lindex [split [lindex $tags 2] ":"] 1]
             

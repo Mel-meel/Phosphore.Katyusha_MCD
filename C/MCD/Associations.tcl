@@ -295,7 +295,7 @@ proc Katyusha_Relations_lignes_relation_tables {association id_association} {
             # Passe la ligne dessous
             $ZONE_MCD.canvas.c lower [lindex [dict get $lignes_graphique $id] 1] "table"
             
-            #dict set textes_cardinalites $id [list $id_entite [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_association $id_entite] -tag [list "texte_cardinalite" $id_entite]]]
+            dict set textes_cardinalites $id [list $id_entite $id_association [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_association $id_entite] -tag [list "texte_cardinalite" $id_entite]]]
             }
             set id_entite_a $id_entite
         }
@@ -364,13 +364,13 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
                 $ZONE_MCD.canvas.c delete $ligne
                 # Créé les textes des cardinalités
                 
-                #foreach {kk texte_cardinalite} $textes_cardinalites {
-                #    if {[lindex $texte_cardinalite 0] == $id_entite && [lindex $texte_cardinalite 1] == $id_relation} {
-                #        $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
-                #        dict unset $textes_cardinalites $kk
-                #    }
-                #}
-                #dict set textes_cardinalites $k [list $id_entite $id_relation [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_entite] -tag [list "texte_cardinalite" $id_entite]]]
+                foreach {kk texte_cardinalite} $textes_cardinalites {
+                    if {[lindex $texte_cardinalite 0] == $id_entite && [lindex $texte_cardinalite 1] == $id_relation} {
+                        $ZONE_MCD.canvas.c delete [lindex $texte_cardinalite 2]
+                        dict unset $textes_cardinalites $kk
+                    }
+                }
+                dict set textes_cardinalites $k [list $id_entite $id_relation [$ZONE_MCD.canvas.c create text [expr ($x_arrivee + $x_origine) / 2] [expr ($y_arrivee + $y_origine) / 2] -text [Katyusha_Relations_cardinalite $id_relation $id_entite] -tag [list "texte_cardinalite" $id_entite]]]
             }
             
     }
