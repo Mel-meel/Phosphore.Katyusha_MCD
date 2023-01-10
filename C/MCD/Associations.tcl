@@ -114,7 +114,7 @@ proc Katyusha_Relations_creer_affichage_graphique {ID relation} {
     foreach pk $pks {
         lappend graph [$ZONE_MCD.canvas.c create image [expr $x - ($largeur / 2) + 25] [expr $y - ($hauteur / 2) + 30 + $pk] -image $IMG(pk) -tag [list "relation" $ID]]
     }
-    unset x y hauteur largeur nom relation ID
+    unset x y x2 y2 hauteur largeur nom relation ID
     return $graph
 }
 
@@ -174,7 +174,6 @@ proc Katyusha_ajout_relation {relation_tmp} {
     # Ajoute la liste temporaire au dictionnaire graphique des entités
     dict set relations_graphique $ID $graph
     # Trace les lignes pour plus de visibilité
-    #Katyusha_Relations_lignes_relation_tables $relation_tmp $ID
     Katyusha_Relations_MAJ_ligne_coords $ID [dict get $relation_tmp "coords"]
     puts "Ajout de la relation : [dict get $relation_tmp nom]"
     set ID [expr $ID + 1]
