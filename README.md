@@ -9,8 +9,8 @@ Script generation is available for the following DBMSs :
   - MySQL
   - SQLite3
   - PostgreSQL
-  -SQLserver
-  -Oracle
+  - SQLserver
+  - Oracle
 
 The **1.x** branch is under active development. It will make it possible to model the UML class diagram of the application in parallel with the Merise modeling of the database.
 Any change on the UML class diagram will be automatically taken into account on the Merise diagram side, thus avoiding too repetitive modeling.
@@ -24,8 +24,8 @@ Die Skriptgenerierung ist für die folgenden DBMSs verfügbar :
    - MySQL
    - SQLite3
    - PostgreSQL
-   -SQL Server
-   -Orakel
+   - SQL Server
+   - Oracle
 
 Der **1.x**-Zweig befindet sich in aktiver Entwicklung. Damit wird es möglich, das UML-Klassendiagramm der Anwendung parallel zur Merise-Modellierung der Datenbank zu modellieren.
 Jede Änderung am UML-Klassendiagramm wird automatisch auf der Seite des Merise-Diagramms berücksichtigt, wodurch eine zu wiederholte Modellierung vermieden wird.
@@ -54,8 +54,8 @@ Skriptgenerering är tillgängligt för följande DBMSer :
    - MySQL
    - SQLite3
    - PostgreSQL
-   -SQL-server
-   -Orakel
+   - SQL-server
+   - Oracle
 
 Filialen **1.x** är under aktiv utveckling. Det kommer att göra det möjligt att modellera UML-klassdiagrammet för applikationen parallellt med Merise-modelleringen av databasen.
 Alla förändringar i UML-klassdiagrammet kommer automatiskt att tas med i beräkningen på Merise-diagramsidan, vilket undviker alltför repetitiv modellering.
