@@ -335,8 +335,7 @@ proc Katyusha_Tables_MAJ_coords {id_table coords} {
 }
 
 ##
-# Mise à jour des lignes entre une table et les objets auxquels elle est reliée
-# À revoir entièrement, procédure trop longue, pas assez performante
+# Mise à jour des lignes entre une entité et les objets auxquels elle est reliée
 ##
 proc Katyusha_Tables_MAJ_ligne_coords {id_entite coords} {
     global lignes_graphique

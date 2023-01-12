@@ -270,14 +270,14 @@ proc Katyusha_Relations_lignes_relation_tables {association id_association} {
                 
                 set x_origine [expr [lindex $coords 2] - ($largeur_association / 2)]
                 set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
-                set x_arrivee [expr [lindex $coords_entite_lien 2] + ($largeur_entite / 2)]
-                set y_arrivee [expr [lindex $coords_entite_lien 3] + ($hauteur_entite / 2)]
                 
             if {[lsearch [dict keys $dict_liens_doubles] $id_entite] == -1} {
                 set multiple 0
                 set n 0
                 set nombre_dict_liens_doubles 0
                 dict set decompte_liens_doubles $id_entite 0
+                set x_arrivee [expr [lindex $coords_entite_lien 2] + ($largeur_entite / 2)]
+                set y_arrivee [expr [lindex $coords_entite_lien 3] + ($hauteur_entite / 2)]
             } else {
                 set nombre_dict_liens_doubles [dict get $dict_liens_doubles $id_entite]
                 set nombre_liens_entite [lindex $dict_liens_doubles 1]
@@ -289,6 +289,8 @@ proc Katyusha_Relations_lignes_relation_tables {association id_association} {
                 set actuel_dict_liens_doubles [dict get $decompte_liens_doubles $id_entite]
                 set multiple 1
                 set n $actuel_dict_liens_doubles
+                set x_arrivee [expr [lindex $coords_entite_lien 2] + ($largeur_entite / 2)]
+                set y_arrivee [expr [lindex $coords_entite_lien 3] + ($n * ($hauteur_entite / ($nombre_liens_entite + 1)))]
             }
                 
                 
@@ -307,8 +309,6 @@ proc Katyusha_Relations_lignes_relation_tables {association id_association} {
 
 ##
 # Met à jour les coordonnées des lignes reliants l'association aux entités
-# La mise à jour des coordonnées ne fonctionnant pas correctement, à chaque fois
-# les lignes sont supprimées et remplacées par des lignes correspondants aux nouvelles coordonnées
 ##
 proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
     global lignes_graphique
@@ -354,8 +354,13 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
             
             set x_origine [expr [lindex $coords 2] - ($largeur_association / 2)]
             set y_origine [expr [lindex $coords 1] + ($hauteur_association / 2)]
-            set x_arrivee [expr [lindex $coords_table_lien 2] + ($largeur_entite / 2)]
-            set y_arrivee [expr [lindex $coords_table_lien 3] + ($hauteur_entite / 2)]
+            if {$multiple == 0} {
+                set x_arrivee [expr [lindex $coords_table_lien 2] + ($largeur_entite / 2)]
+                set y_arrivee [expr [lindex $coords_table_lien 3] + ($hauteur_entite / 2)]
+            } else {
+                set x_arrivee [expr [lindex $coords_table_lien 2] + ($largeur_entite / 2)]
+                set y_arrivee [expr [lindex $coords_table_lien 3] + ($n * ($hauteur_entite / ($nombre_liens + 1)))]
+            }
             
             # Si l'association est par dessus l'entité ou touche l'entité auquel elle est liée, pas de ligne
             if {$x_origine != "" && $y_origine != "" && $x_arrivee != "" && $y_arrivee != ""} {
