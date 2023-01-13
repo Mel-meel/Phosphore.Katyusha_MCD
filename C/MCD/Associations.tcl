@@ -174,6 +174,7 @@ proc Katyusha_ajout_relation {relation_tmp} {
     # Ajoute la liste temporaire au dictionnaire graphique des entités
     dict set relations_graphique $ID $graph
     # Trace les lignes pour plus de visibilité
+    Katyusha_Relations_lignes_relation_tables $relation_tmp $ID
     Katyusha_Relations_MAJ_ligne_coords $ID [dict get $relation_tmp "coords"]
     puts "Ajout de la relation : [dict get $relation_tmp nom]"
     set ID [expr $ID + 1]
