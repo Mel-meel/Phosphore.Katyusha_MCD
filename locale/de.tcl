@@ -138,7 +138,7 @@ set LOCALE(supprimer_table_fille) "Eine Kindentität löschen"
 set LOCALE(aucune_table_selectionne) "Keine Entität ausgewählt "
 # À propos
 set LOCALE(TITRE_a_propos) "Über Katjuscha! MCD"
-set LOCALE(TEXTE_a_propos) "Katyusha MCD ist eine Komponente des Phosphore Projekt\nGeteilt unter GPL v3-Lizenz\nCopyleft (c) 2019 - 2022\n Mélanie Verdon Avizou"
+set LOCALE(TEXTE_a_propos) "Katyusha MCD ist eine Komponente des Phosphore Projekt\nGeteilt unter GPL v3-Lizenz\nCopyleft (c) 2019 - 2023\n Mélanie Verdon Avizou"
 # Supression entité
 set LOCALE(sure_suppression_table) "Sure to delete this entity?"
 set LOCALE(sure_suppression_relation) "Sure to delete this relation?"

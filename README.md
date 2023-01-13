@@ -18,7 +18,7 @@ Any change on the UML class diagram will be automatically taken into account on 
 Deutsh
 ======
 
-** Katjuscha! MCD** ist ein sehr leichtes Modellierungswerkzeug.
+**Katyuscha! MCD** ist ein sehr leichtes Modellierungswerkzeug.
 Derzeit im **0.x**-Zweig erlaubt es nur die Datenbankmodellierung nach der Merise-Methode.
 Die Skriptgenerierung ist für die folgenden DBMSs verfügbar :
    - MySQL

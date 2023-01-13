@@ -168,7 +168,7 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
     set f [ttk::frame $parent.notebook_uml]
     
     frame $f.notebook_uml_panel
-        label $f.notebook_uml_panel.tmp -text [phgt::mc "En travaux, arrivera en version 0.5.x"]
+        label $f.notebook_uml_panel.tmp -text [phgt::mc "En travaux, arrivera en version majeure 1.x"]
         pack $f.notebook_uml_panel.tmp
     pack $f.notebook_uml_panel
     
