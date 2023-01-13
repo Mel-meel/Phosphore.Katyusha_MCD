@@ -274,7 +274,7 @@ proc Katyusha_Heritages_MAJ_lignes {id_heritage} {
             if {[lindex $ligne 3] == $id_heritage && [lindex $ligne 2] == $id_mere} {
                 $ZONE_MCD.canvas.c delete [lindex $ligne 1]
                 # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list "ligne_heritage_mere" "entite:$id_mere" "heritage:$id_heritage" "ligne:$k"]] $id_mere $id_heritage]
+                dict set lignes_graphique $k [list "heritage_mere" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow last -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list "ligne_heritage_mere" "entite:$id_mere" "heritage:$id_heritage" "ligne:$k" "ligne"]] $id_mere $id_heritage]
             }
         }
     }
@@ -315,7 +315,7 @@ proc Katyusha_Heritages_MAJ_lignes {id_heritage} {
                 if {[lindex $ligne 3] == $id_heritage && [lindex $ligne 2] == $id_fille} {
                     $ZONE_MCD.canvas.c delete [lindex $ligne 1]
                     # Créé la nouvelle ligne
-                    dict set lignes_graphique $kk [list "heritage_fille" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list "ligne_heritage_fille" "entite:$id_fille" "heritage:$id_heritage" "ligne:$kk"]] $id_fille $id_heritage]
+                    dict set lignes_graphique $kk [list "heritage_fille" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -arrow first -arrowshape [list 10 11 4] -width 2 -dash [list 15 5] -fill $MCD(couleur_liens_heritage) -tag [list "ligne_heritage_fille" "entite:$id_fille" "heritage:$id_heritage" "ligne:$kk" "ligne"]] $id_fille $id_heritage]
                 }
             }
         $ZONE_MCD.canvas.c delete $kk

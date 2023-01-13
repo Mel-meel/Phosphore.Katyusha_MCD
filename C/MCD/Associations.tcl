@@ -295,8 +295,7 @@ proc Katyusha_Relations_lignes_relation_tables {association id_association} {
                 
                 
             set id [expr [lindex [dict keys $lignes_graphique] [expr [llength [dict keys $lignes_graphique]] - 1]] + 1]
-            dict set lignes_graphique $id [list "association" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne_association" "entite:$id_entite" "association:$id_association" "ligne:$id" "multiple:$multiple" "n:$n/$nombre_dict_liens_doubles"]] $id_entite $id_association]
-            puts [list "ligne_association" "entite:$id_entite" "association:$id_association" "ligne:$id" "multiple:$multiple" "n:$n/$nombre_dict_liens_doubles"]
+            dict set lignes_graphique $id [list "association" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne_association" "entite:$id_entite" "association:$id_association" "ligne:$id" "multiple:$multiple" "n:$n/$nombre_dict_liens_doubles" "ligne"]] $id_entite $id_association]
             # Passe la ligne dessous
             $ZONE_MCD.canvas.c lower [lindex [dict get $lignes_graphique $id] 1] "table"
             
@@ -365,7 +364,7 @@ proc Katyusha_Relations_MAJ_ligne_coords {id_relation coords} {
             # Si l'association est par dessus l'entité ou touche l'entité auquel elle est liée, pas de ligne
             if {$x_origine != "" && $y_origine != "" && $x_arrivee != "" && $y_arrivee != ""} {
                 # Créé la nouvelle ligne
-                dict set lignes_graphique $k [list "association" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne_association" "entite:$id_entite" "association:$id_relation" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_liens"]] $id_entite $id_relation]
+                dict set lignes_graphique $k [list "association" [$ZONE_MCD.canvas.c create line $x_origine $y_origine $x_arrivee $y_arrivee -width 2 -fill $MCD(couleur_liens_relation) -tag [list "ligne_association" "entite:$id_entite" "association:$id_relation" "ligne:$k" "multiple:$multiple" "n:$n/$nombre_liens" "ligne"]] $id_entite $id_relation]
                 # Passe la ligne dessous
                 $ZONE_MCD.canvas.c lower [lindex [dict get $lignes_graphique $k] 1] "table"
                 # Et supprimme l'ancienne

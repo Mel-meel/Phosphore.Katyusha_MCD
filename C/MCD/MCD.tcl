@@ -98,10 +98,11 @@ proc Katyusha_MCD_nouveau {} {
 proc Katyusha_MCD_canvas_effacer {} {
     global ZONE_MCD
     $ZONE_MCD.canvas.c delete "table"
+    $ZONE_MCD.canvas.c delete "objet"
     $ZONE_MCD.canvas.c delete "relation"
     $ZONE_MCD.canvas.c delete "ligne"
     $ZONE_MCD.canvas.c delete "etiquette"
     $ZONE_MCD.canvas.c delete "heritage"
-    $ZONE_MCD.canvas.c delete "ligne_heritage"
+    #$ZONE_MCD.canvas.c delete "ligne_heritage"
     $ZONE_MCD.canvas.c delete "texte_cardinalite"
 }
