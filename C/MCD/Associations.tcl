@@ -158,7 +158,7 @@ proc Katyusha_ajout_relation {relation_tmp} {
     set nom [dict get $relation_tmp nom]
     # Si le nom est vide
     if {$nom == ""} {
-        set nom "Relation_$id"
+        set nom "association_$id"
         dict set relation_tmp "nom" $nom
         dict unset $relation_tmp "id"
     }
@@ -419,7 +419,7 @@ proc Katyusha_Associations_double_entite {association} {
 # Détruit les lignes graphiques en lien avec une association
 # Et supprime leur liste du dictionnaire des lignes graphiques
 ##
-proc Katyusha_Relations_suppression_lignes {id_relation} {
+proc Katyusha_Association_suppression_lignes {id_relation} {
     global lignes_graphique
     global textes_cardinalites
     global ZONE_MCD
@@ -589,10 +589,10 @@ proc suppression_relation {relation} {
         $ZONE_MCD.canvas.c delete $c
     }
     # Supprime les lignes qui pointent vers la relation
-    Katyusha_Relations_suppression_lignes $relation
+    Katyusha_Association_suppression_lignes $relation
     dict unset relations_graphique $relation
     Katyusha_MCD_Objets_maj_arbre_objets
-    puts "Relation $nom supprimée"
+    puts "Association $nom supprimée"
     unset nom
 }
 

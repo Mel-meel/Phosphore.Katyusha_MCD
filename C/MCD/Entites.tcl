@@ -202,7 +202,7 @@ proc ajout_table {table_tmp} {
     set graph [Katyusha_Tables_creer_affichage_graphique $ID $table_tmp]
     # Ajoute la liste temporaire au dictionnaire graphique des tables
     dict set tables_graphique $ID $graph
-    puts "Ajout de la table : [dict get $table_tmp nom]"
+    puts "Ajout de l'entité : [dict get $table_tmp nom]"
     set ID [expr $ID + 1]
     #puts [.mcd.canvas.c coords [lindex $graph 0]]
     unset graph id

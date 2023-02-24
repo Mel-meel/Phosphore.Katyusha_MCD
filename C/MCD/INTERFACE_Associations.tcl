@@ -90,7 +90,7 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
                             label $f.liens.liste.corps.$k.table -text [lindex $lien 0] -width 20 -height 2 -background white -relief solid
                             label $f.liens.liste.corps.$k.type -text [lindex $lien 1] -width 20 -height 2 -background white -relief solid
                             label $f.liens.liste.corps.$k.relatif -text [lindex $lien 2] -width 20 -height 2 -background white -relief solid
-                            button $f.liens.liste.corps.$k.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_lien_relation $k"
+                            button $f.liens.liste.corps.$k.edit -text "Éditer" -image $IMG(editer) -command "Katyuusha_MCD_INTERFACE_Association_ajout_lien_association $k"
                             pack $f.liens.liste.corps.$k.table $f.liens.liste.corps.$k.type $f.liens.liste.corps.$k.relatif $f.liens.liste.corps.$k.edit -side left
                         pack $f.liens.liste.corps.$k
                     }
