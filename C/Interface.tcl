@@ -112,7 +112,7 @@ foreach fichier [Katyusha_fichiers_recents] {
 
 # Menu diagramme de classe UML
 #.mb.uml add command -label [phgt::mc "Modèle Merise"] -command INTERFACE_liste_entites
-.mb.uml add command -label [phgt::mc "En travaux, arrivera en version 0.5.x"]
+.mb.uml add command -label [phgt::mc "En travaux, arrivera en version 1.x"]
 
 # Menu base de donnée
 #.mb.bdd add command -label $LOCALE(menu_config_bdd) -command INTERFACE_config_bdd

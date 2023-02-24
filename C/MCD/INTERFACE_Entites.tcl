@@ -166,7 +166,7 @@ proc INTERFACE_Tables_choix_table {nombre_tables_possibles} {
     wm iconphoto $f $IMG(logo)
     
     frame $f.table -padx 10 -pady 10
-        label $f.table.l -text "Choisir une table :"
+        label $f.table.l -text "Choisir une entité :"
         ttk::combobox $f.table.cb -values [liste_tables]
         pack $f.table.l $f.table.cb -fill both -side left
     pack $f.table -fill x
@@ -182,7 +182,7 @@ proc INTERFACE_Tables_choix_table {nombre_tables_possibles} {
     pack $f.commandes -fill x
     
     # Titre le la présente fenêtre
-    wm title $f "Choisir une table"
+    wm title $f "Choisir une entité"
     # Mise à jour forcée de l'affichage graphique
     update
     

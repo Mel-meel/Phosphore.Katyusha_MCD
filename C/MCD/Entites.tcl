@@ -256,7 +256,7 @@ proc suppression_table {{table "null"}} {
     Katyusha_Tables_suppression_lignes $table
     dict unset tables_graphique $table
     Katyusha_MCD_Objets_maj_arbre_objets
-    puts "Table $nom supprimée"
+    puts "Entité $nom supprimée"
     unset nom
 }
 

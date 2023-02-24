@@ -52,7 +52,7 @@ set LOCALE(gen_code_php_doctrine_prefix) "Préfixe des classes : "
 set LOCALE(gen_code_php_doctrine_un_fichier) "Toutes les classes dans un seul fichier : "
 set LOCALE(gen_code_php_doctrine_attention) "Attention, la génération de code pour Doctrine est encore expérimentale!"
 # Génération SQL
-set LOCALE(selectionner_sgbd) "Sélectionner le SGBD cible :"
+set LOCALE(selectionner_sgbd) "Sélectionner le SGBD cible :*"
 set LOCALE(generer_sql) "Générer un script SQL"
 set LOCALE(script_enregistre) "Script SQL enregistré automatiquement dans : "
 set LOCALE(script_sql) "Script SQL"
