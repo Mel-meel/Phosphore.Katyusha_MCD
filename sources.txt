@@ -12,6 +12,9 @@
 ./C/MCD/Associations.tcl
 ./C/MCD/Entites.tcl
 
+./C/UML/Objets.tcl
+./C/UML/Classes.tcl
+
 ./C/bind.tcl
 ./C/Commandes.tcl
 ./C/Charge.tcl

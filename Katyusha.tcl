@@ -34,6 +34,11 @@ source "$rpr/C/MCD/Entites.tcl"
 source "$rpr/C/MCD/Attributs.tcl"
 source "$rpr/C/MCD/MCD.tcl"
 
+
+source "$rpr/C/UML/Objets.tcl"
+source "$rpr/C/UML/Classes.tcl"
+
+
 source "$rpr/C/INTERFACE_Code.tcl"
 source "$rpr/C/C.tcl"
 source "$rpr/C/SQL_gen.tcl"
