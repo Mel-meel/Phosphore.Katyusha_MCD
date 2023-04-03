@@ -135,7 +135,7 @@ foreach fichier [Katyusha_fichiers_recents] {
 ##
 ttk::notebook .editeurs
 .editeurs add [Katyusha_Interface_editeur_MCD ".editeurs" $canvas_x $canvas_y] -text [phgt::mc "Modèle Merise"]
-.editeurs add [Katyusha_Interface_editeur_UML ".editeurs" $canvas_x $canvas_y] -text [phgt::mc "Diagramme de classe UML"]
+#.editeurs add [Katyusha_Interface_editeur_UML ".editeurs" $canvas_x $canvas_y] -text [phgt::mc "Diagramme de classe UML"]
 pack .editeurs -fill both -expand 1
     frame .infos
         frame .infos.s

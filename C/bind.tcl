@@ -286,6 +286,25 @@ $ZONE_MCD.canvas.c bind table <Button-3> {
     popupMenu .menu_table %x %y
 }
 
+$ZONE_MCD.canvas.c bind table <Double-Button-1> {
+    global CONFIGS
+    global ZONE_MCD
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [$ZONE_MCD.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [$ZONE_MCD.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [$ZONE_MCD.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [$ZONE_MCD.canvas.c gettags $id]
+    popupMenu .menu_table %x %y
+}
+
 menu .menu_table -tearoff 0
 .menu_table add command -label $LOCALE(editer) -command {Katyusha_MCD_INTERFACE_Entite_ajout_entite 0 0 [lindex $selected 1]}
 .menu_table add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "table" [lindex $selected 1]}
@@ -294,6 +313,25 @@ menu .menu_table -tearoff 0
 # Menu de clic droit des associations
 ##
 $ZONE_MCD.canvas.c bind relation <Button-3> {
+    global CONFIGS
+    global ZONE_MCD
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [$ZONE_MCD.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [$ZONE_MCD.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [$ZONE_MCD.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [$ZONE_MCD.canvas.c gettags $id]
+    popupMenu .menu_relation %x %y
+}
+
+$ZONE_MCD.canvas.c bind relation <Double-Button-1> {
     global CONFIGS
     global ZONE_MCD
     
@@ -338,6 +376,25 @@ $ZONE_MCD.canvas.c bind etiquette <Button-3> {
     popupMenu .menu_etiquette %x %y
 }
 
+$ZONE_MCD.canvas.c bind etiquette <Double-Button-1> {
+    global CONFIGS
+    global ZONE_MCD
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [$ZONE_MCD.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [$ZONE_MCD.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [$ZONE_MCD.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [$ZONE_MCD.canvas.c gettags $id]
+    popupMenu .menu_etiquette %x %y
+}
+
 menu .menu_etiquette -tearoff 0
 .menu_etiquette add command -label $LOCALE(editer) -command {INTERFACE_Etiquettes_ajout 0 0 [lindex $selected 1]}
 .menu_etiquette add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "etiquette" [lindex $selected 1]}
@@ -347,6 +404,25 @@ menu .menu_etiquette -tearoff 0
 # Menu de clic droit des héritages
 ##
 $ZONE_MCD.canvas.c bind heritage <Button-3> {
+    global CONFIGS
+    global ZONE_MCD
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [$ZONE_MCD.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [$ZONE_MCD.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [$ZONE_MCD.canvas.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [$ZONE_MCD.canvas.c gettags $id]
+    popupMenu .menu_heritage %x %y
+}
+
+$ZONE_MCD.canvas.c bind heritage <Double-Button-1> {
     global CONFIGS
     global ZONE_MCD
     
