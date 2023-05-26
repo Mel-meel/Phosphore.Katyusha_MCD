@@ -3,99 +3,270 @@
 # Initialisation du programme
 set LOCALE(chargement_locale_ok) " # OK!"
 set LOCALE(chargement_modules) "Chargement des modules........"
+msgid "Chargement des packages"
+msgstr "Chargement des packages"
+
 set LOCALE(chargement_module_tk_ok) " # OK!"
 set LOCALE(chargement_module_tdbc_ok) " # OK!"
 # Menu
-set LOCALE(menu_katyusha) "Katyusha!"
-set LOCALE(menu_fichier) "Projet"
-set LOCALE(menu_mcd) "MCD"
-set LOCALE(menu_bdd) "Base de donnée"
-set LOCALE(menu_code) "Code"
-set LOCALE(menu_aide) "Aide"
-set LOCALE(menu_katyusha_pref) "Préférences"
-set LOCALE(menu_katyusha_maj) "Mises à jour"
-set LOCALE(menu_mcd_nouveau) "Nouveau projet"
-set LOCALE(menu_sauver_sous) "Sauvegarder le projet sous ..."
-set LOCALE(menu_sauver) "Sauvegarder le projet"
-set LOCALE(menu_charger) "Charger un projet"
-set LOCALE(menu_recents) "Projets récents"
-set LOCALE(recents_init) "Supprimer la liste"
-set LOCALE(menu_prefs) "Préférences du projet"
-set LOCALE(menu_quitter) "Quitter"
-set LOCALE(menu_config_bdd) "Configurer la base de donnée"
-set LOCALE(menu_connex_bdd) "Connexion à une base de donnée"
-set LOCALE(menu_gen_sql) "Générer le script SQL du MCD"
-set LOCALE(menu_gen_mcd) "Générer le MCD d'un script SQL"
-set LOCALE(menu_mcd_entites) "Liste des objets du MCD"
-set LOCALE(menu_mcd_ajout_table) "Ajouter une entité"
-set LOCALE(menu_mcd_edit_table) "Éditer une entité"
-set LOCALE(menu_mcd_sup_table) "Supprimer une entité"
-set LOCALE(menu_mcd_ajout_relation) "Ajouter une relation"
-set LOCALE(menu_mcd_edit_relation) "Éditer une relation"
-set LOCALE(menu_mcd_sup_relation) "Supprimer une relation"
-set LOCALE(menu_mcd_exporter_svg) "Exporter le MCD en SVG"
-set LOCALE(menu_mcd_imprimer) "Exporter le MCD en Post Script"
-set LOCALE(menu_mcd_verifier) "Vérifier l'intégrité du MCD"
-set LOCALE(menu_aide_a_propos) "À propos"
-set LOCALE(menu_aide_license) "License"
-set LOCALE(menu_code_generer_php_fonctions) "Générer du code PHP"
-set LOCALE(menu_code_generer_php_doctrine) "Générer du code PHP objet pour Doctrine ORM"
+msgid "Katyusha!"
+msgstr "Katyusha!"
+
+
+msgid "Projet"
+msgstr "Projet"
+
+msgid "Modèle Merise"
+msgstr "Modèle Merise"
+
+msgid "Base de données"
+msgstr "base de données"
+
+msgid "Code"
+msgstr "Code"
+
+msgid "Aide"
+msgstr "Aide"
+
+msgid "Préférences"
+msgstr "Préférences"
+
+msgid "Mises à jour"
+msgstr "Mises à jour"
+
+msgid "Nouveau projet"
+msgstr "Nouveau projet"
+
+msgid "Sauvegarder le projet sous ..."
+msgstr "Sauvegarder le projet sous ..."
+
+msgid "Sauvegarder le projet"
+msgstr "Sauvegarder le projet"
+
+msgid "Charger un projet"
+msgstr "Charger un projet"
+
+msgid "Projets récents"
+msgstr "Projets récents"
+
+msgid "Supprimer la liste"
+msgstr "Supprimer la liste"
+
+msgid "Préférences du projet"
+msgstr "Préférences du projet"
+
+msgid "Quitter"
+msgstr "Quitter"
+
+msgid "Configurer la base de donnée"
+msgstr "Configurer la base de donnée"
+
+msgid "Connexion à une base de donnée"
+msgstr "Connexion à une base de donnée"
+
+msgid "Générer le script SQL du MCD"
+msgstr "Générer le script SQL du MCD"
+
+msgid "Générer le MCD d'un script SQL"
+msgstr "Générer le MCD d'un script SQL"
+
+msgid "Liste des objets du MCD"
+msgstr "Liste des objets du MCD"
+
+msgid "Ajouter une entité"
+msgstr "Ajouter une entité"
+
+msgid "Éditer une entité"
+msgstr "Éditer une entité"
+
+msgid "Supprimer une entité"
+msgstr "Supprimer une entité"
+
+msgid "Ajouter une relation"
+msgstr "Ajouter une relation"
+
+msgid "Éditer une relation"
+msgstr "Éditer une relation"
+
+msgid "Supprimer une relation"
+msgstr "Supprimer une relation"
+
+msgid "Exporter le MCD en SVG"
+msgstr "Exporter le MCD en SVG"
+
+msgid "Exporter le MCD en Post Script"
+msgstr "Exporter le MCD en Post Script"
+
+msgid "Vérifier l'intégrité du MCD"
+msgstr "Vérifier l'intégrité du MCD"
+
+msgid "À propos"
+msgstr "À propos"
+
+msgid "License"
+msgstr "License"
+
+msgid "Générer du code PHP"
+msgstr "Générer du code PHP"
+
+msgid "Générer du code PHP objet pour Doctrine ORM"
+msgstr "Générer du code PHP objet pour Doctrine ORM"
+
 # Génération de code
-set LOCALE(gen_code_php_fonctions_titre) "Générer le code d'accès à la base de données pour PHP procédural"
-set LOCALE(gen_code_php_fonctions) "Code PHP procédural"
-set LOCALE(gen_code_php_fonctions_prefix) "Préfixe des fonctions : "
-set LOCALE(gen_code_php_fonctions_un_fichier) "Toutes les fonctions dans un seul fichier : "
-set LOCALE(gen_code_php_doctrine_titre) "Générer le code d'accès à la base de données pour l'ORM Doctrine"
-set LOCALE(gen_code_php_doctrine) "Code PHP objet des modèles pour Doctrine"
-set LOCALE(gen_code_php_doctrine_namespace) "Namespace : "
-set LOCALE(gen_code_php_doctrine_prefix) "Préfixe des classes : "
-set LOCALE(gen_code_php_doctrine_un_fichier) "Toutes les classes dans un seul fichier : "
-set LOCALE(gen_code_php_doctrine_attention) "Attention, la génération de code pour Doctrine est encore expérimentale!"
+msgid "Générer le code d'accès à la base de données pour PHP procédural"
+msgstr "Générer le code d'accès à la base de données pour PHP procédural"
+
+msgid "Code PHP procédural"
+msgstr "Code PHP procédural"
+
+msgid "Préfixe des fonctions : "
+msgstr "Préfixe des fonctions : "
+
+msgid "Toutes les fonctions dans un seul fichier : "
+msgstr "Toutes les fonctions dans un seul fichier : "
+
+msgid "Générer le code d'accès à la base de données pour l'ORM Doctrine"
+msgstr "Générer le code d'accès à la base de données pour l'ORM Doctrine"
+
+msgid "Code PHP objet des modèles pour Doctrine"
+msgstr "Code PHP objet des modèles pour Doctrine"
+
+msgid "Namespace : "
+msgstr "Namespace : "
+
+msgid "Préfixe des classes : "
+msgstr "Préfixe des classes : "
+
+msgid "Toutes les classes dans un seul fichier : "
+msgstr "Toutes les classes dans un seul fichier : "
+
+msgid "Attention, la génération de code pour Doctrine est encore expérimentale!"
+msgstr "Attention, la génération de code pour Doctrine est encore expérimentale!"
+
 # Génération SQL
-set LOCALE(selectionner_sgbd) "Sélectionner le SGBD cible :"
-set LOCALE(generer_sql) "Générer un script SQL"
-set LOCALE(script_enregistre) "Script SQL enregistré automatiquement dans : "
-set LOCALE(script_sql) "Script SQL"
+msgid "Sélectionner le SGBD cible :"
+msgstr "Sélectionner le SGBD cible :"
+
+msgid "Générer un script SQL"
+msgstr "Générer un script SQL"
+
+msgid "Script SQL enregistré automatiquement dans : "
+msgstr "Script SQL enregistré automatiquement dans : "
+
+msgid "Script SQL"
+msgstr "Script SQL"
+
 # Erreurs MCD
-set LOCALE(erreurs_mcd) "Erreurs du MCD"
+msgid "Erreurs du MCD"
+msgstr "Erreurs du MCD"
+
 # Licence
-set LOCALE(jai_compris) "J'ai compris"
-set LOCALE(licence) "License - GNU GPL v3.0"
+msgid "J'ai compris"
+msgstr "J'ai compris"
+
+msgid "License - GNU GPL v3.0"
+msgstr "License - GNU GPL v3.0"
+
 # Interface principale
-set LOCALE(ajouter_table) "Ajouter une entité"
-set LOCALE(ajouter_relation) "Ajouter une relation"
-set LOCALE(ajouter_heritage) "Ajouter un héritage"
-set LOCALE(ajouter_etiquette) "Ajouter une étiquette"
-set LOCALE(ajouter_procedure) "Ajouter une procédure stockée"
-set LOCALE(entites_de_la_base) "Objets du MCD"
+msgid "Ajouter une entité"
+msgstr "Ajouter une entité"
+
+msgid "Ajouter une relation"
+msgstr "Ajouter une relation"
+
+msgid "Ajouter un héritage"
+msgstr "Ajouter un héritage"
+
+msgid "Ajouter une étiquette"
+msgstr "Ajouter une étiquette"
+
+msgid "Ajouter une procédure stockée"
+msgstr "Ajouter une procédure stockée"
+
+msgid "Objets du MCD"
+msgstr "Objets du MCD"
+
 # Ajout d'une table
-set LOCALE(ajouter_une_table) "Ajouter une entité"
-set LOCALE(editer_la_table) "Éditer l'entité"
-set LOCALE(nom_table) "Nom de l'entité : "
-set LOCALE(liste_attributs_table) "Liste des attributs de l'entité"
-set LOCALE(nom) "Nom"
-set LOCALE(type) "Type"
-set LOCALE(taille) "Taille"
-set LOCALE(pk) "Clef primaire?"
-set LOCALE(auto) "Incrémentation automatique?"
-set LOCALE(valeur) "Valeur par défaut"
-set LOCALE(ajouter_une_ligne) "Ajouter une ligne"
-set LOCALE(nom_de_la_nouvelle_table) "Nom de la nouvelle entité :"
-set LOCALE(le_nom_de_la_table_ne_peut_pas_etre_vide) "Le nom de l'entité ne peut pas être vide"
-set LOCALE(description_de_la_table) "Description de l'entité"
-set LOCALE(ajouter_des_attributs) "Ajouter des attributs"
+msgid "Ajouter une entité"
+msgstr "Ajouter une entité"
+
+msgid "Éditer l'entité"
+msgstr "Éditer l'entité"
+
+msgid "Nom de l'entité : "
+msgstr "Nom de l'entité : "
+
+msgid "Liste des attributs de l'entité"
+msgstr "Liste des attributs de l'entité"
+
+msgid "Nom"
+msgstr "Nom"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Taille"
+msgstr "Taille"
+
+msgid "Unique"
+msgstr "Unique"
+
+msgid "Signé"
+msgstr "Signé"
+
+msgid "Clef primaire?"
+msgstr "Clef primaire?"
+
+msgid "Incrémentation automatique?"
+msgstr "Incrémentation automatique?"
+
+msgid "Valeur par défaut"
+msgstr "Valeur par défaut"
+
+msgid "Ajouter une ligne"
+msgstr "Ajouter une ligne"
+
+msgid "Nom de la nouvelle entité :"
+msgstr "Nom de la nouvelle entité :"
+
+msgid "Le nom de l'entité ne peut pas être vide"
+msgstr "Le nom de l'entité ne peut pas être vide"
+
+msgid "Description de l'entité"
+msgstr "Description de l'entité"
+
+msgid "Ajouter des attributs"
+msgstr "Ajouter des attributs"
+
 # Ajout d'une relation
-set LOCALE(ajouter_une_relation) "Ajouter une relation"
-set LOCALE(editer_la_relation) "Éditer la relation"
-set LOCALE(nom_relation) "Nom de la relation : "
-set LOCALE(liste_attributs_relation) "Liste des attributs de la relation"
+msgid "Ajouter une relation"
+msgstr "Ajouter une relation"
+
+msgid "Éditer la relation"
+msgstr "Éditer la relation"
+
+msgid "Nom de la relation : "
+msgstr "Nom de la relation : "
+
+msgid "Liste des attributs de la relation"
+msgstr "Liste des attributs de la relation"
 
 # Ajout d'un lien à une relation
-set LOCALE(table_concernee_lien) "Sélectionner l'entité concernée par le lien :"
-set LOCALE(table_lien) "Entité"
-set LOCALE(type_lien) "Type de lien"
-set LOCALE(relatif_lien) "Relatif?"
-set LOCALE(pas_assez_table) "Il n'y a pas assez d'entités dans le MCD."
+msgid "Sélectionner l'entité concernée par le lien :"
+msgstr "Sélectionner l'entité concernée par le lien :"
+
+msgid "Entité"
+msgstr "Entité"
+
+msgid "Type de lien"
+msgstr "Type de lien"
+
+msgid "Relatif?"
+msgstr "Relatif?"
+
+msgid "Il n'y a pas assez d'entités dans le MCD."
+msgstr "Il n'y a pas assez d'entités dans le MCD."
+
 # Ajout d'une étiquette
 set LOCALE(ajouter_une_etiquette) "Ajouter une étiquette"
 set LOCALE(editer_l_etiquette) "Éditer l'étiquette :"

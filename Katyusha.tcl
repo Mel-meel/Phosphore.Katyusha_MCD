@@ -1,3 +1,5 @@
+#!/usr/bin/tclsh
+
 ## Créé le 22/6/2020 ##
 
 ######################################################
@@ -60,10 +62,16 @@ source "$rpr/C/Liens.tcl"
 source "$rpr/libs/canvas2svg.tcl"
 source "$rpr/libs/arabe.tcl"
 
-#set theme awbreeze
-#source "$rpr/Themes/colorutils.tcl"
-#source "$rpr/Themes/awthemes.tcl"
-#source "$rpr/Themes/$theme.tcl"
+set theme katyusha
+
+source "$rpr/Themes/colorutils.tcl"
+source "$rpr/Themes/awthemes.tcl"
+source "$rpr/Themes/$theme.tcl"
+
+ttk::style theme use $theme
+set tbg [ttk::style lookup TFrame -background]
+lassign [winfo rgb . $tbg] bg_r bg_g bg_b
+. configure -background $tbg
 
 # Tk
 puts -nonewline "Chargement de Tk"

@@ -17,6 +17,7 @@
 proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
     global IMG
     global LOCALE
+    global STYLES
     global etiquettes
     global etiquette_tmp
     global E_nom_etiquette
@@ -47,15 +48,15 @@ proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
     dict set etiquette_tmp "id" $id
 
     # Frame de choix du nom de la table
-    frame $f.nom
-        label $f.nom.l -text $LOCALE(nom_etiquette)
-        entry $f.nom.e -textvariable E_nom_etiquette
+    ttk::frame $f.nom
+        ttk::label $f.nom.l -text $LOCALE(nom_etiquette)
+        ttk::entry $f.nom.e -textvariable E_nom_etiquette
         pack $f.nom.l $f.nom.e -side left
     pack $f.nom -pady 10 -padx 50
     # Texte de l'étiquette
-    frame $f.texte
-        label $f.texte.l -text $LOCALE(texte_etiquette)
-        text $f.texte.t
+    ttk::frame $f.texte
+        ttk::label $f.texte.l -text $LOCALE(texte_etiquette)
+        text $f.texte.t -background [dict get $STYLES "background"] -highlightbackground [dict get $STYLES "graphics"] -highlightcolor [dict get $STYLES "graphics"] -foreground [dict get $STYLES "foreground"] -insertbackground [dict get $STYLES "foreground"] -relief flat
         pack $f.texte.l $f.texte.t
     pack $f.texte -pady 10 -padx 50
     
@@ -64,9 +65,9 @@ proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
         $f.texte.t insert end [dict get $etiquette "texte"]
     }
 
-    frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command INTERFACE_COMMANDE_Etiquettes_ajout
-        button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
+    ttk::frame $f.commandes
+        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command INTERFACE_COMMANDE_Etiquettes_ajout
+        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes -fill x
@@ -77,6 +78,9 @@ proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
     } else {
         wm title $f "$LOCALE(editer_l_etiquette)[dict get $etiquette nom]"
     }
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
     
     # Mise à jour forcée de l'affichage graphique
     update

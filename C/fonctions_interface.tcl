@@ -133,6 +133,7 @@ proc INTERFACE_erreurs_MCD {erreurs} {
 proc INTERFACE_script_SQL {script fichier_script} {
     global IMG
     global LOCALE
+    global STYLES
     
     set f ".fen_script_sql"
     # Détruit la fenêtre si elle existe déjà
@@ -142,22 +143,27 @@ proc INTERFACE_script_SQL {script fichier_script} {
     toplevel $f
     # Icone de la fenêtre
     wm iconphoto $f $IMG(logo)
-    frame $f.commandes
+    
+    ttk::frame $f.commandes
     pack $f.commandes -fill x
-    frame $f.texte
-        text $f.texte.t -yscrollcommand {.fen_script_sql.texte.ysbar set}
-        scrollbar $f.texte.ysbar -orient vertical -command {.fen_script_sql.texte.t yview}
+    ttk::frame $f.texte
+        text $f.texte.t -yscrollcommand {.fen_script_sql.texte.ysbar set} -background [dict get $STYLES "background"] -highlightbackground [dict get $STYLES "graphics"] -highlightcolor [dict get $STYLES "graphics"] -foreground [dict get $STYLES "foreground"] -insertbackground [dict get $STYLES "foreground"] -relief flat
+        ttk::scrollbar $f.texte.ysbar -orient vertical -command {.fen_script_sql.texte.t yview}
         pack $f.texte.t -fill both -side left -expand 1
         pack $f.texte.ysbar -fill both -side left
     pack $f.texte -fill both -expand 1
-    label $f.info -text "$LOCALE(script_enregistre)$fichier_script" -padx 10 -pady 10
-    pack $f.info -fill x
+    ttk::label $f.info -text "$LOCALE(script_enregistre)$fichier_script"
+    pack $f.info -fill x -padx 10 -pady 10
     # Le script
     $f.texte.t insert end $script
     # Coloration de termes SQL
     Katyusha_SQL_coloration $f.texte.t $script
     # Titre le la présente fenêtre
     wm title $f $LOCALE(script_sql)
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
+    
     # Mise à jour forcée de l'affichage graphique
     update
 }
@@ -332,6 +338,10 @@ proc INTERFACE_preferences {} {
     pack $f.commandes
     
     wm title $f $LOCALE(prefs_titre)
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
+    
     # MAJ de l'affichage graphique
     update
 }
@@ -411,6 +421,10 @@ proc INTERFACE_config_bdd {} {
         button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {destroy .fen_config_bdd}
         pack $f.commandes.ok $f.commandes.ko -side left -fill x -padx 50
     pack $f.commandes -fill x
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
+    
     # MAJ de l'affichage graphique
     update
 }
@@ -435,10 +449,14 @@ proc INTERFACE_mise_en_garde {} {
     wm iconphoto $f $IMG(logo)
     
     label $f.l -text "Le système d'exploitation \"$OS\" sur lequel cette instance de Katyusha! MCD à été initiée n'est pas un système libre.\nLe code source n'ayant pas pu être vérifié par un tiers de confiance, votre VIE PRIVÉE est donc en DANGER.\nÉteignez immédiatement votre ordinateur afin de redémarer sur un système d'exploitation libre et donc sûr." -padx 10 -pady 10
-    button $f.ok -text "J'ai compris" -padx 10 -pady 10 -command "destroy $f"
+    button $f.ok -text "J'ai compris" -pady 10 -command "destroy $f"
     pack $f.l $f.ok -fill x
     
     wm title $f "DANGER!"
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
+    
     # MAJ de l'affichage graphique
     update
 }
@@ -475,6 +493,10 @@ proc INTERFACE_license {} {
     pack $f.ok -fill x
     
     wm title $f $LOCALE(licence)
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
+    
     # MAJ de l'affichage graphique
     update
 }
@@ -486,7 +508,7 @@ proc INTERFACE_license {} {
 proc INTERFACE_exporter_svg {} {
     set fichier [tk_getSaveFile]
     if {$fichier != ""} {
-        set svg [canvas2svg .mcd.canvas.c]
+        set svg [canvas2svg .editeurs.notebook_mcd.mcd.canvas.c]
         set fp [open $fichier "w+"]
         puts $fp $svg
         close $fp
@@ -497,7 +519,7 @@ proc INTERFACE_exporter_svg {} {
 #
 ##
 proc INTERFACE_imprimer {} {
-    set taille [Katyusha_SVG_taille_svg .mcd.canvas.c]
+    set taille [Katyusha_SVG_taille_svg .editeurs.notebook_mcd.mcd.canvas.c]
     set fichier [tk_getSaveFile]
     if {$fichier != ""} {
         set fp [open $fichier "w+"]

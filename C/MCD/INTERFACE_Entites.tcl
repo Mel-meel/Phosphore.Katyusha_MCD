@@ -16,6 +16,7 @@
 ##
 proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
     global LOCALE
+    global STYLES
     global coords
     global IMG
     global tables
@@ -50,40 +51,40 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
     wm iconphoto $f $IMG(logo)
     
     # Frame de choix du nom de la table
-    frame $f.nom
-        label $f.nom.l -text $LOCALE(nom_table)
-        entry $f.nom.e -textvariable E_nom_table
+    ttk::frame $f.nom
+        ttk::label $f.nom.l -text $LOCALE(nom_table)
+        ttk::entry $f.nom.e -textvariable E_nom_table
         pack $f.nom.l $f.nom.e -side left
     pack $f.nom -pady 10 -padx 50
     
-    frame $f.attributs
+    ttk::frame $f.attributs
         # Commandes des attributs
-        frame $f.attributs.commandes
+        ttk::frame $f.attributs.commandes
             # Bouton d'ajout d'un nouvel attribut
-            button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_MCD_INTERFACE_Objets_ajout_attribut "table"}
+            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_MCD_INTERFACE_Objets_ajout_attribut "table"}
             # Bouton de supression d'un nouvel attribut
-            button $f.attributs.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_attribut "table"}
+            ttk::button $f.attributs.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_attribut "table"}
             pack $f.attributs.commandes.ajout $f.attributs.commandes.supp -padx 10
         pack $f.attributs.commandes -side left -fill x
         
         # Attributs dans un canvas pour pouvoir utiliser une scrollbar
-        canvas $f.attributs.c -width 1200 -height 400
-        frame $f.attributs.c.f
+        canvas $f.attributs.c -width 1200 -height 400 -background [dict get $STYLES "background"] -highlightbackground [dict get $STYLES "graphics"]
+        ttk::frame $f.attributs.c.f
             # Liste des attributs
-            frame $f.attributs.c.f.liste
-                label $f.attributs.c.f.titre -text $LOCALE(liste_attributs_table)
+            ttk::frame $f.attributs.c.f.liste
+                ttk::label $f.attributs.c.f.titre -text $LOCALE(liste_attributs_table)
                 pack $f.attributs.c.f.titre -fill x
-                frame $f.attributs.c.f.tete
-                    label $f.attributs.c.f.tete.nom -text $LOCALE(nom) -width 20 -height 2 -background white -relief solid
-                    label $f.attributs.c.f.tete.type -text $LOCALE(type) -width 20 -height 2 -background white -relief solid
-                    label $f.attributs.c.f.tete.taille -text $LOCALE(taille) -width 20 -height 2 -background white -relief solid
-                    label $f.attributs.c.f.tete.valeur -text $LOCALE(valeur) -width 20 -height 2 -background white -relief solid
-                    label $f.attributs.c.f.tete.auto -text $LOCALE(auto) -width 20 -height 2 -background white -relief solid
-                    label $f.attributs.c.f.tete.pk -text $LOCALE(pk) -width 20 -height 2 -background white -relief solid
+                ttk::frame $f.attributs.c.f.tete
+                    ttk::label $f.attributs.c.f.tete.nom -text $LOCALE(nom) -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.type -text $LOCALE(type) -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.taille -text $LOCALE(taille) -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.valeur -text $LOCALE(valeur) -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.auto -text $LOCALE(auto) -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.pk -text $LOCALE(pk) -width 20 -background [dict get $STYLES "background"] -relief solid
                     
                     pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.auto $f.attributs.c.f.tete.pk -fill x -side left
-                pack $f.attributs.c.f.tete -fill x
-                frame $f.attributs.c.f.corps
+                pack $f.attributs.c.f.tete -fill both
+                ttk::frame $f.attributs.c.f.corps
                 
                 pack $f.attributs.c.f.corps -fill x
                     ##
@@ -105,9 +106,9 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
     # À voir pour faire fonctionner correctement plus tard
     $f.attributs.c configure -yscrollcommand "$f.attributs.yscroll set"
     
-    frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table
-        button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {
+    ttk::frame $f.commandes
+        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table
+        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {
             if {[winfo exists .fen_ajout_attribut]} {
                 destroy .fen_ajout_attribut
             }
@@ -123,6 +124,9 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
     } else {
         wm title $f "$LOCALE(editer_la_table) : $E_nom_table"
     }
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
     
     # Mise à jour forcée de l'affichage graphique
     update
@@ -152,6 +156,7 @@ proc Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table {} {
 proc INTERFACE_Tables_choix_table {nombre_tables_possibles} {
     global tables
     global LOCALE
+    global STYLES
     global IMG
     global table_choisie
     
@@ -165,24 +170,28 @@ proc INTERFACE_Tables_choix_table {nombre_tables_possibles} {
     # Icone de la fenêtre
     wm iconphoto $f $IMG(logo)
     
-    frame $f.table -padx 10 -pady 10
-        label $f.table.l -text "Choisir une entité :"
+    ttk::frame $f.table -padx 10 -pady 10
+        ttk::label $f.table.l -text "Choisir une entité :"
         ttk::combobox $f.table.cb -values [liste_tables]
         pack $f.table.l $f.table.cb -fill both -side left
     pack $f.table -fill x
-    frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
+    ttk::frame $f.commandes
+        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
             set f ".fen_choix_table"
             global table_choisie
             set table_choisie [$f.table.cb get]
         }
-        button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
+        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes -fill x
     
     # Titre le la présente fenêtre
     wm title $f "Choisir une entité"
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
+    
     # Mise à jour forcée de l'affichage graphique
     update
     

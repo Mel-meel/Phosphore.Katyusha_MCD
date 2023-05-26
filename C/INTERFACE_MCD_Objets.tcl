@@ -23,16 +23,16 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f entite} {
     set attributs [dict get $entite "attributs"]
     foreach {id_attribut_graphique attribut} $attributs {
         #set nom_attribut_graphique [dict get $attribut "nom"]
-        frame $f.$id_attribut_graphique
-            label $f.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 20 -height 2 -background white -relief solid
-            label $f.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 20 -height 2 -background white -relief solid
-            label $f.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 20 -height 2 -background white -relief solid
-            label $f.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -height 2 -background white -relief solid
-            label $f.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -height 2 -background white -relief solid
-            label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -height 2 -background white -relief solid
-            button $f.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_Objets_deplacer_attribut $id_attribut_graphique [expr $id_attribut_graphique - 1]"
-            button $f.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_Objets_deplacer_attribut $id_attribut_graphique [expr $id_attribut_graphique - 1]"
-            button $f.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_attribut table $id_attribut_graphique"
+        ttk::frame $f.$id_attribut_graphique
+            ttk::label $f.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 20 -background white -relief solid
+            ttk::label $f.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 20 -background white -relief solid
+            ttk::label $f.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 20 -background white -relief solid
+            ttk::label $f.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -background white -relief solid
+            ttk::label $f.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -background white -relief solid
+            ttk::label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -background white -relief solid
+            ttk::button $f.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_Objets_deplacer_attribut $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            ttk::button $f.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_Objets_deplacer_attribut $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            ttk::button $f.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_attribut table $id_attribut_graphique"
             pack $f.$id_attribut_graphique.nom $f.$id_attribut_graphique.type $f.$id_attribut_graphique.taille $f.$id_attribut_graphique.valeur $f.$id_attribut_graphique.auto $f.$id_attribut_graphique.pk $f.$id_attribut_graphique.haut $f.$id_attribut_graphique.bas $f.$id_attribut_graphique.edit -side left
         pack $f.$id_attribut_graphique -fill x
                         }
@@ -109,22 +109,22 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
     wm iconphoto $f $IMG(logo)
     
     # Frame de titre
-    frame $f.nom
-        label $f.nom.l -text $LOCALE(prop_attribut)
+    ttk::frame $f.nom
+        ttk::label $f.nom.l -text $LOCALE(prop_attribut)
         pack $f.nom.l -fill x
     pack $f.nom -fill x -pady 10 -padx 50
     
     # Propriétés de l'attribut
-    frame $f.prop
+    ttk::frame $f.prop
         # Nom de l'attribut
-        frame $f.prop.nom
-            label $f.prop.nom.l -text $LOCALE(nom_attribut) -width 40 -anchor w
-            entry $f.prop.nom.e -textvariable E_nom_attribut
+        ttk::frame $f.prop.nom
+            ttk::label $f.prop.nom.l -text $LOCALE(nom_attribut) -width 40 -anchor w
+            ttk::entry $f.prop.nom.e -textvariable E_nom_attribut
             pack $f.prop.nom.l $f.prop.nom.e -side left -fill x
         pack $f.prop.nom -fill x
         # Type de l'attribut
-        frame $f.prop.type
-            label $f.prop.type.l -text $LOCALE(type_attribut) -width 40 -anchor w
+        ttk::frame $f.prop.type
+            ttk::label $f.prop.type.l -text $LOCALE(type_attribut) -width 40 -anchor w
             ttk::combobox $f.prop.type.cb -values [Katyusha_SQL_liste_types]
             pack $f.prop.type.l $f.prop.type.cb -side left -fill x
             if {$id != "null"} {
@@ -132,35 +132,35 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
             }
         pack $f.prop.type -fill x
         # Complément du type de l'attribut
-        frame $f.prop.ctype
-            label $f.prop.ctype.l -text $LOCALE(ctype_attribut) -width 40 -anchor w
+        ttk::frame $f.prop.ctype
+            ttk::label $f.prop.ctype.l -text $LOCALE(ctype_attribut) -width 40 -anchor w
             ttk::entry $f.prop.ctype.e -textvariable $E_ctype_attribut
             pack $f.prop.ctype.l $f.prop.ctype.e -side left -fill x
         pack $f.prop.ctype -fill x
         # Taille de l'attribut (0 pour la valeur par défaut du SGBD)
-        frame $f.prop.taille
-            label $f.prop.taille.l -text $LOCALE(taille_attribut) -width 40 -anchor w
-            spinbox $f.prop.taille.sb -from 0 -to 255 -increment 1
+        ttk::frame $f.prop.taille
+            ttk::label $f.prop.taille.l -text $LOCALE(taille_attribut) -width 40 -anchor w
+            ttk::spinbox $f.prop.taille.sb -from 0 -to 255 -increment 1
             pack $f.prop.taille.l $f.prop.taille.sb -side left -fill x
         pack $f.prop.taille -fill x
-        label $f.prop.info_taille -text $LOCALE(taille_info_attribut) -foreground red -anchor w -justify left
+        ttk::label $f.prop.info_taille -text $LOCALE(taille_info_attribut) -foreground red -anchor w -justify left
         pack $f.prop.info_taille -fill x
         # Null?
-        frame $f.prop.null
-            label $f.prop.null.l -text $LOCALE(null_attribut) -width 40 -anchor w
-            checkbutton $f.prop.null.cb -onvalue 1 -offvalue 0 -variable E_null_attribut
+        ttk::frame $f.prop.null
+            ttk::label $f.prop.null.l -text $LOCALE(null_attribut) -width 40 -anchor w
+            ttk::checkbutton $f.prop.null.cb -onvalue 1 -offvalue 0 -variable E_null_attribut
             pack $f.prop.null.l $f.prop.null.cb -side left -fill x
         pack $f.prop.null -fill x
         # Valeur par défaut
-        frame $f.prop.valeur
-            label $f.prop.valeur.l -text $LOCALE(valeur_attribut) -width 40 -anchor w
-            entry $f.prop.valeur.e -textvariable E_valeur_attribut
+        ttk::frame $f.prop.valeur
+            ttk::label $f.prop.valeur.l -text $LOCALE(valeur_attribut) -width 40 -anchor w
+            ttk::entry $f.prop.valeur.e -textvariable E_valeur_attribut
             pack $f.prop.valeur.l $f.prop.valeur.e -side left -fill x
         pack $f.prop.valeur -fill x
         # Incrémentation automatique?
-        frame $f.prop.auto
-            label $f.prop.auto.l -text $LOCALE(auto_attribut) -width 40 -anchor w
-            checkbutton $f.prop.auto.cb -onvalue 1 -offvalue 0 -variable E_auto_attribut
+        ttk::frame $f.prop.auto
+            ttk::label $f.prop.auto.l -text $LOCALE(auto_attribut) -width 40 -anchor w
+            ttk::checkbutton $f.prop.auto.cb -onvalue 1 -offvalue 0 -variable E_auto_attribut
             pack $f.prop.auto.l $f.prop.auto.cb -side left -fill x
         pack $f.prop.auto -fill x
         # Si l'attribut est en incrémentation utomatique, il ne peut pas être null

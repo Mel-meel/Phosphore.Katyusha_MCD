@@ -13,6 +13,7 @@ proc INTERFACE_Heritages_ajout {x y {id "null"}} {
     global heritages
     global tables
     global LOCALE
+    global STYLES
     global IMG
     
     # Initialise l'heritage temporaire
@@ -44,33 +45,33 @@ proc INTERFACE_Heritages_ajout {x y {id "null"}} {
     
     # Il doit y avoir au moins une table dans le MCD pour ajouter un héritage (la table mère)
     if {[dict size $tables] > 0} {
-    frame $f.mere -padx 10 -pady 10
+    ttk::frame $f.mere -padx 10 -pady 10
         #label $f.mere.l -text $LOCALE(table_mere)
         #ttk::combobox $f.mere.cb -values [liste_tables]
         #pack $f.mere.l $f.mere.cb -fill both -side left
         #if {$id != "null"} {
         #    $f.mere.cb set $table_mere
         #}
-        button $f.mere.table -text $LOCALE(table_mere) -command INTERFACE_Heritages_ajout_table_mere
-        label $f.mere.label -text $table_mere
+        ttk::button $f.mere.table -text $LOCALE(table_mere) -command INTERFACE_Heritages_ajout_table_mere
+        ttk::label $f.mere.label -text $table_mere
         pack $f.mere.table $f.mere.label -side left -fill x
     pack $f.mere -fill x
-    frame $f.filles -padx 10 -pady 10
-            label $f.filles.tete -text $LOCALE(liste_tables_filles)
+    ttk::frame $f.filles -padx 10 -pady 10
+            ttk::label $f.filles.tete -text $LOCALE(liste_tables_filles)
             pack $f.filles.tete -fill x
-        frame $f.filles.commandes
-            button $f.filles.commandes.ajout -text "+" -image $IMG(ajouter) -command {INTERFACE_Heritages_ajout_table_fille}
-            button $f.filles.commandes.supp -text "-" -image $IMG(supprimer) -command {INTERFACE_Heritages_supp_table_fille}
+        ttk::frame $f.filles.commandes
+            ttk::button $f.filles.commandes.ajout -text "+" -image $IMG(ajouter) -command {INTERFACE_Heritages_ajout_table_fille}
+            ttk::button $f.filles.commandes.supp -text "-" -image $IMG(supprimer) -command {INTERFACE_Heritages_supp_table_fille}
             pack $f.filles.commandes.ajout $f.filles.commandes.supp -padx 10
         pack $f.filles.commandes -fill x -side left
-        frame $f.filles.liste
-            frame $f.filles.liste.corps
+        ttk::frame $f.filles.liste
+            ttk::frame $f.filles.liste.corps
             ##
             # Ici, s'affiche la liste des tables filles de l'héritage
             ##
             if {$id != "null"} {
                 foreach {k table_fille} [dict get $heritage_tmp "filles"] {
-                    label $f.filles.liste.corps.$k -text [dict get [dict get $tables $table_fille] "nom"] -height 2 -width 40 -background white -relief solid
+                    ttk::label $f.filles.liste.corps.$k -text [dict get [dict get $tables $table_fille] "nom"] -width 40 -background white -relief solid
                     pack $f.filles.liste.corps.$k -fill x
                 }
             }
@@ -81,17 +82,17 @@ proc INTERFACE_Heritages_ajout {x y {id "null"}} {
     # Constraintes de l'héitage
     # XT, X, T ou aucune contrainte
     ##
-    frame $f.contrainte -padx 10 -pady 10
-        label $f.contrainte.l -text "Contrainte de l'héritage"
+    ttk::frame $f.contrainte -padx 10 -pady 10
+        ttk::label $f.contrainte.l -text "Contrainte de l'héritage"
         ttk::combobox $f.contrainte.cb -values [list "" "XT" "X" "T"]
         if {$id != "null"} {
             $f.contrainte.cb set $contrainte
         }
         pack $f.contrainte.l $f.contrainte.cb -fill both
     pack $f.contrainte -fill x
-    frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "INTERFACE_COMMANDE_Heritage_ajout $x $y $id"
-        button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
+    ttk::frame $f.commandes
+        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "INTERFACE_COMMANDE_Heritage_ajout $x $y $id"
+        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes -fill x
@@ -107,6 +108,9 @@ proc INTERFACE_Heritages_ajout {x y {id "null"}} {
     } else {
         wm title $f "$LOCALE(editer_l_heritage)$id"
     }
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
     
     # Mise à jour forcée de l'affichage graphique
     update
@@ -135,6 +139,7 @@ proc INTERFACE_Heritages_ajout_table_mere {} {
     global tables
     global LOCALE
     global IMG
+    global STYLES
     
     set f ".fen_heritage_ajout_table_mere"
     
@@ -146,26 +151,29 @@ proc INTERFACE_Heritages_ajout_table_mere {} {
     # Icone de la fenêtre
     wm iconphoto $f $IMG(logo)
     
-    frame $f.table -padx 10 -pady 10
-        label $f.table.l -text $LOCALE(table_mere)
+    ttk::frame $f.table -padx 10 -pady 10
+        ttk::label $f.table.l -text $LOCALE(table_mere)
         ttk::combobox $f.table.cb -values [liste_tables]
         pack $f.table.l $f.table.cb -fill both -side left
     pack $f.table -fill x
-    frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
+    ttk::frame $f.commandes
+        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
             global heritage_tmp
             set f ".fen_heritage_ajout_table_mere"
             dict set heritage_tmp "mere" [Katyusha_Tables_ID_table [$f.table.cb get]]
             .fen_ajout_heritage.mere.label configure -text [$f.table.cb get]
             destroy $f
         }
-        button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
+        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes -fill x
     
     # Titre le la présente fenêtre
     wm title $f $LOCALE(ajouter_table_mere)
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
     
     # Mise à jour forcée de l'affichage graphique
     update
@@ -180,6 +188,7 @@ proc INTERFACE_Heritages_ajout_table_fille {} {
     global tables
     global LOCALE
     global IMG
+    global STYLES
     
     set f ".fen_heritage_ajout_table_fille"
     
@@ -191,24 +200,27 @@ proc INTERFACE_Heritages_ajout_table_fille {} {
     # Icone de la fenêtre
     wm iconphoto $f $IMG(logo)
     
-    frame $f.table -padx 10 -pady 10
-        label $f.table.l -text $LOCALE(table_fille)
+    ttk::frame $f.table -padx 10 -pady 10
+        ttk::label $f.table.l -text $LOCALE(table_fille)
         ttk::combobox $f.table.cb -values [liste_tables]
         pack $f.table.l $f.table.cb -fill both -side left
     pack $f.table -fill x
-    frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
+    ttk::frame $f.commandes
+        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
             set f ".fen_heritage_ajout_table_fille"
             Katyusha_Heritages_ajout_table_fille [Katyusha_Tables_ID_table [$f.table.cb get]] [$f.table.cb get]
             destroy $f
         }
-        button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
+        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes -fill x
     
     # Titre le la présente fenêtre
     wm title $f $LOCALE(ajouter_table_fille)
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
     
     # Mise à jour forcée de l'affichage graphique
     update
@@ -222,6 +234,7 @@ proc INTERFACE_Heritages_supp_table_fille {} {
     global tables
     global LOCALE
     global IMG
+    global STYLES
     
     set f ".fen_supp_table_fille"
     set defaut_valeur "null"
@@ -243,21 +256,25 @@ proc INTERFACE_Heritages_supp_table_fille {} {
     wm iconphoto $f $IMG(logo)
     
     # Frame de titre
-    frame $f.nom
-        label $f.nom.l -text $LOCALE(supprimer_table_fille_selection)
+    ttk::frame $f.nom
+        ttk::label $f.nom.l -text $LOCALE(supprimer_table_fille_selection)
         pack $f.nom.l -fill x
     pack $f.nom -fill x -pady 10 -padx 50
     ttk::combobox $f.cb -value $liste_filles -width 50
     pack $f.cb
-    frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command INTERFACE_COMMANDE_suppression_table_fille
-        button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
+    ttk::frame $f.commandes
+        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command INTERFACE_COMMANDE_suppression_table_fille
+        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes
     
     # Titre le la présente fenêtre
     wm title $f $LOCALE(supprimer_table_fille)
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
+    
     update
 }
 
