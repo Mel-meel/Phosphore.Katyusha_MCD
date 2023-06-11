@@ -194,16 +194,16 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
     ttk::frame $parent.notebook_mcd.panel
         ttk::frame $parent.notebook_mcd.panel.commandes
             # Bouton on/off d'ajout d'une entité
-            button $parent.notebook_mcd.panel.commandes.ajout_table -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_action_boutons_ajout "table"}
+            button $parent.notebook_mcd.panel.commandes.ajout_table -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_MCD_action_boutons_ajout "table"}
             tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_table $LOCALE(ajouter_table)
             # Bouton on/off d'ajout d'une association
-            button $parent.notebook_mcd.panel.commandes.ajout_relation -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_action_boutons_ajout "relation"}
+            button $parent.notebook_mcd.panel.commandes.ajout_relation -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_MCD_action_boutons_ajout "relation"}
             tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_relation $LOCALE(ajouter_relation)
             # Bouton on/off d'ajout d'un héritage
-            button $parent.notebook_mcd.panel.commandes.ajout_heritage -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_heritage) -image $IMG(ajouter_heritage) -command {Katyusha_action_boutons_ajout "heritage"}
+            button $parent.notebook_mcd.panel.commandes.ajout_heritage -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_heritage) -image $IMG(ajouter_heritage) -command {Katyusha_MCD_action_boutons_ajout "heritage"}
             tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_heritage $LOCALE(ajouter_heritage)
             # Bouton on/off d'ajout d'une étiquette
-            button $parent.notebook_mcd.panel.commandes.ajout_etiquette -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_etiquette) -image $IMG(ajouter_etiquette) -command {Katyusha_action_boutons_ajout "etiquette"}
+            button $parent.notebook_mcd.panel.commandes.ajout_etiquette -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_etiquette) -image $IMG(ajouter_etiquette) -command {Katyusha_MCD_action_boutons_ajout "etiquette"}
             tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_etiquette $LOCALE(ajouter_etiquette)
             pack $parent.notebook_mcd.panel.commandes.ajout_table $parent.notebook_mcd.panel.commandes.ajout_relation $parent.notebook_mcd.panel.commandes.ajout_etiquette $parent.notebook_mcd.panel.commandes.ajout_heritage -side left
         pack $parent.notebook_mcd.panel.commandes
@@ -261,19 +261,10 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
     
     ttk::frame $parent.notebook_uml.panel
         ttk::frame $parent.notebook_uml.panel.commandes
-            # Bouton on/off d'ajout d'une entité
-            button $parent.notebook_uml.panel.commandes.ajout_table -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_action_boutons_ajout "table"}
-            tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_table $LOCALE(ajouter_table)
-            # Bouton on/off d'ajout d'une association
-            button $parent.notebook_uml.panel.commandes.ajout_relation -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_action_boutons_ajout "relation"}
-            tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_relation $LOCALE(ajouter_relation)
-            # Bouton on/off d'ajout d'un héritage
-            button $parent.notebook_uml.panel.commandes.ajout_heritage -text $LOCALE(ajouter_heritage) -image $IMG(ajouter_heritage) -command {Katyusha_action_boutons_ajout "heritage"}
-            tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_heritage $LOCALE(ajouter_heritage)
-            # Bouton on/off d'ajout d'une étiquette
-            button $parent.notebook_uml.panel.commandes.ajout_etiquette -text $LOCALE(ajouter_etiquette) -image $IMG(ajouter_etiquette) -command {Katyusha_action_boutons_ajout "etiquette"}
-            tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_etiquette $LOCALE(ajouter_etiquette)
-            pack $parent.notebook_uml.panel.commandes.ajout_table $parent.notebook_mcd.panel.commandes.ajout_relation $parent.notebook_mcd.panel.commandes.ajout_etiquette $parent.notebook_uml.panel.commandes.ajout_heritage -side left
+            # Bouton on/off d'ajout d'une classe
+            button $parent.notebook_uml.panel.commandes.ajout_classe -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_UML_action_boutons_ajout "classe"}
+            tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_classe $LOCALE(ajouter_table)
+            pack $parent.notebook_uml.panel.commandes.ajout_classe -side left
         pack $parent.notebook_uml.panel.commandes
         ttk::label $parent.notebook_uml.panel.entites -text [phgt::mc "Objets du digramme de classes"] -justify left
         pack $parent.notebook_uml.panel.entites -fill x -pady 10 -padx 5

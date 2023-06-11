@@ -19,26 +19,6 @@ proc lremove {liste quoi} {
     return [lsearch -all -inline -not -exact $liste $quoi]
 }
 
-proc Katyusha_action_boutons_ajout {entite_select} {
-    global ACTION_B1
-    global NOTEBOOK_MCD
-    
-    set entites [list "table" "relation" "etiquette"]
-    
-    if {$ACTION_B1 == "ajout_$entite_select"} {
-        set ACTION_B1 "null"
-        $NOTEBOOK_MCD.panel.commandes.ajout_$entite_select configure -relief raised
-    } else {
-        set ACTION_B1 "ajout_$entite_select"
-        $NOTEBOOK_MCD.panel.commandes.ajout_$entite_select configure -relief sunken
-    }
-    foreach entite $entites {
-        if {$entite != $entite_select} {
-            $NOTEBOOK_MCD.panel.commandes.ajout_$entite configure -relief raised
-        }
-    }
-}
-
 ##
 # Remet sur off tous les boutons de commande
 ##
@@ -46,11 +26,13 @@ proc Katyusha_boutons_ajout_off {} {
     global ACTION_B1
     global CONFIGS
     global NOTEBOOK_MCD
+    global ENV
     
     foreach bouton [list "ajout_table" "ajout_relation" "ajout_etiquette" "ajout_heritage"] {
         $NOTEBOOK_MCD.panel.commandes.$bouton configure -relief raised
     }
     set ACTION_B1 "null"
+    set ENV "null"
 }
 
 ##

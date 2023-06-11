@@ -107,6 +107,7 @@ proc Katyusha_Tables_creer_affichage_graphique {ID table} {
     global rpr
     global CONFIGS
     global ZONE_MCD
+    global ENV
     
     # Récupère le nom de la table
     set nom [dict get $table "nom"]
@@ -188,7 +189,7 @@ proc Katyusha_Tables_modification_graphique {id table} {
 }
 
 ##
-# Ajoute une table
+# Ajoute une entité au MCD et appel la création de sa classes UML correspondante
 ##
 proc ajout_table {table_tmp} {
     # Charge la variable globale contenant toutes les tables
@@ -202,7 +203,11 @@ proc ajout_table {table_tmp} {
     set graph [Katyusha_Tables_creer_affichage_graphique $ID $table_tmp]
     # Ajoute la liste temporaire au dictionnaire graphique des tables
     dict set tables_graphique $ID $graph
-    puts "Ajout de l'entité : [dict get $table_tmp nom]"
+    puts [phgt::mc "Ajout de l'entité : [dict get $table_tmp nom]"]
+    
+    # Créé la classe UML
+    Katyusha_UML_Classe_creer_classe_depuis_entite $ID $table_tmp
+    
     set ID [expr $ID + 1]
     #puts [.mcd.canvas.c coords [lindex $graph 0]]
     unset graph id
@@ -256,7 +261,7 @@ proc suppression_table {{table "null"}} {
     Katyusha_Tables_suppression_lignes $table
     dict unset tables_graphique $table
     Katyusha_MCD_Objets_maj_arbre_objets
-    puts "Entité $nom supprimée"
+    puts [phgt::mc "Entité $nom supprimée"]
     unset nom
 }
 

@@ -97,6 +97,7 @@ proc Katyusha_MCD_nouveau {} {
 
 proc Katyusha_MCD_canvas_effacer {} {
     global ZONE_MCD
+    
     $ZONE_MCD.canvas.c delete "table"
     $ZONE_MCD.canvas.c delete "objet"
     $ZONE_MCD.canvas.c delete "relation"
@@ -105,4 +106,26 @@ proc Katyusha_MCD_canvas_effacer {} {
     $ZONE_MCD.canvas.c delete "heritage"
     #$ZONE_MCD.canvas.c delete "ligne_heritage"
     $ZONE_MCD.canvas.c delete "texte_cardinalite"
+}
+
+proc Katyusha_MCD_action_boutons_ajout {objet_select} {
+    global ACTION_B1
+    global NOTEBOOK_MCD
+    global ENV
+    
+    set objets [list "table" "relation" "etiquette"]
+    set ENV "mcd"
+    
+    if {$ACTION_B1 == "ajout_$objet_select"} {
+        set ACTION_B1 "null"
+        $NOTEBOOK_MCD.panel.commandes.ajout_$objet_select configure -relief raised
+    } else {
+        set ACTION_B1 "ajout_$objet_select"
+        $NOTEBOOK_MCD.panel.commandes.ajout_$objet_select configure -relief sunken
+    }
+    foreach objet $objets {
+        if {$objet != $objet_select} {
+            $NOTEBOOK_MCD.panel.commandes.ajout_$objet configure -relief raised
+        }
+    }
 }

@@ -39,6 +39,7 @@ source "$rpr/C/MCD/MCD.tcl"
 
 source "$rpr/C/UML/Objets.tcl"
 source "$rpr/C/UML/Classes.tcl"
+source "$rpr/C/UML/UML.tcl"
 
 
 source "$rpr/C/INTERFACE_Code.tcl"
@@ -114,7 +115,10 @@ Katyusha_Configurations_charge $rpr $rep_configs
 # Répertoire par défaut des projets Katyusha MCD
 set id_projet -1
 
+set ENV "null"
+
 Katyusha_MCD_init
+Katyusha_UML_init
 
 set version 0.4.6
 set splash [lindex [list "Катюша!" "Katyusha!" "!کاتیوشا" "कात्युषा" "კატიუშა" "Կատյուշա" "Катюша!"] [expr int((rand() * 7) + 1) - 1]]
@@ -148,6 +152,7 @@ puts "OK!"
 
 set OS [lindex $tcl_platform(os) 0]
 set NOTEBOOK_MCD ".editeurs.notebook_mcd"
+set NOTEBOOK_UML ".editeurs.notebook_uml"
 set ZONE_MCD ".editeurs.notebook_mcd.mcd"
 set ZONE_UML ".editeurs.notebook_uml.uml"
 
