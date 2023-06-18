@@ -15,11 +15,14 @@
 proc Katyusha_UML_init {} {
     global classes
     global classes_graphique
+    global ID_UML
+    global ID
     
     # Dictionnaire contenant toutes les classes et leurs informations, sauf graphiques
     set classes [dict create]
     #
     set classes_graphique [dict create]
+    set ID_UML $ID
 }
 
 proc Katyusha_UML_canvas_effacer {} {
@@ -47,4 +50,22 @@ proc Katyusha_UML_action_boutons_ajout {objet_select} {
             $NOTEBOOK_UML.panel.commandes.ajout_$objet configure -relief raised
         }
     }
+}
+
+
+
+##
+# Remet sur off tous les boutons de commande
+##
+proc Katyusha_UML_boutons_ajout_off {} {
+    global ACTION_B1
+    global CONFIGS
+    global NOTEBOOK_UML
+    global ENV
+    
+    foreach bouton [list "ajout_classe"] {
+        $NOTEBOOK_UML.panel.commandes.$bouton configure -relief raised
+    }
+    set ACTION_B1 "null"
+    set ENV "null"
 }

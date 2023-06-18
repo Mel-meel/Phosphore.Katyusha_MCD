@@ -206,7 +206,7 @@ proc ajout_table {table_tmp} {
     puts [phgt::mc "Ajout de l'entité : [dict get $table_tmp nom]"]
     
     # Créé la classe UML
-    Katyusha_UML_Classe_creer_classe_depuis_entite $ID $table_tmp
+    Katyusha_UML_Classes_creer_classe_depuis_entite $ID $table_tmp
     
     set ID [expr $ID + 1]
     #puts [.mcd.canvas.c coords [lindex $graph 0]]
