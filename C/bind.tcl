@@ -88,8 +88,10 @@ $ZONE_MCD.canvas.c bind table <Button-1> {
 
 $ZONE_MCD.canvas.c bind table <B1-Motion> {
     global tables_graphique
+    global classes_graphique
     global CONFIGS
     global ZONE_MCD
+    global ZONE_UML
     
     set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
     set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
@@ -103,11 +105,18 @@ $ZONE_MCD.canvas.c bind table <B1-Motion> {
             foreach c [dict get $tables_graphique $tag] {
                 $ZONE_MCD.canvas.c move $c $changed_x $changed_y
             }
+            foreach c [dict get $classes_graphique $tag] {
+                $ZONE_UML.modelisation.c move $c $changed_x $changed_y
+            }
             set coords [$ZONE_MCD.canvas.c coords $id_graphique]
             # MAJ des coordonnées de l'entité
             set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
             set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
             Katyusha_Tables_MAJ_coords $tag [list $x $y]
+            
+            # Répercute les changements sur la zone UML
+            Katyusha_UML_Classes_MAJ_coords $tag [list $x $y]
+            
             # MAJ de la ligne reliant l'entité à son association
             Katyusha_Tables_MAJ_ligne_coords $tag [list [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
         #}

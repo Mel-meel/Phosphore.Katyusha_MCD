@@ -27,7 +27,7 @@ proc Katyusha_UML_init {} {
 
 proc Katyusha_UML_canvas_effacer {} {
     global ZONE_UML
-    $ZONE_MCD.canvas.c delete "classes"
+    $ZONE_MCD.modelisation.c delete "objet_uml"
 }
 
 proc Katyusha_UML_action_boutons_ajout {objet_select} {
@@ -51,8 +51,6 @@ proc Katyusha_UML_action_boutons_ajout {objet_select} {
         }
     }
 }
-
-
 
 ##
 # Remet sur off tous les boutons de commande
