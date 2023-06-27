@@ -159,7 +159,7 @@ set ZONE_UML ".editeurs.notebook_uml.uml"
 
 puts "OS : $OS"
 
-after 1000
+after 2000
 
 Katyusha_Interface
 source "$rpr/C/bind.tcl"
