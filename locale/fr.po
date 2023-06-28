@@ -268,94 +268,223 @@ msgid "Il n'y a pas assez d'entités dans le MCD."
 msgstr "Il n'y a pas assez d'entités dans le MCD."
 
 # Ajout d'une étiquette
-set LOCALE(ajouter_une_etiquette) "Ajouter une étiquette"
-set LOCALE(editer_l_etiquette) "Éditer l'étiquette :"
-set LOCALE(nom_etiquette) "Nom de l'étiquette :"
-set LOCALE(texte_etiquette) "Texte de l'étiquette"
+msgid "Ajouter une étiquette"
+msgstr "Ajouter une étiquette"
+
+msgid "Éditer l'étiquette :"
+msgstr "Éditer l'étiquette :"
+
+msgid "Nom de l'étiquette :"
+msgstr "Nom de l'étiquette :"
+
+msgid "Texte de l'étiquette"
+msgstr "Texte de l'étiquette"
+
 # Supprimer une entité
-set LOCALE(sure_supprimer_entite) "Sure de vouloir supprimer cette "
+msgid "Sure de vouloir supprimer cette "
+msgstr "Sure de vouloir supprimer cette "
+
 # Ajout d'un attribut à une table ou une étiquette
-set LOCALE(ajouter_attribut) "Ajouter un attribut"
-set LOCALE(prop_attribut) "Propriétés de l'attribut"
-set LOCALE(nom_attribut) "Nom de l'attribut : "
-set LOCALE(type_attribut) "Type de l'attribut : "
-set LOCALE(ctype_attribut) "Complément du type de l'attribut : "
-set LOCALE(taille_attribut) "Taille de l'attribut : "
-set LOCALE(taille_info_attribut) "Attention, tous les type ne possèdent pas de taille. Si c'est le cas, ce paramètre sera simplement ignoré.\nLaisser \"0\" pour utiliser la valeur par défaut du SGBD."
-set LOCALE(null_attribut) "Cocher si l'attribut peu être nul : "
-set LOCALE(valeur_attribut) "Valeur par défaut de l'attribut : "
-set LOCALE(auto_attribut) "Incrémentation automatique? : "
-set LOCALE(pk_attribut) "Clef primaire? : "
+msgid "Ajouter un attribut"
+msgstr "Ajouter un attribut"
+
+msgid "Propriétés de l'attribut"
+msgstr "Propriétés de l'attribut"
+
+msgid "Nom de l'attribut : "
+msgstr "Nom de l'attribut : "
+
+msgid "Type de l'attribut : "
+msgstr "Type de l'attribut : "
+
+msgid "Complément du type de l'attribut : "
+msgstr "Complément du type de l'attribut : "
+
+msgid "Taille de l'attribut : "
+msgstr "Taille de l'attribut : "
+
+msgid "Attention, tous les type ne possèdent pas de taille. Si c'est le cas, ce paramètre sera simplement ignoré.\nLaisser \"0\" pour utiliser la valeur par défaut du SGBD."
+msgstr "Attention, tous les type ne possèdent pas de taille. Si c'est le cas, ce paramètre sera simplement ignoré.\nLaisser \"0\" pour utiliser la valeur par défaut du SGBD."
+
+msgid "Cocher si l'attribut peu être nul : "
+msgstr "Cocher si l'attribut peu être nul : "
+
+msgid "Valeur par défaut de l'attribut : "
+msgstr "Valeur par défaut de l'attribut : "
+
+msgid "Incrémentation automatique? : "
+msgstr "Incrémentation automatique? : "
+
+msgid "Clef primaire? : "
+msgstr "Clef primaire? : "
+
 # Supprimer un attribut
-set LOCALE(supprimer_attribut) "Supprimer un attribut"
-set LOCALE(supprimer_attribut_selection) "Sélectionner un attribut à supprimer"
-set LOCALE(aucun_attribut_selectionne) "Aucun attribut n'a été sélectionné"
+msgid "Supprimer un attribut"
+msgstr "Supprimer un attribut"
+
+msgid "Sélectionner un attribut à supprimer"
+msgstr "Sélectionner un attribut à supprimer"
+
+msgid "Aucun attribut n'a été sélectionné"
+msgstr "Aucun attribut n'a été sélectionné"
+
 # Ajout d'un héritage
-set LOCALE(pas_assez_table) "Le MCD doit contenir au moins une entité pour ajouter un héritage"
-set LOCALE(ajouter_un_heritage) "Ajouter un héritage"
-set LOCALE(editer_l_heritage) "Éditer l'héritage : "
-set LOCALE(table_mere) "Entité mère : "
-set LOCALE(cliquer_choisir_table_mere) "Cliquer pour choisir une table mère"
-set LOCALE(liste_tables_filles) "Liste des entités filles"
+msgid "Le MCD doit contenir au moins une entité pour ajouter un héritage"
+msgstr "Le MCD doit contenir au moins une entité pour ajouter un héritage"
+
+msgid "Ajouter un héritage"
+msgstr "Ajouter un héritage"
+
+msgid "Éditer l'héritage : "
+msgstr "Éditer l'héritage : "
+
+msgid "Entité mère : "
+msgstr "Entité mère : "
+
+msgid "Cliquer pour choisir une table mère"
+msgstr "Cliquer pour choisir une table mère"
+
+msgid "Liste des entités filles"
+msgstr "Liste des entités filles"
+
 # Ajout d'une table mère à l'héritage
-set LOCALE(ajouter_table_mere) "Ajouter une entité mère à l'héritage"
-set LOCALE(table_mere) "Entité mère : "
+msgid "Ajouter une entité mère à l'héritage"
+msgstr "Ajouter une entité mère à l'héritage"
+
+msgid "Entité mère : "
+msgstr "Entité mère : "
+
 # Ajout d'une table fille à l'héritage
-set LOCALE(ajouter_table_fille) "Ajouter une entité fille à l'héritage"
-set LOCALE(table_fille) "Entité fille : "
+msgid "Ajouter une entité fille à l'héritage"
+msgstr "Ajouter une entité fille à l'héritage"
+
+msgid "Entité fille : "
+msgstr "Entité fille : "
+
 # Suppression d'une table fille à un héritage
-set LOCALE(supprimer_table_fille_selection) "Sélectionner une entité fille à supprimer"
-set LOCALE(supprimer_table_fille) "Supprimer une entité fille"
-set LOCALE(aucune_table_selectionne) "Aucune entité sélectionnée"
+msgid "Sélectionner une entité fille à supprimer"
+msgstr "Sélectionner une entité fille à supprimer"
+
+msgid "Supprimer une entité fille"
+msgstr "Supprimer une entité fille"
+
+msgid "Aucune entité sélectionnée"
+msgstr "Aucune entité sélectionnée"
+
 # À propos
-set LOCALE(TITRE_a_propos) "À propos de Katyusha MCD"
-set LOCALE(TEXTE_a_propos) "Katyusha MCD est un composant du Projet Phosphore\nDistribué sous licence GPL v3\nCopyleft (c) 2019 - 2022\n Mélanie Verdon Avizou"
+msgid "À propos de Katyusha MCD"
+msgstr "À propos de Katyusha MCD"
+
+msgid "Katyusha MCD est un composant du Projet Phosphore\nDistribué sous licence GPL v3\nCopyleft (c) 2019 - 2023\n Mélanie Verdon Avizou"
+msgstr "Katyusha MCD est un composant du Projet Phosphore\nDistribué sous licence GPL v3\nCopyleft (c) 2019 - 2023\n Mélanie Verdon Avizou"
+
 # Supression entité
-set LOCALE(sure_suppression_table) "Sure de vouloir supprimer cette entité?"
-set LOCALE(sure_suppression_relation) "Sure de vouloir supprimer cette relation?"
+msgid "Sure de vouloir supprimer cette entité?"
+msgstr "Sure de vouloir supprimer cette entité?"
+
+msgid "Sure de vouloir supprimer cette relation?"
+msgstr "Sure de vouloir supprimer cette relation?"
+
 # Préférences
-set LOCALE(prefs_titre) "Préférences de Katyusha MCD"
-set LOCALE(prefs_choix_langue) "Choix de la langue : "
-set LOCALE(prefs_taille_fenetre) "Taille de la fenêtre (auto pour une configuration automatique) : "
-set LOCALE(prefs_taille_fenetre_alerte) "Attention, la configuration automatique fonctionne mal avec les écrans multiples!"
-set LOCALE(prefs_nom_bdd_defaut) "Nom par défaut de la base de donnée : "
-set LOCALE(prefs_sgbd_defaut) "SGBD à utiliser par défaut : "
-set LOCALE(prefs_taille_canvas) "Taille du canvas : "
-set LOCALE(prefs_alerte_configs_redemarrage) "Le changement de certaines configurations ne prendra effet qu'au redémarrage de Katyusha MCD."
-set LOCALE(prefs_taille_fenetre) "Taille de la fenêtre (auto pour une configuration automatique) : "
-set LOCALE(prefs_titre_choix_props_att) "Choisir les propriétés des attributs à afficher à l'intérieur des objets du MCD"
-set LOCALE(prefs_pk) "Clef primaire"
-set LOCALE(prefs_nom) "Nom"
-set LOCALE(prefs_type) "Type"
-set LOCALE(prefs_taille) "Taille de l'attribut"
-set LOCALE(prefs_null) "Si l'attribut peut être nul"
-set LOCALE(prefs_defaut) "Varleur par défaut"
+msgid "Préférences de Katyusha MCD"
+msgstr "Préférences de Katyusha MCD"
+
+msgid "Choix de la langue : "
+msgstr "Choix de la langue : "
+
+msgid "Taille de la fenêtre (auto pour une configuration automatique) : "
+msgstr "Taille de la fenêtre (auto pour une configuration automatique) : "
+
+msgid "Attention, la configuration automatique fonctionne mal avec les écrans multiples!"
+msgstr "Attention, la configuration automatique fonctionne mal avec les écrans multiples!"
+
+msgid "Nom par défaut de la base de donnée : "
+msgstr "Nom par défaut de la base de donnée : "
+
+msgid "SGBD à utiliser par défaut : "
+msgstr "SGBD à utiliser par défaut : "
+
+msgid "Taille du canvas : "
+msgstr "Taille du canvas : "
+
+msgid "Le changement de certaines configurations ne prendra effet qu'au redémarrage de Katyusha MCD."
+msgstr "Le changement de certaines configurations ne prendra effet qu'au redémarrage de Katyusha MCD."
+
+msgid "Taille de la fenêtre (auto pour une configuration automatique) : "
+msgstr "Taille de la fenêtre (auto pour une configuration automatique) : "
+
+msgid "Choisir les propriétés des attributs à afficher à l'intérieur des objets du MCD"
+msgstr "Choisir les propriétés des attributs à afficher à l'intérieur des objets du MCD"
+
+msgid "Clef primaire"
+msgstr "Clef primaire"
+
+msgid "Nom"
+msgstr "Nom"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Taille de l'attribut"
+msgstr "Taille de l'attribut"
+
+msgid "Si l'attribut peut être nul"
+msgstr "Si l'attribut peut être nul"
+
+msgid "Varleur par défaut"
+msgstr "Varleur par défaut"
+
 # Configurations BDD
-set LOCALE(config_mcd_titre) "Configuration du projet"
-set LOCALE(nom_projet) "Nom du projet : "
-set LOCALE(liste_sgbd) "Liste des SGBD : "
+msgid "Configuration du projet"
+msgstr "Configuration du projet"
+
+msgid "Nom du projet : "
+msgstr "Nom du projet : "
+
+msgid "Liste des SGBD : "
+msgstr "Liste des SGBD : "
+
 # Sauvegarde
-set LOCALE(mcd_sauv_sous) "MCD sauvegarder sous : "
+msgid "MCD sauvegarder sous : "
+msgstr "MCD sauvegarder sous : "
+
 # Véréfication du MCD
-set LOCALE(relation_min_2_liens_1) "La relation "
-set LOCALE(relation_min_2_liens_2) " doit posséder au moins 2 liens."
-set LOCALE(entite_mere_est_aussi_fille_1) "L'entité mère de l'héritage "
-set LOCALE(entite_mere_est_aussi_fille_2) " est aussi une de ses entités filles."
-set LOCALE(plusieurs_entites_nom) "Plusieurs objets portent le nom "
+msgid "La relation %s doit posséder au moins 2 liens."
+msgstr "La relation %s doit posséder au moins 2 liens."
+
+msgid "L'entité mère de l'héritage %s est aussi une de ses entités filles."
+msgstr "L'entité mère de l'héritage %s est aussi une de ses entités filles."
+
+msgid "Plusieurs objets portent le nom %s"
+msgstr "Plusieurs objets portent le nom %s"
 
 # Général
-set LOCALE(valider) "Valider"
-set LOCALE(retour) "Retour"
-set LOCALE(editer) "Éditer"
-set LOCALE(supprimer) "Supprimer"
-set LOCALE(mcd_correcte) "MCD correcte"
-set LOCALE(tables) "Entités"
-set LOCALE(relations) "Relations"
-set LOCALE(etiquettes) "Étiquettes"
-set LOCALE(heritages) "Héritages"
-set LOCALE(attention_os) "Attention!! Votre vie privée est en danger!"
+msgid "Valider"
+msgstr "Valider"
 
-# UTF8
-#foreach mot [array names LOCALE] {
-#    set LOCALE($mot) [encoding convertto utf-8 $LOCALE($mot)]
-#}
+msgid "Retour"
+msgstr "Retour"
+
+msgid "Éditer"
+msgstr "Éditer"
+
+msgid "Supprimer"
+msgstr "Supprimer"
+
+msgid "MCD correcte"
+msgstr "MCD correcte"
+
+msgid "Entités"
+msgstr "Entités"
+
+msgid "Relations"
+msgstr "Relations"
+
+msgid "Étiquettes"
+msgstr "Étiquettes"
+
+msgid "Héritages"
+msgstr "Héritages"
+
+msgid "Attention!! Votre vie privée est en danger!"
+msgstr "Attention!! Votre vie privée est en danger!"
