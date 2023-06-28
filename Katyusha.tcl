@@ -35,11 +35,13 @@ source "$rpr/C/MCD/Etiquettes.tcl"
 source "$rpr/C/MCD/Entites.tcl"
 source "$rpr/C/MCD/Attributs.tcl"
 source "$rpr/C/MCD/MCD.tcl"
+source "$rpr/C/MCD/Interface_MCD.tcl"
 
 
 source "$rpr/C/UML/Objets.tcl"
 source "$rpr/C/UML/Classes.tcl"
 source "$rpr/C/UML/UML.tcl"
+source "$rpr/C/UML/Interface_UML.tcl"
 
 
 source "$rpr/C/INTERFACE_Code.tcl"

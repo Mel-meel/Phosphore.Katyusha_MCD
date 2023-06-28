@@ -11,9 +11,11 @@
 ./C/MLD.tcl
 ./C/MCD/Associations.tcl
 ./C/MCD/Entites.tcl
+./C/MCD/Interface_MCD.tcl
 
 ./C/UML/Objets.tcl
 ./C/UML/Classes.tcl
+./C/UML/Interface_UML.tcl
 
 ./C/bind.tcl
 ./C/Commandes.tcl
