@@ -19,6 +19,9 @@ msgstr "Projet"
 msgid "Modèle Merise"
 msgstr "Modèle Merise"
 
+msgid "Diagramme de classes"
+msgstr "Diagramme de classes"
+
 msgid "Base de données"
 msgstr "base de données"
 
