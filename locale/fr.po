@@ -338,8 +338,8 @@ msgstr "Le MCD doit contenir au moins une entité pour ajouter un héritage"
 msgid "Ajouter un héritage"
 msgstr "Ajouter un héritage"
 
-msgid "Éditer l'héritage : "
-msgstr "Éditer l'héritage : "
+msgid "Éditer l'héritage : %s"
+msgstr "Éditer l'héritage : %s"
 
 msgid "Entité mère : "
 msgstr "Entité mère : "
