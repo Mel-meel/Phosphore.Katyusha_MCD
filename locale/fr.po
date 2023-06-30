@@ -193,11 +193,14 @@ msgstr "Objets du MCD"
 msgid "Ajouter une entité"
 msgstr "Ajouter une entité"
 
-msgid "Éditer l'entité"
-msgstr "Éditer l'entité"
+msgid "Éditer l'entité %s"
+msgstr "Éditer l'entité %s"
 
 msgid "Nom de l'entité : "
 msgstr "Nom de l'entité : "
+
+msgid "Entite_%s"
+msgstr "Entite_%s"
 
 msgid "Liste des attributs de l'entité"
 msgstr "Liste des attributs de l'entité"
@@ -211,20 +214,20 @@ msgstr "Type"
 msgid "Taille"
 msgstr "Taille"
 
-msgid "Unique"
-msgstr "Unique"
+msgid "Unique?"
+msgstr "Unique?"
 
-msgid "Signé"
-msgstr "Signé"
+msgid "Signé?"
+msgstr "Signé?"
 
-msgid "Clef primaire?"
-msgstr "Clef primaire?"
+msgid "Clef\nprimaire?"
+msgstr "Clef\nprimaire?"
 
-msgid "Incrémentation automatique?"
-msgstr "Incrémentation automatique?"
+msgid "Incrémentation\nautomatique?"
+msgstr "Incrémentation\nautomatique?"
 
-msgid "Valeur par défaut"
-msgstr "Valeur par défaut"
+msgid "Valeur\npar défaut"
+msgstr "Valeur\npar défaut"
 
 msgid "Ajouter une ligne"
 msgstr "Ajouter une ligne"
@@ -240,6 +243,12 @@ msgstr "Description de l'entité"
 
 msgid "Ajouter des attributs"
 msgstr "Ajouter des attributs"
+
+msgid "Choisir une entité :"
+msgstr "Choisir une entité :"
+
+msgid "Choisir une entité"
+msgstr "Choisir une entité"
 
 # Ajout d'une relation
 msgid "Ajouter une relation"
