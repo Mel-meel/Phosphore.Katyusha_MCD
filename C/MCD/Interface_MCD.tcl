@@ -43,7 +43,7 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
         pack $parent.notebook_mcd.panel.entites -fill x -pady 10 -padx 5
         # Arbre des objets du MCD
         ttk::frame $parent.notebook_mcd.panel.arbre
-            canvas $parent.notebook_mcd.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_mcd.panel.arbre.vs set" -scrollregion "0 0 250 4000" -background [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"]
+            canvas $parent.notebook_mcd.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_mcd.panel.arbre.vs set" -background [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"]
             ttk::scrollbar $parent.notebook_mcd.panel.arbre.vs -command "$parent.notebook_mcd.panel.arbre.c yview"
             pack $parent.notebook_mcd.panel.arbre.c $parent.notebook_mcd.panel.arbre.vs -side left -fill both
         pack $parent.notebook_mcd.panel.arbre

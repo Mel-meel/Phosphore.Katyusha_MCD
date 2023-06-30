@@ -13,7 +13,6 @@
 # Interface de la modélisation UML
 ##
 proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
-    global LOCALE
     global IMG
     global CONFIGS
     global STYLES
@@ -26,15 +25,15 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
     ttk::frame $parent.notebook_uml.panel
         ttk::frame $parent.notebook_uml.panel.commandes
             # Bouton on/off d'ajout d'une classe
-            button $parent.notebook_uml.panel.commandes.ajout_classe -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_UML_action_boutons_ajout "classe"}
-            tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_classe $LOCALE(ajouter_table)
+            button $parent.notebook_uml.panel.commandes.ajout_classe -text [phgt::mc "Ajouter une classe"] -image $IMG(ajouter_table) -command {Katyusha_UML_action_boutons_ajout "classe"}
+            tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_classe [phgt::mc "Ajouter une classe"]
             pack $parent.notebook_uml.panel.commandes.ajout_classe -side left
         pack $parent.notebook_uml.panel.commandes
         ttk::label $parent.notebook_uml.panel.entites -text [phgt::mc "Objets du digramme de classes"] -justify left
         pack $parent.notebook_uml.panel.entites -fill x -pady 10 -padx 5
         # Arbre des objets du MCD
         ttk::frame $parent.notebook_uml.panel.arbre
-            canvas $parent.notebook_uml.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_uml.panel.arbre.vs set" -scrollregion "0 0 250 4000" -background [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"]
+            canvas $parent.notebook_uml.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_uml.panel.arbre.vs set" -background [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"]
             ttk::scrollbar $parent.notebook_uml.panel.arbre.vs -command "$parent.notebook_uml.panel.arbre.c yview"
             pack $parent.notebook_uml.panel.arbre.c $parent.notebook_uml.panel.arbre.vs -side left -fill both
         pack $parent.notebook_uml.panel.arbre
