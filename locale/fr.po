@@ -318,8 +318,8 @@ msgstr "Taille de l'attribut : "
 msgid "Attention, tous les type ne possèdent pas de taille. Si c'est le cas, ce paramètre sera simplement ignoré.\nLaisser \"0\" pour utiliser la valeur par défaut du SGBD."
 msgstr "Attention, tous les type ne possèdent pas de taille. Si c'est le cas, ce paramètre sera simplement ignoré.\nLaisser \"0\" pour utiliser la valeur par défaut du SGBD."
 
-msgid "Cocher si l'attribut peu être nul : "
-msgstr "Cocher si l'attribut peu être nul : "
+msgid "Cocher si l'attribut peu être nul "
+msgstr "Cocher si l'attribut peu être nul "
 
 msgid "Valeur par défaut de l'attribut : "
 msgstr "Valeur par défaut de l'attribut : "
@@ -327,8 +327,8 @@ msgstr "Valeur par défaut de l'attribut : "
 msgid "Incrémentation automatique? : "
 msgstr "Incrémentation automatique? : "
 
-msgid "Clef primaire? : "
-msgstr "Clef primaire? : "
+msgid "Cocher si l'attribut est-il une clef primaire "
+msgstr "Cocher si l'attribut est-il une clef primaire "
 
 # Supprimer un attribut
 msgid "Supprimer un attribut"
