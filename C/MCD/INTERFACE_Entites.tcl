@@ -82,8 +82,11 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
                     ttk::label $f.attributs.c.f.tete.auto -text [phgt::mc "Incrémentation\nautomatique?"] -width 15 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.pk -text [phgt::mc "Clef\nprimaire?"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.unique -text [phgt::mc "Unique?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
                     
-                    pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.signe $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.auto $f.attributs.c.f.tete.pk $f.attributs.c.f.tete.unique -fill both -expand 1 -side left
+                    pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.signe $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.auto $f.attributs.c.f.tete.pk $f.attributs.c.f.tete.unique $f.attributs.c.f.tete.m $f.attributs.c.f.tete.d $f.attributs.c.f.tete.e -fill both -expand 1 -side left
                 pack $f.attributs.c.f.tete -fill both
                 ttk::frame $f.attributs.c.f.corps
                 

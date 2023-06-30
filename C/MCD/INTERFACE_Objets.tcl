@@ -16,7 +16,6 @@
 ##
 proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f objet type_objet} {
     global IMG
-    global LOCALE
     global STYLES
     
     set attributs [dict get $objet "attributs"]
@@ -27,16 +26,19 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f objet type_objet} {
         }
         #set nom_attribut_graphique [dict get $attribut "nom"]
         ttk::frame $f.$id_attribut_graphique
-            ttk::label $f.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 20 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 15 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.$id_attribut_graphique.signe -text "true" -width 10 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
             ttk::label $f.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::button $f.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique - 1]"
-            ttk::button $f.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique + 1]"
-            ttk::button $f.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
-            pack $f.$id_attribut_graphique.nom $f.$id_attribut_graphique.type $f.$id_attribut_graphique.taille $f.$id_attribut_graphique.valeur $f.$id_attribut_graphique.auto $f.$id_attribut_graphique.pk $f.$id_attribut_graphique.haut $f.$id_attribut_graphique.bas $f.$id_attribut_graphique.edit -side left
+            ttk::label $f.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 15 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 10 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.$id_attribut_graphique.unique -text "" -width 10 -background [dict get $STYLES "background"] -relief solid
+            
+            ttk::button $f.$id_attribut_graphique.haut -text "Remonter" -width 6 -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            ttk::button $f.$id_attribut_graphique.bas -text "Descendre" -width 6 -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique + 1]"
+            ttk::button $f.$id_attribut_graphique.edit -text "Éditer" -width 5 -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
+            pack $f.$id_attribut_graphique.nom $f.$id_attribut_graphique.type $f.$id_attribut_graphique.taille $f.$id_attribut_graphique.signe $f.$id_attribut_graphique.valeur $f.$id_attribut_graphique.auto $f.$id_attribut_graphique.pk $f.$id_attribut_graphique.unique $f.$id_attribut_graphique.haut $f.$id_attribut_graphique.bas $f.$id_attribut_graphique.edit -fill y -expand 1 -side left
         pack $f.$id_attribut_graphique -fill x
     }
     # Mise à jour forcée de l'affichage graphique
