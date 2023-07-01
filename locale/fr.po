@@ -485,12 +485,23 @@ msgstr "L'entité mère de l'héritage %s est aussi une de ses entités filles."
 msgid "Plusieurs objets portent le nom %s"
 msgstr "Plusieurs objets portent le nom %s"
 
+# Fenêtre danger
+
+msgid "DANGER!"
+msgstr "DANGER!"
+
+msgid "Le système d'exploitation \"%s\" sur lequel cette instance de Katyusha! MCD à été initiée n'est pas un système libre.\nLe code source n'ayant pas pu être vérifié par un tiers de confiance, votre VIE PRIVÉE est donc en DANGER.\nÉteignez immédiatement votre ordinateur afin de redémarer sur un système d'exploitation libre et donc sûr."
+msgstr "Le système d'exploitation \"%s\" sur lequel cette instance de Katyusha! MCD à été initiée n'est pas un système libre.\nLe code source n'ayant pas pu être vérifié par un tiers de confiance, votre VIE PRIVÉE est donc en DANGER.\nÉteignez immédiatement votre ordinateur afin de redémarer sur un système d'exploitation libre et donc sûr."
+
 # Général
 msgid "Valider"
 msgstr "Valider"
 
 msgid "Retour"
 msgstr "Retour"
+
+msgid "J'ai compris"
+msgstr "J'ai compris"
 
 msgid "Éditer"
 msgstr "Éditer"
