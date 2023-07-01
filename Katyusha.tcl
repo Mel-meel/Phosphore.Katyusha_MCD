@@ -89,14 +89,6 @@ if {[catch {package require Tk}]} {
 source "$rpr/packages/tooltip.tcl"
 source "$rpr/packages/phgettext/phgettext.tcl"
 
-# Img
-#package ifneeded Img 1.4.13 [list load [file join "$rpr/libs/Img1.4.13" pkgIndex.tcl] Img]
-
-#ttk::style theme use breeze
-#set tbg [ttk::style lookup TFrame -background]
-#lassign [winfo rgb . $tbg] bg_r bg_g bg_b
-#. configure -background $tbg
-
 array set CONFIG {}
 array set MCD {}
 
@@ -122,7 +114,7 @@ set ENV "null"
 Katyusha_MCD_init
 Katyusha_UML_init
 
-set version 0.4.6
+set version 1.0.0
 set splash [lindex [list "Катюша!" "Katyusha!" "!کاتیوشا" "कात्युषा" "კატიუშა" "Կատյուշա" "Катюша!"] [expr int((rand() * 7) + 1) - 1]]
 set sgbd 0
 # Fichier dans lequel toutes les sauvegardes simples se feronts

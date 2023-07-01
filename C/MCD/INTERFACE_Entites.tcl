@@ -76,7 +76,7 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
                 ttk::frame $f.attributs.c.f.tete
                     ttk::label $f.attributs.c.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.signe -text [phgt::mc "Signé?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.signe -text [phgt::mc "Non signé?"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.auto -text [phgt::mc "Incrémentation\nautomatique?"] -width 15 -background [dict get $STYLES "background"] -relief solid

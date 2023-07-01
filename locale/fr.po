@@ -217,8 +217,8 @@ msgstr "Taille"
 msgid "Unique?"
 msgstr "Unique?"
 
-msgid "Signé?"
-msgstr "Signé?"
+msgid "Non signé?"
+msgstr "Non signé?"
 
 msgid "Clef\nprimaire?"
 msgstr "Clef\nprimaire?"

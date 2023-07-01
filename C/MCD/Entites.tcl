@@ -527,7 +527,7 @@ proc Katyusha_Tables_controle_attribut {nom type signe complement_type taille nu
 ##
 # Ici, on suppose que les données ont été controlée avant injection
 ##
-proc Katyusha_Tables_ajout_attribut {nom type signe complement_type taille null valeur auto pk unique description {graphique 1}} {
+proc Katyusha_Tables_ajout_attribut {nom type nsigne complement_type taille null valeur auto pk unique description {graphique 1}} {
     global table_tmp
     global IMG
     global LOCALE
@@ -537,7 +537,7 @@ proc Katyusha_Tables_ajout_attribut {nom type signe complement_type taille null 
     
     dict set attribut "nom" $nom
     dict set attribut "type" $type
-    dict set attribut "signe" $signe
+    dict set attribut "signe" $nsigne
     dict set attribut "complement_type" $complement_type
     dict set attribut "taille" $taille
     dict set attribut "null" $null
@@ -559,7 +559,7 @@ proc Katyusha_Tables_ajout_attribut {nom type signe complement_type taille null 
         frame $f.attributs.c.f.corps.$id_attribut_graphique
             ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.nom -text $nom -width 30 -background [dict get $STYLES "background"]  -relief solid
             ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.type -text $type -width 15 -background [dict get $STYLES "background"]  -relief solid
-            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.signe -text $signe -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.signe -text $nsigne -width 10 -background [dict get $STYLES "background"]  -relief solid
             ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.taille -text $taille -width 10 -background [dict get $STYLES "background"]  -relief solid
             ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.valeur -text $valeur -width 20 -background [dict get $STYLES "background"]  -relief solid
             ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.auto -text $auto -width 15 -background [dict get $STYLES "background"]  -relief solid
