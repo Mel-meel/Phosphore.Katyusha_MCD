@@ -9,7 +9,7 @@
 ######################################################
 
 proc Katyusha_UML_Classes_ajout {} {
-
+    Katyusha_UML_Objets_maj_arbre_objets
 }
 
 proc Katyusha_UML_Classes_maj_depuis_mld {mld} {
@@ -34,6 +34,7 @@ proc Katyusha_UML_Classes_creer_affichage_graphique {id classe} {
     
     lappend graph [$ZONE_UML.modelisation.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2)] -outline red -fill yellow -tag [list "objet_uml" "classe" $id]]
     lappend graph [$ZONE_UML.modelisation.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y - ($hauteur / 2) + 20] -fill black -anchor w -text $nom -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list "objet_uml" "classe" $id]]
+    lappend graph [$ZONE_UML.modelisation.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2) + 40] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 40] -outline red -fill yellow -tag [list "objet_uml" "classe" $id]]
     
     unset id classe
     
@@ -71,6 +72,8 @@ proc Katyusha_UML_Classes_creer_classe_depuis_entite {id entite} {
     # Met à jour l'arbre des entités
     #Katyusha_UML_Objets_maj_arbre_objets
     #Katyusha_Historique_maj
+    
+    Katyusha_UML_Objets_maj_arbre_objets
     
     puts $classe
     unset graph id entite classe

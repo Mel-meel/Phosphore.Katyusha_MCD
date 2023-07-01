@@ -70,10 +70,13 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
     global E_valeur_attribut
     global E_nom_attribut
     global E_type_attribut
+    global E_signe_attribut
     global E_ctype_attribut
     global E_null_attribut
     global E_description_attribut
     global E_auto_attribut
+    global E_pk_attribut
+    global E_unique_attribut
     
     set f ".fen_ajout_attribut"
     
@@ -96,6 +99,7 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
     if {$id == "null"} {
         set E_valeur_attribut "null"
         set E_auto_attribut 0
+        set E_signe_attribut 0
         set E_null_attribut 1
         set E_pk_attribut 0
         set E_type_attribut ""
@@ -106,17 +110,20 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
         } elseif {$entite == "relation"} {
             set E_nom_attribut "Attribut_[expr [llength [dict get $relation_tmp attributs]]]"
         }
+        set E_unique_attribut 0
     } else {
         # Charge les données de l'attribut en édition
         set attribut [dict get $attributs $id]
         set E_nom_attribut "[dict get $attribut nom]"
         set E_type_attribut "[dict get $attribut type]"
+        set E_signe_attribut "[dict get $attribut signe]"
         set E_ctype_attribut "[dict get $attribut complement_type]"
         set E_taille_attribut "[dict get $attribut taille]"
         set E_valeur_attribut "[dict get $attribut valeur]"
         set E_null_attribut "[dict get $attribut null]"
         set E_auto_attribut "[dict get $attribut auto]"
         set E_pk_attribut "[dict get $attribut pk]"
+        set E_unique_attribut "[dict get $attribut unique]"
         set E_description_attribut ""
     }
     
@@ -147,6 +154,12 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
                 $f.prop.type.cb set $E_type_attribut
             }
         pack $f.prop.type -fill x
+        # L'attribut peut-l être unique
+        ttk::frame $f.prop.signe
+            ttk::label $f.prop.signe.l -text [phgt::mc "Cocher si l'attribut est non-signé : "] -width 40 -anchor w
+            ttk::checkbutton $f.prop.signe.cb -onvalue 1 -offvalue 0 -variable E_signe_attribut
+            pack $f.prop.signe.l $f.prop.signe.cb -side left -fill x
+        pack $f.prop.signe -fill x
         # Complément du type de l'attribut
         ttk::frame $f.prop.ctype
             ttk::label $f.prop.ctype.l -text [phgt::mc "Complément du type de l'attribut : "] -width 40 -anchor w
@@ -179,6 +192,14 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
             ttk::checkbutton $f.prop.auto.cb -onvalue 1 -offvalue 0 -variable E_auto_attribut
             pack $f.prop.auto.l $f.prop.auto.cb -side left -fill x
         pack $f.prop.auto -fill x
+        # L'attribut peut-l être unique
+        ttk::frame $f.prop.unique
+            ttk::label $f.prop.unique.l -text [phgt::mc "Cocher si l'attribut est unique : "] -width 40 -anchor w
+            ttk::checkbutton $f.prop.unique.cb -onvalue 1 -offvalue 0 -variable E_unique_attribut
+            pack $f.prop.unique.l $f.prop.unique.cb -side left -fill x
+        pack $f.prop.unique -fill x
+        
+        
         # Si l'attribut est en incrémentation utomatique, il ne peut pas être null
         # TODO : Sortir le bind de là, c'est pas propre
         bind $f.prop.auto.cb <Button-1> {
@@ -225,39 +246,37 @@ proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
     update
 }
 
-proc Katyusha_MCD_INTERFACE_COMMANDE_Objets_ajout_attribut {entite {id "null"}} {
+proc Katyusha_MCD_INTERFACE_COMMANDE_Objets_ajout_attribut {objet {id "null"}} {
+    global E_signe_attribut
     global E_auto_attribut
     global E_pk_attribut
     global E_null_attribut
     global E_description_attribut
+    global E_unique_attribut
     
     set f ".fen_ajout_attribut"
     
-    if {$entite == "table"} {
-        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut]
+    if {$objet == "table"} {
+        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_signe_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_description_attribut]
         if {$ok == 1} {
             if {$id == "null"} {
-                Katyusha_Tables_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut
+                Katyusha_Tables_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_signe_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_description_attribut
             } else {
-                Katyusha_Tables_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut
+                Katyusha_Tables_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_signe_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_description_attribut
             }
             destroy $f
         }
-    } elseif {$entite == "relation"} {
-        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut]
+    } elseif {$objet == "relation"} {
+        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_signe_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_description_attribut]
         if {$ok == 1} {
             if {$id == "null"} {
-                Katyusha_Relations_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut
+                Katyusha_Relations_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_signe_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_description_attribut
             } else {
-                Katyusha_Relations_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut
+                Katyusha_Relations_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_signe_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_description_attribut
             }
             destroy $f
         }
     }
-    
-    unset E_auto_attribut
-    unset E_null_attribut
-    unset E_pk_attribut
 }
 
 ##
