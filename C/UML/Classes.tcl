@@ -28,13 +28,21 @@ proc Katyusha_UML_Classes_creer_affichage_graphique {id classe} {
     set y [lindex [dict get $classe "coords"] 1]
     
     set nom [dict get $classe "nom"]
+    set attributs [dict get $classe "attributs"]
     
     set largeur 100
-    set hauteur 50
+    set hauteur [expr ([llength $attributs] / 2) * 18 + 20]
     
     lappend graph [$ZONE_UML.modelisation.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2)] -outline red -fill yellow -tag [list "objet_uml" "classe" $id]]
     lappend graph [$ZONE_UML.modelisation.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y - ($hauteur / 2) + 20] -fill black -anchor w -text $nom -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list "objet_uml" "classe" $id]]
     lappend graph [$ZONE_UML.modelisation.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2) + 40] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 40] -outline red -fill yellow -tag [list "objet_uml" "classe" $id]]
+    
+    set y2 [expr $y + 60]
+    
+    foreach {k attribut} $attributs {
+        lappend graph [$ZONE_UML.modelisation.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y2 - ($hauteur / 2)] -fill black -anchor w -text "-  [dict get $attribut nom]" -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list "objet_uml" "classe" $id]]
+        set y2 [expr $y2 + 18]
+    }
     
     unset id classe
     
