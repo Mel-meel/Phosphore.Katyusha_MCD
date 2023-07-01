@@ -250,18 +250,33 @@ msgstr "Choisir une entité :"
 msgid "Choisir une entité"
 msgstr "Choisir une entité"
 
-# Ajout d'une relation
-msgid "Ajouter une relation"
-msgstr "Ajouter une relation"
+# Ajout d'une association
+msgid "Ajouter une association"
+msgstr "Ajouter une association"
 
-msgid "Éditer la relation"
-msgstr "Éditer la relation"
+msgid "Éditer l'association : %s"
+msgstr "Éditer l'association : %s"
 
-msgid "Nom de la relation : "
-msgstr "Nom de la relation : "
+msgid "Nom de l'association : "
+msgstr "Nom de l'association : "
 
-msgid "Liste des attributs de la relation"
-msgstr "Liste des attributs de la relation"
+msgid "Liste des liens de l'association"
+msgstr "Liste des liens de l'association"
+
+msgid "Entité concernée"
+msgstr "Entité concernée"
+
+msgid "Type de lien"
+msgstr "Type de lien"
+
+msgid "Identifiant relatif?"
+msgstr "Identifiant relatif?"
+
+msgid "Liste des attributs de l'association"
+msgstr "Liste des attributs de l'association"
+
+msgid "Les informations saisies sont incomplètes"
+msgstr "Les informations saisies sont incomplètes"
 
 # Ajout d'un lien à une relation
 msgid "Sélectionner l'entité concernée par le lien :"
