@@ -16,6 +16,51 @@ proc Katyusha_UML_Classes_maj_depuis_mld {mld} {
     global classes
 }
 
+proc Katyusha_UML_Classes_creer_affichage_graphique_attributs {attributs} {
+    set res [list]
+    
+    foreach {k attribut} $attributs {
+        set acces [dict get $attribut "acces"]
+        set nom [dict get $attribut "nom"]
+        
+        if {$acces == "private"} {
+            set acces_symbole "-"
+        } elseif {$acces == "public"} {
+            set acces_symbole "+"
+        } elseif {$acces == "protected"} {
+            set acces_symbole "#"
+        }
+        
+        lappend res "$acces_symbole  $nom"
+    }
+    
+    return $res
+}
+
+proc Katyusha_UML_Classes_creer_affichage_graphique_methodes {methodes} {
+
+}
+
+##
+# 
+##
+proc Katyusha_UML_Classes_creer_affichage_graphique_taille_classe {nom attributs methodes} {
+    set largeur [string length $nom]
+    # Attrbituts
+    foreach {k attribut} $attributs {
+        if {[string length "! [dict get $attribut nom]"] > $largeur} {
+            set largeur [string length "! [dict get $attribut nom]"]
+        }
+    }
+    # Méthodes
+    foreach {k methode} $methodes {
+        if {[string length "! [dict get $methode nom]"] > $largeur} {
+            set largeur [string length "! [dict get $methode nom]"]
+        }
+    }
+    return $largeur
+}
+
 proc Katyusha_UML_Classes_creer_affichage_graphique {id classe} {
     global IMG
     global rpr
@@ -29,18 +74,32 @@ proc Katyusha_UML_Classes_creer_affichage_graphique {id classe} {
     
     set nom [dict get $classe "nom"]
     set attributs [dict get $classe "attributs"]
+    set methodes [dict get $classe "methodes"]
     
-    set largeur 100
-    set hauteur [expr ([llength $attributs] / 2) * 18 + 20]
+    set largeur [expr [Katyusha_UML_Classes_creer_affichage_graphique_taille_classe $nom $attributs $methodes] * 10 + 20]
+    set hauteur_attributs [expr ([llength $attributs] / 2) * 18 + 20]
+    set hauteur_methodes [expr ([llength $methodes] / 2) * 18 + 20]
+    
+    set hauteur [expr $hauteur_attributs + $hauteur_methodes]
     
     lappend graph [$ZONE_UML.modelisation.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2)] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2)] -outline red -fill yellow -tag [list "objet_uml" "classe" $id]]
     lappend graph [$ZONE_UML.modelisation.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y - ($hauteur / 2) + 20] -fill black -anchor w -text $nom -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list "objet_uml" "classe" $id]]
-    lappend graph [$ZONE_UML.modelisation.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur / 2) + 40] [expr $x + ($largeur / 2)] [expr $y + ($hauteur / 2) + 40] -outline red -fill yellow -tag [list "objet_uml" "classe" $id]]
+    lappend graph [$ZONE_UML.modelisation.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur_attributs / 2) + 40] [expr $x + ($largeur / 2)] [expr $y + ($hauteur_attributs / 2) + 40] -outline red -fill yellow -tag [list "objet_uml" "classe" $id]]
+    lappend graph [$ZONE_UML.modelisation.c create rect [expr $x - ($largeur / 2)] [expr $y - ($hauteur_methodes / 2) + ($hauteur_attributs / 2) + 40] [expr $x + ($largeur / 2)] [expr $y + ($hauteur_methodes / 2) + ($hauteur_attributs / 2) + 40] -outline red -fill yellow -tag [list "objet_uml" "classe" $id]]
     
     set y2 [expr $y + 60]
     
-    foreach {k attribut} $attributs {
-        lappend graph [$ZONE_UML.modelisation.c create text [expr $x - (([string length $nom] * 7.5) / 2)] [expr $y2 - ($hauteur / 2)] -fill black -anchor w -text "-  [dict get $attribut nom]" -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list "objet_uml" "classe" $id]]
+    # Création de l'affichage des attributs
+    foreach attribut [Katyusha_UML_Classes_creer_affichage_graphique_attributs $attributs] {
+        lappend graph [$ZONE_UML.modelisation.c create text [expr $x - (([string length $nom] * 7.5) / 2) - 10] [expr $y2 - ($hauteur / 2)] -fill black -anchor w -text $attribut -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list "objet_uml" "classe" $id]]
+        set y2 [expr $y2 + 18]
+    }
+    
+    set y2 [expr $y2 + 20]
+    
+    # Création de l'affichage des méthodes
+    foreach methode [Katyusha_UML_Classes_creer_affichage_graphique_methodes $methodes] {
+        lappend graph [$ZONE_UML.modelisation.c create text [expr $x - (([string length $nom] * 7.5) / 2) - 10] [expr $y2 - ($hauteur / 2)] -fill black -anchor w -text $methode -font {-family "$rpr/libs/general_font.ttf" -size 12} -tag [list "objet_uml" "classe" $id]]
         set y2 [expr $y2 + 18]
     }
     
@@ -60,8 +119,6 @@ proc Katyusha_UML_Classes_creer_classe_depuis_entite {id entite} {
     global ID_UML
     
     puts "Création de la classe UML pour la table $id"
-    puts $entite
-    puts "ID de la classe : $ID_UML"
     
     set classe [Katyusha_UML_Classes_init_classe]
     
@@ -76,14 +133,9 @@ proc Katyusha_UML_Classes_creer_classe_depuis_entite {id entite} {
     dict set classes_graphique $ID_UML $graph
     
     set ID_UML [expr $ID_UML + 1]
-    #puts [.mcd.canvas.c coords [lindex $graph 0]]
-    # Met à jour l'arbre des entités
-    #Katyusha_UML_Objets_maj_arbre_objets
-    #Katyusha_Historique_maj
     
     Katyusha_UML_Objets_maj_arbre_objets
     
-    puts $classe
     unset graph id entite classe
 }
 

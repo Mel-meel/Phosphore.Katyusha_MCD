@@ -465,6 +465,7 @@ proc Katyusha_Relations_ajout_attribut {nom type nsigne complement_type taille n
     dict set attribut "auto" $auto
     dict set attribut "pk" $pk
     dict set attribut "unique" $unique
+    dict set attribut "acces" "private"
     dict set attribut "description" ""
     
     set ids [dict keys $attributs]
