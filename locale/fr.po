@@ -295,14 +295,17 @@ msgid "Il n'y a pas assez d'entités dans le MCD."
 msgstr "Il n'y a pas assez d'entités dans le MCD."
 
 # Ajout d'une étiquette
+msgid "Étiquette_%s"
+msgstr "Étiquette_%s"
+
 msgid "Ajouter une étiquette"
 msgstr "Ajouter une étiquette"
 
-msgid "Éditer l'étiquette :"
-msgstr "Éditer l'étiquette :"
+msgid "Éditer l'étiquette %s"
+msgstr "Éditer l'étiquette %s"
 
-msgid "Nom de l'étiquette :"
-msgstr "Nom de l'étiquette :"
+msgid "Nom de l'étiquette : "
+msgstr "Nom de l'étiquette : "
 
 msgid "Texte de l'étiquette"
 msgstr "Texte de l'étiquette"
