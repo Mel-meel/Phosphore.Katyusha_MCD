@@ -196,6 +196,7 @@ proc ajout_table {table_tmp} {
     global tables
     global tables_graphique
     global ID
+    
     # Créé un id pour la nouvelle table
     set id [expr [dict size $tables]]
     # Ajoute la nouvelle table aux tables existantes
@@ -219,7 +220,7 @@ proc ajout_table {table_tmp} {
 ##
 # Enregistre les modifications d'une table
 ##
-proc Katyusha_Tables_modification_table {id table} {
+proc Katyusha_Tables_modification_table {id entite} {
     global tables
     global tables_graphique
     global ZONE_MCD
@@ -228,10 +229,14 @@ proc Katyusha_Tables_modification_table {id table} {
     foreach c [dict get $tables_graphique $id] {
         $ZONE_MCD.canvas.c delete $c
     }
-    Katyusha_Relations_modification_nom_table [dict get $tables $id] $table
-    dict set tables $id $table
+    Katyusha_Relations_modification_nom_table [dict get $tables $id] $entite
+    dict set tables $id $entite
     dict unset tables_graphique $id
-    Katyusha_Tables_modification_graphique $id $table
+    Katyusha_Tables_modification_graphique $id $entite
+    
+    # Modifie la classe associée
+    Katyusha_UML_Classes_maj_classe_depuis_entite $id $entite
+    
     Katyusha_MCD_Objets_maj_arbre_objets
     Katyusha_Historique_maj
 }

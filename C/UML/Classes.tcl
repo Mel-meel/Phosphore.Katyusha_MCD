@@ -118,8 +118,6 @@ proc Katyusha_UML_Classes_creer_classe_depuis_entite {id entite} {
     global ENV
     global ID_UML
     
-    puts "Création de la classe UML pour la table $id"
-    
     set classe [Katyusha_UML_Classes_init_classe]
     
     dict set classe "nom" [dict get $entite "nom"]
@@ -139,6 +137,28 @@ proc Katyusha_UML_Classes_creer_classe_depuis_entite {id entite} {
     unset graph id entite classe
 }
 
+proc Katyusha_UML_Classes_maj_classe_depuis_entite {id entite} {
+    global classes
+    global classes_graphique
+    global tables
+    global ENV
+    global ID_UML
+    
+    set classe [dict get $classes $id]
+    
+    dict set classe "nom" [dict get $entite "nom"]
+    dict set classe "attributs" [dict get $entite "attributs"]
+    dict set classe "coords" [dict get $entite "coords"]
+    
+    dict set classes $id $classe
+    
+    set graph [Katyusha_UML_Classes_creer_affichage_graphique $ID_UML $classe]
+    
+    # Remplace l'ancien affichage graphique par le nouveau
+    dict set classes_graphique $id $graph
+    
+    Katyusha_UML_Objets_maj_arbre_objets
+}
 
 ##
 # Met à jour les coordonnées d'une table par son ID
