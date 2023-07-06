@@ -446,7 +446,7 @@ proc Katyusha_Association_suppression_lignes {id_relation} {
 # Ajout d'un attribut à l'association
 # Ici, on suppose que les données ont été controlée avant injection
 ##
-proc Katyusha_Relations_ajout_attribut {nom type nsigne complement_type taille null valeur auto pkunique  description {graphique 1}} {
+proc Katyusha_Relations_ajout_attribut {nom type nsigne complement_type taille null valeur auto pk unique acces description {graphique 1}} {
     global relation_tmp
     global id_attribut_graphique
     global IMG
@@ -465,7 +465,7 @@ proc Katyusha_Relations_ajout_attribut {nom type nsigne complement_type taille n
     dict set attribut "auto" $auto
     dict set attribut "pk" $pk
     dict set attribut "unique" $unique
-    dict set attribut "acces" "private"
+    dict set attribut "acces" $acces
     dict set attribut "description" ""
     
     set ids [dict keys $attributs]
@@ -619,8 +619,8 @@ proc Katyusha_Relations_init_relation {} {
 ##
 # Modifie un attribut
 ##
-proc Katyusha_Relations_modification_attribut {id_attribut nom type complement_type taille null valeur auto pk description {graphique 1}} {
-    Katyusha_Entites_modification_attribut $id_attribut $nom $type $complement_type $taille $null $valeur $auto $pk $description "relation" $graphique
+proc Katyusha_Relations_modification_attribut {id_attribut nom type nsigne complement_type taille null valeur auto pk unique acces description {graphique 1}} {
+    Katyusha_Entites_modification_attribut $id_attribut $nom $type $nsigne $complement_type $taille $null $valeur $auto $pk $unique $acces $description "relation" $graphique
     unset id_attribut nom type complement_type taille null valeur auto pk description graphique
 }
 

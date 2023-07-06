@@ -143,6 +143,7 @@ proc Katyusha_UML_Classes_maj_classe_depuis_entite {id entite} {
     global tables
     global ENV
     global ID_UML
+    global ZONE_UML
     
     set classe [dict get $classes $id]
     
@@ -152,7 +153,11 @@ proc Katyusha_UML_Classes_maj_classe_depuis_entite {id entite} {
     
     dict set classes $id $classe
     
-    set graph [Katyusha_UML_Classes_creer_affichage_graphique $ID_UML $classe]
+    # Supprime l'affichage de la table
+    foreach c [dict get $classes_graphique $id] {
+        $ZONE_UML.modelisation.c delete $c
+    }
+    set graph [Katyusha_UML_Classes_creer_affichage_graphique $id $classe]
     
     # Remplace l'ancien affichage graphique par le nouveau
     dict set classes_graphique $id $graph

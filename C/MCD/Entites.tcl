@@ -493,7 +493,7 @@ proc Katyusha_Tables_controle_table {table} {
 ##
 # Contrôle les éléments de l'attribut à ajouter
 ##
-proc Katyusha_Tables_controle_attribut {nom type signe complement_type taille null valeur auto pk unique description} {
+proc Katyusha_Tables_controle_attribut {nom type signe complement_type taille null valeur auto pk unique acces description} {
     set ok 1
     # Contrôle avant acceptation
     if {$nom == ""} {
@@ -532,7 +532,7 @@ proc Katyusha_Tables_controle_attribut {nom type signe complement_type taille nu
 ##
 # Ici, on suppose que les données ont été controlée avant injection
 ##
-proc Katyusha_Tables_ajout_attribut {nom type nsigne complement_type taille null valeur auto pk unique description {graphique 1}} {
+proc Katyusha_Tables_ajout_attribut {nom type nsigne complement_type taille null valeur auto pk unique acces description {graphique 1}} {
     global table_tmp
     global IMG
     global LOCALE
@@ -550,7 +550,7 @@ proc Katyusha_Tables_ajout_attribut {nom type nsigne complement_type taille null
     dict set attribut "auto" $auto
     dict set attribut "pk" $pk
     dict set attribut "unique" $unique
-    dict set attribut "acces" "private"
+    dict set attribut "acces" $acces
     dict set attribut "description" ""
     
     set ids [dict keys $attributs]
@@ -605,8 +605,8 @@ proc Katyusha_Tables_init_table {} {
 ##
 # Modifie un attribut
 ##
-proc Katyusha_Tables_modification_attribut {id_attribut nom type complement_type taille null valeur auto pk description {graphique 1}} {
-    Katyusha_Entites_modification_attribut $id_attribut $nom $type $complement_type $taille $null $valeur $auto $pk $description "table" $graphique
+proc Katyusha_Tables_modification_attribut {id_attribut nom type nsigne complement_type taille null valeur auto pk unique acces description {graphique 1}} {
+    Katyusha_Objets_modification_attribut $id_attribut $nom $type $nsigne $complement_type $taille $null $valeur $auto $pk $unique $acces $description "table" $graphique
 }
 
 ##

@@ -123,29 +123,32 @@ proc Katyusha_deplace_entite {type_entite x y tag} {
 # Si l'option graphique est à 1, l'affichage graphique sera modifié, 0 sinon
 # Par défaut 1
 ##
-proc Katyusha_Entites_modification_attribut {id_attribut nom type complement_type taille null valeur auto pk description entite {graphique 1}} {
+proc Katyusha_Objets_modification_attribut {id_attribut nom type nsigne complement_type taille null valeur auto pk unique acces description objet {graphique 1}} {
     global relation_tmp
     global table_tmp
     
-    if {$entite == "table"} {
+    if {$objet == "table"} {
         set attributs [dict get $table_tmp "attributs"]
-    } elseif {$entite == "relation"} {
+    } elseif {$objet == "relation"} {
         set attributs [dict get $relation_tmp "attributs"]
     }
     
     dict set attribut "nom" $nom
     dict set attribut "type" $type
+    dict set attribut "nsigne" $nsigne
     dict set attribut "complement_type" $complement_type
     dict set attribut "taille" $taille
     dict set attribut "null" $null
     dict set attribut "valeur" $valeur
     dict set attribut "auto" $auto
     dict set attribut "pk" $pk
+    dict set attribut "unique" $unique
+    dict set attribut "acces" $acces
     dict set attribut "description" ""
     
     # Modifie l'affichage graphique
     if {$graphique == 1} {
-        set f ".fen_ajout_$entite"
+        set f ".fen_ajout_$objet"
         foreach element [list "nom" "type" "taille" "valeur" "auto" "pk"] {
             $f.attributs.c.f.corps.$id_attribut.$element configure -text [dict get $attribut $element]
         }
@@ -155,9 +158,9 @@ proc Katyusha_Entites_modification_attribut {id_attribut nom type complement_typ
     
     dict set attributs $id_attribut $attribut
     
-    if {$entite == "table"} {
+    if {$objet == "table"} {
         dict set table_tmp "attributs" $attributs
-    } elseif {$entite == "relation"} {
+    } elseif {$objet == "relation"} {
         dict set relation_tmp "attributs" $attributs
     }
     
