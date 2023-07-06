@@ -19,6 +19,7 @@ proc Katyusha_Images {} {
     set IMG(ajouter_relation) [image create photo -file "$rpr/images/ajouter_relation.png"]
     set IMG(ajouter_heritage) [image create photo -file "$rpr/images/ajouter_heritage.png"]
     set IMG(ajouter_etiquette) [image create photo -file "$rpr/images/ajouter_etiquette.png"]
+    set IMG(ajouter_classe) [image create photo -file "$rpr/images/ajouter_classe.png"]
     set IMG(splash) [image create photo -file "$rpr/images/splash_1.0.x.png"]
     set IMG(editer) [image create photo -file "$rpr/images/editer-x32.png"]
     set IMG(valider) [image create photo -file "$rpr/images/valider-x32.png"]

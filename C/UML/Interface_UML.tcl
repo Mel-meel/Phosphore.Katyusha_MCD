@@ -25,7 +25,7 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
     ttk::frame $parent.notebook_uml.panel
         ttk::frame $parent.notebook_uml.panel.commandes
             # Bouton on/off d'ajout d'une classe
-            button $parent.notebook_uml.panel.commandes.ajout_classe -text [phgt::mc "Ajouter une classe"] -image $IMG(ajouter_table) -command {Katyusha_UML_action_boutons_ajout "classe"}
+            button $parent.notebook_uml.panel.commandes.ajout_classe -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter une classe"] -image $IMG(ajouter_classe) -command {Katyusha_UML_action_boutons_ajout "classe"}
             tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_classe [phgt::mc "Ajouter une classe"]
             pack $parent.notebook_uml.panel.commandes.ajout_classe -side left
         pack $parent.notebook_uml.panel.commandes
