@@ -65,7 +65,6 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
             ttk::scrollbar $parent.notebook_mcd.mcd.canvas.vs -command "$parent.notebook_mcd.mcd.canvas.c yview"
             set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
             set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
-            # -height [expr $canvas_y] -width [expr $canvas_x - 50]
             canvas $parent.notebook_mcd.mcd.canvas.c -background white -xscrollcommand "$parent.notebook_mcd.mcd.hs set" -yscrollcommand "$parent.notebook_mcd.mcd.canvas.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas" -highlightbackground [dict get $STYLES "graphics"]
             pack $parent.notebook_mcd.mcd.canvas.c -side left -fill both -expand 1
             pack $parent.notebook_mcd.mcd.canvas.vs -side left -fill y
@@ -73,7 +72,7 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
         pack $parent.notebook_mcd.mcd.canvas -fill both -expand 1
         ttk::scrollbar $parent.notebook_mcd.mcd.hs -orient horiz -command "$parent.notebook_mcd.mcd.canvas.c xview"
         pack $parent.notebook_mcd.mcd.hs -side top -fill x
-    pack $parent.notebook_mcd.mcd -side left -fill both  -expand 1
+    pack $parent.notebook_mcd.mcd -side left -fill both -expand 1
     
     return $f
 }
