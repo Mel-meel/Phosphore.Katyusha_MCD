@@ -63,9 +63,9 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
         # Commandes des attributs
         ttk::frame $f.attributs.commandes
             # Bouton d'ajout d'un nouvel attribut
-            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_MCD_INTERFACE_Objets_ajout_attribut "table"}
+            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_UML_Interface_Objets_ajout_attribut "classe"}
             # Bouton de supression d'un nouvel attribut
-            ttk::button $f.attributs.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_attribut "table"}
+            ttk::button $f.attributs.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_UML_Interface_Objets_suppression_attribut "classe"}
             pack $f.attributs.commandes.ajout $f.attributs.commandes.supp -padx 10
         pack $f.attributs.commandes -side left -fill x
         
@@ -124,9 +124,9 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
         # Commandes des attributs
         ttk::frame $f.methodes.commandes
             # Bouton d'ajout d'un nouvel attribut
-            ttk::button $f.methodes.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_MCD_INTERFACE_Objets_ajout_attribut "table"}
+            ttk::button $f.methodes.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_UML_Interface_Objets_ajout_methode "classe"}
             # Bouton de supression d'un nouvel attribut
-            ttk::button $f.methodes.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_attribut "table"}
+            ttk::button $f.methodes.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_UML_Interface_Objets_suppression_methode "classe"}
             pack $f.methodes.commandes.ajout $f.methodes.commandes.supp -padx 10
         pack $f.methodes.commandes -side left -fill x
         
