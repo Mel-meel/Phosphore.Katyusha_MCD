@@ -31,14 +31,14 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
         # Transfert des coordonnées
         set coords [list $x $y]
         set classe_tmp [Katyusha_UML_Classes_init_classe]
-        dict set table_tmp "coords" $coords
-        set E_nom_table [phgt::mc "Entite_%s" [list [expr [dict size $tables] + 1]]]
+        dict set classe_tmp "coords" $coords
+        set E_nom_classe [phgt::mc "Classe_%s" [list [expr [dict size $classes] + 1]]]
     } else {
-        set table [dict get $tables $id]
-        set table_tmp $table
-        set E_nom_table [dict get $table "nom"]
+        set classe [dict get $classes $id]
+        set classe_tmp $classe
+        set E_nom_classe [dict get $classe "nom"]
     }
-    dict set table_tmp "id" $id
+    dict set classe_tmp "id" $id
     set id_attribut_graphique 0
     
     # Détruit la fenêtre si elle existe déjà
@@ -51,11 +51,14 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     
     # Frame de choix du nom de la table
     ttk::frame $f.nom
-        ttk::label $f.nom.l -text [phgt::mc "Nom de l'entité : "]
-        ttk::entry $f.nom.e -textvariable E_nom_table
+        ttk::label $f.nom.l -text [phgt::mc "Nom de la classe : "]
+        ttk::entry $f.nom.e -textvariable E_nom_classe
         pack $f.nom.l $f.nom.e -side left
     pack $f.nom -pady 10 -padx 50
     
+    ##
+    # Attributs de la classe
+    ##
     ttk::frame $f.attributs
         # Commandes des attributs
         ttk::frame $f.attributs.commandes
@@ -71,22 +74,20 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
         ttk::frame $f.attributs.c.f
             # Liste des attributs
             ttk::frame $f.attributs.c.f.liste
-                ttk::label $f.attributs.c.f.titre -text [phgt::mc "Liste des attributs de l'entité"]
+                ttk::label $f.attributs.c.f.titre -text [phgt::mc "Liste des attributs de la classe"]
                 pack $f.attributs.c.f.titre -fill x
                 ttk::frame $f.attributs.c.f.tete
                     ttk::label $f.attributs.c.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.signe -text [phgt::mc "Non signé?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.accces -text [phgt::mc "Accès"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.auto -text [phgt::mc "Incrémentation\nautomatique?"] -width 15 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.pk -text [phgt::mc "Clef\nprimaire?"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.unique -text [phgt::mc "Unique?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.id -text [phgt::mc "Identifiant?"] -width 15 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.c.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
                     
-                    pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.signe $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.auto $f.attributs.c.f.tete.pk $f.attributs.c.f.tete.unique $f.attributs.c.f.tete.m $f.attributs.c.f.tete.d $f.attributs.c.f.tete.e -fill both -expand 1 -side left
+                    pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.accces $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.id $f.attributs.c.f.tete.m $f.attributs.c.f.tete.d $f.attributs.c.f.tete.e -fill both -expand 1 -side left
                 pack $f.attributs.c.f.tete -fill both
                 ttk::frame $f.attributs.c.f.corps
                 
@@ -110,13 +111,68 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     # À voir pour faire fonctionner correctement plus tard
     $f.attributs.c configure -yscrollcommand "$f.attributs.yscroll set"
     
+    ###
+    # Méthodes de la classe
+    ##
+    ttk::frame $f.methodes
+        # Commandes des attributs
+        ttk::frame $f.methodes.commandes
+            # Bouton d'ajout d'un nouvel attribut
+            ttk::button $f.methodes.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_MCD_INTERFACE_Objets_ajout_attribut "table"}
+            # Bouton de supression d'un nouvel attribut
+            ttk::button $f.methodes.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_attribut "table"}
+            pack $f.methodes.commandes.ajout $f.methodes.commandes.supp -padx 10
+        pack $f.methodes.commandes -side left -fill x
+        
+        # Attributs dans un canvas pour pouvoir utiliser une scrollbar
+        canvas $f.methodes.c -width 1200 -height 400 -background [dict get $STYLES "lbackground"] -highlightbackground [dict get $STYLES "graphics"]
+        ttk::frame $f.methodes.c.f
+            # Liste des attributs
+            ttk::frame $f.methodes.c.f.liste
+                ttk::label $f.methodes.c.f.titre -text [phgt::mc "Liste des Méthodes de la classe"]
+                pack $f.methodes.c.f.titre -fill x
+                ttk::frame $f.methodes.c.f.tete
+                    ttk::label $f.methodes.c.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.c.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.c.f.tete.accces -text [phgt::mc "Accès"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.c.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.c.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.c.f.tete.id -text [phgt::mc "Identifiant?"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.c.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.c.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.c.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
+                    
+                    pack $f.methodes.c.f.tete.nom $f.methodes.c.f.tete.type $f.methodes.c.f.tete.accces $f.methodes.c.f.tete.taille $f.methodes.c.f.tete.valeur $f.methodes.c.f.tete.id $f.methodes.c.f.tete.m $f.methodes.c.f.tete.d $f.methodes.c.f.tete.e -fill both -expand 1 -side left
+                pack $f.methodes.c.f.tete -fill both
+                ttk::frame $f.methodes.c.f.corps
+                
+                pack $f.methodes.c.f.corps -fill x
+                    ##
+                    # Ici viennent s'insérer les attributs
+                    ##
+                    # Si l'entité est en édition, on affiche la liste des attributs déjà existants
+                    if {$id != "null"} {
+                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.methodes.c.f.corps $table "entite"
+                    }
+            pack $f.methodes.c.f.liste -side left -fill x
+        pack $f.methodes.c -side left -expand 1 -fill both
+        $f.methodes.c create window 0 0 -anchor nw -window $f.methodes.c.f
+        ttk::scrollbar $f.methodes.yscroll -command "$f.attributs.c yview"
+        pack $f.methodes.yscroll -side right -fill y
+        $f.methodes.c configure -scrollregion "0 0 1000 10000"
+    pack $f.methodes -fill x -padx 10
+    
+    # Ajout de la commande de scroll du canvas des attributs ici, sinon erreur mais fonctionne.
+    # À voir pour faire fonctionner correctement plus tard
+    $f.methodes.c configure -yscrollcommand "$f.attributs.yscroll set"
+    
     ttk::frame $f.commandes
         ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table
         ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {
             if {[winfo exists .fen_ajout_attribut]} {
                 destroy .fen_ajout_attribut
             }
-            destroy .fen_ajout_table
+            destroy .fen_ajout_classe
         }
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
@@ -124,9 +180,9 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     
     # Titre le la présente fenêtre
     if {$id == "null"} {
-        wm title $f [phgt::mc "Ajouter une entité"]
+        wm title $f [phgt::mc "Ajouter une classe"]
     } else {
-        wm title $f [phgt::mc "Éditer l'entité %s" [list $E_nom_table]]
+        wm title $f [phgt::mc "Éditer la classe %s" [list $E_nom_table]]
     }
     
     # Couleur de fond de la fenêtre
