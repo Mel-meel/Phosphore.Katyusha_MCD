@@ -21,26 +21,29 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f objet type_objet} {
     set attributs [dict get $objet "attributs"]
     
     foreach {id_attribut_graphique attribut} $attributs {
-        if {[winfo exists $f]} {
+        if {[winfo exists $f.f.corps]} {
             destroy $f.$id_attribut_graphique
         }
         #set nom_attribut_graphique [dict get $attribut "nom"]
-        ttk::frame $f.$id_attribut_graphique
-            ttk::label $f.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 15 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.signe -text "true" -width 10 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 15 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 10 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.unique -text "" -width 10 -background [dict get $STYLES "background"] -relief solid
+        ttk::frame $f.f.corps.$id_attribut_graphique
+            ttk::label $f.f.corps.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 15 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.signe -text "true" -width 10 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 15 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 10 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.unique -text "" -width 10 -background [dict get $STYLES "background"] -relief solid
             
-            ttk::button $f.$id_attribut_graphique.haut -text "Remonter" -width 6 -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique - 1]"
-            ttk::button $f.$id_attribut_graphique.bas -text "Descendre" -width 6 -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique + 1]"
-            ttk::button $f.$id_attribut_graphique.edit -text "Éditer" -width 5 -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
-            pack $f.$id_attribut_graphique.nom $f.$id_attribut_graphique.type $f.$id_attribut_graphique.taille $f.$id_attribut_graphique.signe $f.$id_attribut_graphique.valeur $f.$id_attribut_graphique.auto $f.$id_attribut_graphique.pk $f.$id_attribut_graphique.unique $f.$id_attribut_graphique.haut $f.$id_attribut_graphique.bas $f.$id_attribut_graphique.edit -fill y -expand 1 -side left
-        pack $f.$id_attribut_graphique -fill x
+            ttk::button $f.f.corps.$id_attribut_graphique.haut -text "Remonter" -width 6 -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.f.corps $type_objet $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            ttk::button $f.f.corps.$id_attribut_graphique.bas -text "Descendre" -width 6 -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.f.corps $type_objet $id_attribut_graphique [expr $id_attribut_graphique + 1]"
+            ttk::button $f.f.corps.$id_attribut_graphique.edit -text "Éditer" -width 5 -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
+            pack $f.f.corps.$id_attribut_graphique.nom $f.f.corps.$id_attribut_graphique.type $f.f.corps.$id_attribut_graphique.taille $f.f.corps.$id_attribut_graphique.signe $f.f.corps.$id_attribut_graphique.valeur $f.f.corps.$id_attribut_graphique.auto $f.f.corps.$id_attribut_graphique.pk $f.f.corps.$id_attribut_graphique.unique $f.f.corps.$id_attribut_graphique.haut $f.f.corps.$id_attribut_graphique.bas $f.f.corps.$id_attribut_graphique.edit -fill y -expand 1 -side left
+        pack $f.f.corps.$id_attribut_graphique -fill x
     }
+    
+    $f configure -scrollregion [$f bbox all]
+    
     # Mise à jour forcée de l'affichage graphique
     update
 }

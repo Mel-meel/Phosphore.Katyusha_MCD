@@ -103,15 +103,15 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
                     ##
                     # Si l'entité est en édition, on affiche la liste des attributs déjà existants
                     if {$id != "null"} {
-                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $table "entite"
+                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c $table "entite"
                     }
-            pack $f.attributs.c.f.liste -side left -fill x
+            pack $f.attributs.c.f.liste -side left -fill both
         pack $f.attributs.c -side left -expand 1 -fill both
         $f.attributs.c create window 0 0 -anchor nw -window $f.attributs.c.f
         ttk::scrollbar $f.attributs.yscroll -command "$f.attributs.c yview"
         pack $f.attributs.yscroll -side right -fill y
-        $f.attributs.c configure -scrollregion "0 0 1000 10000"
-    pack $f.attributs -fill x -padx 10
+        
+    pack $f.attributs -fill both -padx 10
     
     # Ajout de la commande de scroll du canvas des attributs ici, sinon erreur mais fonctionne.
     # À voir pour faire fonctionner correctement plus tard
