@@ -377,6 +377,30 @@ msgstr "Cliquer pour choisir une table mère"
 msgid "Liste des entités filles"
 msgstr "Liste des entités filles"
 
+
+##
+# UML
+##
+
+# Ajout d'une classe
+msgid "Liste des attributs de la classe"
+msgstr "Liste des attributs de la classe"
+
+msgid "Identifiant?"
+msgstr "Identifiant?"
+
+msgid "Accès"
+msgstr "Accès"
+
+msgid "Liste des méthodes de la classe"
+msgstr "Liste des méthodes de la classe"
+
+msgid "Ajouter une classe"
+msgstr "Ajouter une classe"
+
+msgid "Éditer la classe : %s"
+msgstr "Éditer la classe : %s"
+
 # Ajout d'une table mère à l'héritage
 msgid "Ajouter une entité mère à l'héritage"
 msgstr "Ajouter une entité mère à l'héritage"

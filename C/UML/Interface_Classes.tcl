@@ -194,7 +194,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     if {$id == "null"} {
         wm title $f [phgt::mc "Ajouter une classe"]
     } else {
-        wm title $f [phgt::mc "Éditer la classe %s" [list $E_nom_table]]
+        wm title $f [phgt::mc "Éditer la classe : %s" [list $E_nom_table]]
     }
     
     # Couleur de fond de la fenêtre
