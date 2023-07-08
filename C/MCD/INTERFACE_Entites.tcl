@@ -66,28 +66,35 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
             pack $f.attributs.commandes.ajout $f.attributs.commandes.supp -padx 10
         pack $f.attributs.commandes -side left -fill x
         
+        
+        ttk::frame $f.attributs.table_tete
+            ttk::frame $f.attributs.table_tete.f
+                ttk::label $f.attributs.table_tete.f.titre -text [phgt::mc "Liste des attributs de l'entité"]
+                pack $f.attributs.table_tete.f.titre -fill both -anchor center -padx 10 -pady 10 -expand 1
+                ttk::frame $f.attributs.table_tete.f.tete
+                    ttk::label $f.attributs.table_tete.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.signe -text [phgt::mc "Non signé?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.auto -text [phgt::mc "Incrémentation\nautomatique?"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.pk -text [phgt::mc "Clef\nprimaire?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.unique -text [phgt::mc "Unique?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
+                    
+                    pack $f.attributs.table_tete.f.tete.nom $f.attributs.table_tete.f.tete.type $f.attributs.table_tete.f.tete.signe $f.attributs.table_tete.f.tete.taille $f.attributs.table_tete.f.tete.valeur $f.attributs.table_tete.f.tete.auto $f.attributs.table_tete.f.tete.pk $f.attributs.table_tete.f.tete.unique $f.attributs.table_tete.f.tete.m $f.attributs.table_tete.f.tete.d $f.attributs.table_tete.f.tete.e -fill both -expand 1 -side left
+                pack $f.attributs.table_tete.f.tete -fill both -anchor w -expand 1
+            pack $f.attributs.table_tete.f -fill both -anchor w -expand 1
+        pack $f.attributs.table_tete -anchor w -expand 1
+        
+        
         # Attributs dans un canvas pour pouvoir utiliser une scrollbar
-        canvas $f.attributs.c -width 1200 -height 400 -background [dict get $STYLES "lbackground"] -highlightbackground [dict get $STYLES "graphics"]
+        canvas $f.attributs.c -background [dict get $STYLES "lbackground"] -highlightbackground [dict get $STYLES "graphics"]
         ttk::frame $f.attributs.c.f
             # Liste des attributs
             ttk::frame $f.attributs.c.f.liste
-                ttk::label $f.attributs.c.f.titre -text [phgt::mc "Liste des attributs de l'entité"]
-                pack $f.attributs.c.f.titre -fill x
-                ttk::frame $f.attributs.c.f.tete
-                    ttk::label $f.attributs.c.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.signe -text [phgt::mc "Non signé?"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.auto -text [phgt::mc "Incrémentation\nautomatique?"] -width 15 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.pk -text [phgt::mc "Clef\nprimaire?"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.unique -text [phgt::mc "Unique?"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
-                    
-                    pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.signe $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.auto $f.attributs.c.f.tete.pk $f.attributs.c.f.tete.unique $f.attributs.c.f.tete.m $f.attributs.c.f.tete.d $f.attributs.c.f.tete.e -fill both -expand 1 -side left
-                pack $f.attributs.c.f.tete -fill both
                 ttk::frame $f.attributs.c.f.corps
                 
                 pack $f.attributs.c.f.corps -fill x
