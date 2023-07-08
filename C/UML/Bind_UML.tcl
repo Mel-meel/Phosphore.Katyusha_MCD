@@ -32,8 +32,8 @@ bind $ZONE_UML.modelisation.c <Button-1> {
         puts "Rien à faire en position $px : $py"
     } elseif {$ACTION_B1 == "ajout_classe"} {
         # Si la fenêtre d'ajout d'entité n'existe pas déjà, la créer
-        if {![winfo exists .fen_uml_ajout_classe]} {
-            Katyusha_UML_INTERFACE_Objets_ajout_entite $px $py
+        if {![winfo exists ".fen_uml_ajout_classe"]} {
+            Katyusha_UML_Interface_Classes_ajout_classe $px $py
             Katyusha_UML_boutons_ajout_off
         }
     }
