@@ -69,7 +69,6 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
             pack $f.attributs.commandes.ajout $f.attributs.commandes.supp -padx 10
         pack $f.attributs.commandes -side left -fill x
         
-        # Attributs dans un canvas pour pouvoir utiliser une scrollbar
         ttk::frame $f.attributs.table_tete
             ttk::frame $f.attributs.table_tete.f
                 ttk::label $f.attributs.table_tete.f.titre -text [phgt::mc "Liste des attributs de la classe"]
@@ -86,10 +85,11 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
                     ttk::label $f.attributs.table_tete.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
                     
                     pack $f.attributs.table_tete.f.tete.nom $f.attributs.table_tete.f.tete.type $f.attributs.table_tete.f.tete.accces $f.attributs.table_tete.f.tete.taille $f.attributs.table_tete.f.tete.valeur $f.attributs.table_tete.f.tete.id $f.attributs.table_tete.f.tete.m $f.attributs.table_tete.f.tete.d $f.attributs.table_tete.f.tete.e -fill both -expand 1 -side left
-                pack $f.attributs.table_tete.f.tete -fill both -anchor w
-            pack $f.attributs.table_tete.f -fill both -anchor w
-        pack $f.attributs.table_tete -anchor w
+                pack $f.attributs.table_tete.f.tete -fill both -anchor w -expand 1
+            pack $f.attributs.table_tete.f -fill both -anchor w -expand 1
+        pack $f.attributs.table_tete -anchor w -expand 1
         
+        # Attributs dans un canvas pour pouvoir utiliser une scrollbar
         canvas $f.attributs.c -background [dict get $STYLES "lbackground"] -highlightbackground [dict get $STYLES "graphics"]
         ttk::frame $f.attributs.c.f
             # Liste des attributs
@@ -130,26 +130,32 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
             pack $f.methodes.commandes.ajout $f.methodes.commandes.supp -padx 10
         pack $f.methodes.commandes -side left -fill x
         
+        ttk::frame $f.methodes.table_tete
+            ttk::frame $f.methodes.table_tete.f
+                ttk::label $f.methodes.table_tete.f.titre -text [phgt::mc "Liste des méthodes de la classe"]
+                pack $f.methodes.table_tete.f.titre -fill both -anchor center -padx 10 -pady 10 -expand 1
+                ttk::frame $f.methodes.table_tete.f.tete
+                    ttk::label $f.methodes.table_tete.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.accces -text [phgt::mc "Accès"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.id -text [phgt::mc "Identifiant?"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
+                    
+                    pack $f.methodes.table_tete.f.tete.nom $f.methodes.table_tete.f.tete.type $f.methodes.table_tete.f.tete.accces $f.methodes.table_tete.f.tete.taille $f.methodes.table_tete.f.tete.valeur $f.methodes.table_tete.f.tete.id $f.methodes.table_tete.f.tete.m $f.methodes.table_tete.f.tete.d $f.methodes.table_tete.f.tete.e -fill both -expand 1 -side left
+                pack $f.methodes.table_tete.f.tete -fill both -anchor w -expand 1
+            pack $f.methodes.table_tete.f -fill both -anchor w -expand 1
+        pack $f.methodes.table_tete -anchor w -expand 1
+        
         # Attributs dans un canvas pour pouvoir utiliser une scrollbar
         canvas $f.methodes.c -background [dict get $STYLES "lbackground"] -highlightbackground [dict get $STYLES "graphics"]
         ttk::frame $f.methodes.c.f
             # Liste des attributs
             ttk::frame $f.methodes.c.f.liste
-                ttk::label $f.methodes.c.f.titre -text [phgt::mc "Liste des Méthodes de la classe"]
-                pack $f.methodes.c.f.titre -fill x
-                ttk::frame $f.methodes.c.f.tete
-                    ttk::label $f.methodes.c.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.c.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.c.f.tete.accces -text [phgt::mc "Accès"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.c.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.c.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.c.f.tete.id -text [phgt::mc "Identifiant?"] -width 15 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.c.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.c.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.c.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
-                    
-                    pack $f.methodes.c.f.tete.nom $f.methodes.c.f.tete.type $f.methodes.c.f.tete.accces $f.methodes.c.f.tete.taille $f.methodes.c.f.tete.valeur $f.methodes.c.f.tete.id $f.methodes.c.f.tete.m $f.methodes.c.f.tete.d $f.methodes.c.f.tete.e -fill both -expand 1 -side left
-                pack $f.methodes.c.f.tete -fill both
+            
                 ttk::frame $f.methodes.c.f.corps
                 
                 pack $f.methodes.c.f.corps -fill x
@@ -170,7 +176,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     
     # Ajout de la commande de scroll du canvas des attributs ici, sinon erreur mais fonctionne.
     # À voir pour faire fonctionner correctement plus tard
-    $f.methodes.c configure -yscrollcommand "$f.attributs.yscroll set"
+    $f.methodes.c configure -yscrollcommand "$f.methodes.yscroll set"
     
     ttk::frame $f.commandes
         ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table
