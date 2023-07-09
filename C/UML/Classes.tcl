@@ -166,6 +166,57 @@ proc Katyusha_UML_Classes_maj_classe_depuis_entite {id entite} {
 }
 
 ##
+# Ajout d'un attribut
+# Ici, on suppose que les données ont été controlée avant injection
+##
+proc Katyusha_UML_Classes_ajout_attribut {nom type nsigne complement_type taille null valeur auto pk unique acces description {graphique 1}} {
+    global classe_tmp
+    global IMG
+    global LOCALE
+    global STYLES
+    
+    set attributs [dict get $classe_tmp "attributs"]
+    
+    dict set attribut "nom" $nom
+    dict set attribut "type" $type
+    dict set attribut "signe" $nsigne
+    dict set attribut "complement_type" $complement_type
+    dict set attribut "taille" $taille
+    dict set attribut "null" $null
+    dict set attribut "valeur" $valeur
+    dict set attribut "auto" $auto
+    dict set attribut "pk" $pk
+    dict set attribut "unique" $unique
+    dict set attribut "acces" $acces
+    dict set attribut "description" ""
+    
+    set ids [dict keys $attributs]
+    set id_attribut_graphique [expr [lindex $ids [expr [llength $ids] - 1]] + 1]
+    dict set attributs $id_attribut_graphique $attribut
+    
+    dict set table_tmp "attributs" $attributs
+    
+    if {$graphique == 1} {
+        set f ".fen_ajout_classe"
+        #
+        frame $f.attributs.c.f.corps.$id_attribut_graphique
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.nom -text $nom -width 30 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.type -text $type -width 15 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.acces -text $acces -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.taille -text $taille -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.valeur -text $valeur -width 20 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.pk -text $pk -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.attributs.c.f.corps $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.attributs.c.f.corps $id_attribut_graphique [expr $id_attribut_graphique + 1]"
+            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.edit -text $LOCALE(editer) -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
+            pack $f.attributs.c.f.corps.$id_attribut_graphique.nom $f.attributs.c.f.corps.$id_attribut_graphique.type $f.attributs.c.f.corps.$id_attribut_graphique.acces $f.attributs.c.f.corps.$id_attribut_graphique.taille $f.attributs.c.f.corps.$id_attribut_graphique.valeur $f.attributs.c.f.corps.$id_attribut_graphique.pk $f.attributs.c.f.corps.$id_attribut_graphique.haut $f.attributs.c.f.corps.$id_attribut_graphique.bas $f.attributs.c.f.corps.$id_attribut_graphique.edit -fill both -expand 1 -side left
+        pack $f.attributs.c.f.corps.$id_attribut_graphique -fill x
+        
+        update
+    }
+}
+
+##
 # Met à jour les coordonnées d'une table par son ID
 ##
 proc Katyusha_UML_Classes_MAJ_coords {id coords} {

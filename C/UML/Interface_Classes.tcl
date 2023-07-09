@@ -79,7 +79,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
                     ttk::label $f.attributs.table_tete.f.tete.accces -text [phgt::mc "Accès"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.table_tete.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.table_tete.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.table_tete.f.tete.id -text [phgt::mc "Identifiant?"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.id -text [phgt::mc "Identifiant?"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.table_tete.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.table_tete.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.attributs.table_tete.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
@@ -140,7 +140,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
                     ttk::label $f.methodes.table_tete.f.tete.accces -text [phgt::mc "Accès"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.methodes.table_tete.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.methodes.table_tete.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.id -text [phgt::mc "Identifiant?"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.id -text [phgt::mc "Identifiant?"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.methodes.table_tete.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.methodes.table_tete.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.methodes.table_tete.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid

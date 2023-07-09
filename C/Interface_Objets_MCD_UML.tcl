@@ -42,7 +42,7 @@ proc Katyusha_Interface_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "m
             set attributs [dict get $table_tmp "attributs"]
         } elseif {$objet == "relation"} {
             set attributs [dict get $relation_tmp "attributs"]
-        } elseif {$objet == "UML_classe"} {
+        } elseif {$objet == "classe"} {
             set attributs [dict get $relation_tmp "attributs"]
         }
     }
@@ -64,6 +64,8 @@ proc Katyusha_Interface_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "m
             set E_nom_attribut "Attribut_[expr [llength [dict get $table_tmp attributs]]]"
         } elseif {$objet == "relation"} {
             set E_nom_attribut "Attribut_[expr [llength [dict get $relation_tmp attributs]]]"
+        } elseif {$objet == "classe"} {
+            set E_nom_attribut "Attribut_[expr [llength [dict get $classe_tmp attributs]]]"
         }
         set E_unique_attribut 0
     } else {
@@ -253,7 +255,7 @@ proc Katyusha_Interface_Objets_MCD_UML_commande_ajout_attribut {objet {id "null"
             }
             destroy $f
         }
-    } elseif {$objet == "UML_classe"} {
+    } elseif {$objet == "classe"} {
         set ok [Katyusha_UML_Objets_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut]
         if {$ok == 1} {
             if {$id == "null"} {
