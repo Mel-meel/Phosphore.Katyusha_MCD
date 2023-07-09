@@ -180,7 +180,7 @@ proc Katyusha_Interface_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "m
         # Clef primaire?
         ttk::frame $f.prop.pk
             if {$env == "mcd"} {
-                set texte [phgt::mc "Cocher si l'attribut est une clef primaire : "] 
+                set texte [phgt::mc "Cocher si l'attribut est une clef primaire : "]
             } else {
                 set texte [phgt::mc "Cocher si l'attribut est un identifiant : "]
             }
@@ -189,14 +189,19 @@ proc Katyusha_Interface_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "m
             ttk::checkbutton $f.prop.pk.cb -onvalue 1 -offvalue 0 -variable E_pk_attribut
             pack $f.prop.pk.l $f.prop.pk.cb -side left -fill x
         
-        
+        # Accès de l'attribut
+        ttk::frame $f.prop.acces
+            ttk::label $f.prop.acces.l -text [phgt::mc "Accès de l'attribut : "] -width 40 -anchor w
+            ttk::combobox $f.prop.acces.cb -values [list "private" "public" "protected"]
+            pack $f.prop.acces.l $f.prop.acces.cb -side left -fill x
+            $f.prop.acces.cb set $E_acces_attribut
         
         pack $f.prop.nom $f.prop.type $f.prop.valeur $f.prop.pk -fill x
         
         if {$env == "mcd"} {
             pack $f.prop.signe $f.prop.taille $f.prop.info_taille $f.prop.null $f.prop.auto $f.prop.unique -fill x
         } else {
-        
+            pack $f.prop.acces
         }
         
     pack $f.prop -fill x -padx 20
@@ -245,6 +250,16 @@ proc Katyusha_Interface_Objets_MCD_UML_commande_ajout_attribut {objet {id "null"
                 Katyusha_Relations_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
             } else {
                 Katyusha_Relations_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
+            }
+            destroy $f
+        }
+    } elseif {$objet == "UML_classe"} {
+        set ok [Katyusha_UML_Objets_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut]
+        if {$ok == 1} {
+            if {$id == "null"} {
+                Katyusha_UML_Classes_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
+            } else {
+                Katyusha_UML_Classes_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
             }
             destroy $f
         }

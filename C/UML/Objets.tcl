@@ -43,3 +43,7 @@ proc Katyusha_UML_Objets_maj_arbre_objets {} {
     set x [expr $x - 20]
     $c configure -scrollregion [$c bbox all]
 }
+
+proc Katyusha_UML_Objets_controle_attribut {nom type signe complement_type taille null valeur auto pk unique acces description} {
+    return 1
+}

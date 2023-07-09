@@ -351,6 +351,9 @@ msgstr "Cocher si l'attribut est une clef primaire : "
 msgid "Cocher si l'attribut est un identifiant : "
 msgstr "Cocher si l'attribut est un identifiant : "
 
+msgid "Accès de l'attribut : "
+msgstr "Accès de l'attribut : "
+
 # Supprimer un attribut
 msgid "Supprimer un attribut"
 msgstr "Supprimer un attribut"
