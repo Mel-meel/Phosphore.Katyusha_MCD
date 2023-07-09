@@ -61,40 +61,6 @@ proc Katyusha_MCD_INTERFACE_Objets_deplacer_attribut {f type_objet id_ancien id_
     }
 }
 
-proc Katyusha_MCD_INTERFACE_COMMANDE_Objets_ajout_attribut {objet {id "null"}} {
-    global E_nsigne_attribut
-    global E_auto_attribut
-    global E_pk_attribut
-    global E_null_attribut
-    global E_description_attribut
-    global E_unique_attribut
-    global E_acces_attribut
-    
-    set f ".fen_ajout_attribut"
-    
-    if {$objet == "table"} {
-        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut]
-        if {$ok == 1} {
-            if {$id == "null"} {
-                Katyusha_Tables_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
-            } else {
-                Katyusha_Tables_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
-            }
-            destroy $f
-        }
-    } elseif {$objet == "relation"} {
-        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut]
-        if {$ok == 1} {
-            if {$id == "null"} {
-                Katyusha_Relations_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
-            } else {
-                Katyusha_Relations_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
-            }
-            destroy $f
-        }
-    }
-}
-
 ##
 # Fenêtre de choix d'un attribut à supprimer pour le type d'objet passé en paramètre
 ##

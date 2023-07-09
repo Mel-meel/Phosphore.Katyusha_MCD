@@ -63,7 +63,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
         # Commandes des attributs
         ttk::frame $f.attributs.commandes
             # Bouton d'ajout d'un nouvel attribut
-            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_Objets_MCD_UML_ajout_attribut "classe" "null" "uml"}
+            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_Interface_Objets_MCD_UML_ajout_attribut "classe" "null" "uml"}
             # Bouton de supression d'un nouvel attribut
             ttk::button $f.attributs.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_UML_Interface_Objets_suppression_attribut "classe"}
             pack $f.attributs.commandes.ajout $f.attributs.commandes.supp -padx 10

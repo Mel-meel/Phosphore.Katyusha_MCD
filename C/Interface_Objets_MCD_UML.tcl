@@ -12,7 +12,7 @@
 # Fenêtre d'ajout d'un attribut à une entité ou une association
 # Si l'ID d'un attribut est passé en paramètre, il s'agira alors de l'éditer
 ##
-proc Katyusha_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "mcd"}} {
+proc Katyusha_Interface_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "mcd"}} {
     global table_tmp
     global relation_tmp
     global classe_tmp
@@ -132,7 +132,7 @@ proc Katyusha_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "mcd"}} {
         
         # Null?
         ttk::frame $f.prop.null
-            ttk::label $f.prop.null.l -text [phgt::mc "Cocher si l'attribut peu être nul "] -width 40 -anchor w
+            ttk::label $f.prop.null.l -text [phgt::mc "Cocher si l'attribut peu être nul : "] -width 40 -anchor w
             ttk::checkbutton $f.prop.null.cb -onvalue 1 -offvalue 0 -variable E_null_attribut
             pack $f.prop.null.l $f.prop.null.cb -side left -fill x
         
@@ -155,16 +155,7 @@ proc Katyusha_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "mcd"}} {
             pack $f.prop.unique.l $f.prop.unique.cb -side left -fill x
         
         
-        pack $f.prop.nom $f.prop.type $f.prop.valeur -fill x
-        
-        if {$env == "mcd"} {
-            pack $f.prop.signe $f.prop.taille $f.prop.info_taille $f.prop.null $f.prop.auto $f.prop.unique -fill x
-        } else {
-        
-        }
-        
-        
-        # Si l'attribut est en incrémentation utomatique, il ne peut pas être null
+        # Si l'attribut est en incrémentation automatique, il ne peut pas être null
         # TODO : Sortir le bind de là, c'est pas propre
         bind $f.prop.auto.cb <Button-1> {
             global E_auto_attribut
@@ -188,14 +179,30 @@ proc Katyusha_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "mcd"}} {
         }
         # Clef primaire?
         ttk::frame $f.prop.pk
-            ttk::label $f.prop.pk.l -text [phgt::mc "Cocher si l'attribut est-il une clef primaire "] -width 40 -anchor w
+            if {$env == "mcd"} {
+                set texte [phgt::mc "Cocher si l'attribut est une clef primaire : "] 
+            } else {
+                set texte [phgt::mc "Cocher si l'attribut est un identifiant : "]
+            }
+        
+            ttk::label $f.prop.pk.l -text $texte -width 40 -anchor w
             ttk::checkbutton $f.prop.pk.cb -onvalue 1 -offvalue 0 -variable E_pk_attribut
             pack $f.prop.pk.l $f.prop.pk.cb -side left -fill x
-        pack $f.prop.pk -fill x
+        
+        
+        
+        pack $f.prop.nom $f.prop.type $f.prop.valeur $f.prop.pk -fill x
+        
+        if {$env == "mcd"} {
+            pack $f.prop.signe $f.prop.taille $f.prop.info_taille $f.prop.null $f.prop.auto $f.prop.unique -fill x
+        } else {
+        
+        }
+        
     pack $f.prop -fill x -padx 20
     
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command "Katyusha_MCD_INTERFACE_COMMANDE_Objets_ajout_attribut $objet $id"
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command "Katyusha_Interface_Objets_MCD_UML_commande_ajout_attribut $objet $id $env"
         ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
@@ -208,4 +215,38 @@ proc Katyusha_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "mcd"}} {
     $f configure -background [dict get $STYLES "lbackground"]
     
     update
+}
+
+proc Katyusha_Interface_Objets_MCD_UML_commande_ajout_attribut {objet {id "null"} {env "mcd"}} {
+    global E_nsigne_attribut
+    global E_auto_attribut
+    global E_pk_attribut
+    global E_null_attribut
+    global E_description_attribut
+    global E_unique_attribut
+    global E_acces_attribut
+    
+    set f ".fen_ajout_attribut"
+    
+    if {$objet == "table"} {
+        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut]
+        if {$ok == 1} {
+            if {$id == "null"} {
+                Katyusha_Tables_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
+            } else {
+                Katyusha_Tables_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
+            }
+            destroy $f
+        }
+    } elseif {$objet == "relation"} {
+        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut]
+        if {$ok == 1} {
+            if {$id == "null"} {
+                Katyusha_Relations_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
+            } else {
+                Katyusha_Relations_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
+            }
+            destroy $f
+        }
+    }
 }
