@@ -60,7 +60,7 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
         # Commandes des attributs
         ttk::frame $f.attributs.commandes
             # Bouton d'ajout d'un nouvel attribut
-            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_MCD_INTERFACE_Objets_ajout_attribut "table"}
+            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_Objets_MCD_UML_ajout_attribut "table"}
             # Bouton de supression d'un nouvel attribut
             ttk::button $f.attributs.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_attribut "table"}
             pack $f.attributs.commandes.ajout $f.attributs.commandes.supp -padx 10
