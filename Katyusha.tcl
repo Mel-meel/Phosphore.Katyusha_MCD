@@ -46,6 +46,7 @@ source "$rpr/C/UML/Interface_Classes.tcl"
 
 
 source "$rpr/C/Interface_Objets_MCD_UML.tcl"
+source "$rpr/C/Objets_MCD_UML.tcl"
 
 source "$rpr/C/INTERFACE_Code.tcl"
 source "$rpr/C/C.tcl"
