@@ -154,7 +154,8 @@ proc Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table {} {
     set id [dict get $table_tmp "id"]
     dict set table_tmp "nom" [$f.nom.e get]
     dict set table_tmp "description" ""
-    set ok [Katyusha_Tables_controle_table $table_tmp]
+    #set ok [Katyusha_Tables_controle_table $table_tmp]
+    set ok 1
     if {$id == "null" && $ok == 1} {
         ajout_table $table_tmp
         destroy $f

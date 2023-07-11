@@ -22,7 +22,7 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f objet type_objet} {
     
     foreach {id_attribut_graphique attribut} $attributs {
         if {[winfo exists $f.f.corps]} {
-            destroy $f.$id_attribut_graphique
+            destroy $f.f.corps.$id_attribut_graphique
         }
         #set nom_attribut_graphique [dict get $attribut "nom"]
         ttk::frame $f.f.corps.$id_attribut_graphique
@@ -35,8 +35,8 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f objet type_objet} {
             ttk::label $f.f.corps.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 10 -background [dict get $STYLES "background"] -relief solid
             ttk::label $f.f.corps.$id_attribut_graphique.unique -text "" -width 10 -background [dict get $STYLES "background"] -relief solid
             
-            ttk::button $f.f.corps.$id_attribut_graphique.haut -text "Remonter" -width 6 -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.f.corps $type_objet $id_attribut_graphique [expr $id_attribut_graphique - 1]"
-            ttk::button $f.f.corps.$id_attribut_graphique.bas -text "Descendre" -width 6 -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.f.corps $type_objet $id_attribut_graphique [expr $id_attribut_graphique + 1]"
+            ttk::button $f.f.corps.$id_attribut_graphique.haut -text "Remonter" -width 6 -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            ttk::button $f.f.corps.$id_attribut_graphique.bas -text "Descendre" -width 6 -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique + 1]"
             ttk::button $f.f.corps.$id_attribut_graphique.edit -text "Éditer" -width 5 -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
             pack $f.f.corps.$id_attribut_graphique.nom $f.f.corps.$id_attribut_graphique.type $f.f.corps.$id_attribut_graphique.taille $f.f.corps.$id_attribut_graphique.signe $f.f.corps.$id_attribut_graphique.valeur $f.f.corps.$id_attribut_graphique.auto $f.f.corps.$id_attribut_graphique.pk $f.f.corps.$id_attribut_graphique.unique $f.f.corps.$id_attribut_graphique.haut $f.f.corps.$id_attribut_graphique.bas $f.f.corps.$id_attribut_graphique.edit -fill y -expand 1 -side left
         pack $f.f.corps.$id_attribut_graphique -fill x
