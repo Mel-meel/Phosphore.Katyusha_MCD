@@ -194,7 +194,7 @@ proc Katyusha_UML_Classes_ajout_attribut {nom type nsigne complement_type taille
     set id_attribut_graphique [expr [lindex $ids [expr [llength $ids] - 1]] + 1]
     dict set attributs $id_attribut_graphique $attribut
     
-    dict set table_tmp "attributs" $attributs
+    dict set classe_tmp "attributs" $attributs
     
     if {$graphique == 1} {
         set f ".fen_ajout_classe"
