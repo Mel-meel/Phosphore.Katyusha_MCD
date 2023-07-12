@@ -136,11 +136,6 @@ phgt::src "$rpr/locale" "fr"
 
 
 # Par défaut, français
-if {![file exists "$rpr/locale/$CONFIGS(LANG).tcl"]} {
-    source "$rpr/locale/fr.tcl"
-} else {
-    source "$rpr/locale/$CONFIGS(LANG).tcl"
-}
 
 
 #Katyusha_Configurations_packages
