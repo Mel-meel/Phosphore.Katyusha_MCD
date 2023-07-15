@@ -12,7 +12,6 @@
 bind $ZONE_MCD.canvas.c <Button-1> {
     global ACTION_B1
     global CONFIGS
-    global LOCALE
     global ZONE_MCD
     
     set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
@@ -360,8 +359,8 @@ $ZONE_MCD.canvas.c bind relation <Double-Button-1> {
 }
 
 menu .menu_relation -tearoff 0
-.menu_relation add command -label $LOCALE(editer) -command {Katyusha_MCD_INTERFACE_Association_ajout_association 0 0 [lindex $selected 1]}
-.menu_relation add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "relation" [lindex $selected 1]}
+.menu_relation add command -label [phgt::mc "Éditer"] -command {Katyusha_MCD_INTERFACE_Association_ajout_association 0 0 [lindex $selected 1]}
+.menu_relation add command -label [phgt::mc "Supprimer"] -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "relation" [lindex $selected 1]}
 
 ##
 # Menu de clic droit des étiquettes
@@ -405,8 +404,8 @@ $ZONE_MCD.canvas.c bind etiquette <Double-Button-1> {
 }
 
 menu .menu_etiquette -tearoff 0
-.menu_etiquette add command -label $LOCALE(editer) -command {INTERFACE_Etiquettes_ajout 0 0 [lindex $selected 1]}
-.menu_etiquette add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "etiquette" [lindex $selected 1]}
+.menu_etiquette add command -label [phgt::mc "Éditer"] -command {INTERFACE_Etiquettes_ajout 0 0 [lindex $selected 1]}
+.menu_etiquette add command -label [phgt::mc "Supprimer"] -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "etiquette" [lindex $selected 1]}
 
 
 ##
@@ -451,8 +450,8 @@ $ZONE_MCD.canvas.c bind heritage <Double-Button-1> {
 }
 
 menu .menu_heritage -tearoff 0
-.menu_heritage add command -label $LOCALE(editer) -command {INTERFACE_Heritages_ajout 0 0 [lindex $selected 1]}
-.menu_heritage add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "heritage" [lindex $selected 1]}
+.menu_heritage add command -label [phgt::mc "Éditer"] -command {INTERFACE_Heritages_ajout 0 0 [lindex $selected 1]}
+.menu_heritage add command -label [phgt::mc "Supprimer"] -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "heritage" [lindex $selected 1]}
 
 proc popupMenu {theMenu theX theY} {
     global ZONE_MCD

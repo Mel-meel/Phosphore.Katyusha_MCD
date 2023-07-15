@@ -13,7 +13,6 @@
 # Interface de la modélisation Merise
 ##
 proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
-    global LOCALE
     global IMG
     global CONFIGS
     global STYLES
@@ -26,17 +25,17 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
     ttk::frame $parent.notebook_mcd.panel
         ttk::frame $parent.notebook_mcd.panel.commandes
             # Bouton on/off d'ajout d'une entité
-            button $parent.notebook_mcd.panel.commandes.ajout_table -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_MCD_action_boutons_ajout "table"}
-            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_table $LOCALE(ajouter_table)
+            button $parent.notebook_mcd.panel.commandes.ajout_table -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter une entité"] -image $IMG(ajouter_table) -command {Katyusha_MCD_action_boutons_ajout "table"}
+            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_table [phgt::mc "Ajouter une table"]
             # Bouton on/off d'ajout d'une association
-            button $parent.notebook_mcd.panel.commandes.ajout_relation -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_MCD_action_boutons_ajout "relation"}
-            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_relation $LOCALE(ajouter_relation)
+            button $parent.notebook_mcd.panel.commandes.ajout_relation -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter une association"] -image $IMG(ajouter_relation) -command {Katyusha_MCD_action_boutons_ajout "relation"}
+            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_relation [phgt::mc "Ajouter une association"]
             # Bouton on/off d'ajout d'un héritage
-            button $parent.notebook_mcd.panel.commandes.ajout_heritage -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_heritage) -image $IMG(ajouter_heritage) -command {Katyusha_MCD_action_boutons_ajout "heritage"}
-            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_heritage $LOCALE(ajouter_heritage)
+            button $parent.notebook_mcd.panel.commandes.ajout_heritage -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter un héritage"] -image $IMG(ajouter_heritage) -command {Katyusha_MCD_action_boutons_ajout "heritage"}
+            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_heritage [phgt::mc "Ajouter un héritage"]
             # Bouton on/off d'ajout d'une étiquette
-            button $parent.notebook_mcd.panel.commandes.ajout_etiquette -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_etiquette) -image $IMG(ajouter_etiquette) -command {Katyusha_MCD_action_boutons_ajout "etiquette"}
-            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_etiquette $LOCALE(ajouter_etiquette)
+            button $parent.notebook_mcd.panel.commandes.ajout_etiquette -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter une étiquette"] -image $IMG(ajouter_etiquette) -command {Katyusha_MCD_action_boutons_ajout "etiquette"}
+            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_etiquette [phgt::mc "Ajouter une étiquette"]
             pack $parent.notebook_mcd.panel.commandes.ajout_table $parent.notebook_mcd.panel.commandes.ajout_relation $parent.notebook_mcd.panel.commandes.ajout_etiquette $parent.notebook_mcd.panel.commandes.ajout_heritage -side left
         pack $parent.notebook_mcd.panel.commandes
         ttk::label $parent.notebook_mcd.panel.entites -text [phgt::mc "Objets du MCD"] -justify left

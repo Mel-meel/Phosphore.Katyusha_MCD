@@ -13,7 +13,6 @@ proc Katyusha_Interface {} {
 global IMG
 global CONFIGS
 global STYLES
-global LOCALE
 global MCD
 global splash
 global fichier_sauvegarde
@@ -65,69 +64,69 @@ menu .mb.fichier.recents -tearoff 0 -background [dict get $STYLES "background"] 
 .mb add cascade -menu .mb.fichier -label [phgt::mc "Projet"]
 .mb add cascade -menu .mb.mcd -label [phgt::mc "Modèle Merise"]
 .mb add cascade -menu .mb.uml -label [phgt::mc "Diagramme de classes"]
-.mb add cascade -menu .mb.bdd -label $LOCALE(menu_bdd)
-.mb add cascade -menu .mb.code -label $LOCALE(menu_code)
-.mb add cascade -menu .mb.aide -label $LOCALE(menu_aide)
+.mb add cascade -menu .mb.bdd -label [phgt::mc "Base de données"]
+.mb add cascade -menu .mb.code -label [phgt::mc "Code"]
+.mb add cascade -menu .mb.aide -label [phgt::mc "Aide"]
 
 # Menu Katyusha
-.mb.katyusha add command -label $LOCALE(menu_katyusha_pref) -command INTERFACE_preferences
+.mb.katyusha add command -label [phgt::mc "Préférences"] -command INTERFACE_preferences
 #.mb.katyusha add command -label $LOCALE(menu_katyusha_maj) -command INTERFACE_MAJ
-.mb.katyusha add command -label $LOCALE(menu_quitter) -command Katyusha_exit_verif
+.mb.katyusha add command -label [phgt::mc "Quitter"] -command Katyusha_exit_verif
 
 # Menu Fichier
-.mb.fichier add command -label $LOCALE(menu_mcd_nouveau) -command Katyusha_MCD_nouveau
-.mb.fichier add command -label $LOCALE(menu_sauver_sous) -command Katyusha_sauvegarder_sous
-.mb.fichier add command -label $LOCALE(menu_sauver) -command Katyusha_sauvegarder
+.mb.fichier add command -label [phgt::mc "Nouveau projet"] -command Katyusha_MCD_nouveau
+.mb.fichier add command -label [phgt::mc "Sauvegarder sous"] -command Katyusha_sauvegarder_sous
+.mb.fichier add command -label [phgt::mc "Sauvegarder"] -command Katyusha_sauvegarder
 
 # Projets récement chargés
-.mb.fichier add cascade -menu .mb.fichier.recents -label $LOCALE(menu_recents)
-.mb.fichier.recents add command -label $LOCALE(recents_init) -command Katyusha_projets_recents_init
+.mb.fichier add cascade -menu .mb.fichier.recents -label [phgt::mc "Récents"]
+.mb.fichier.recents add command -label [phgt::mc "Effacer la liste"] -command Katyusha_projets_recents_init
 foreach fichier [Katyusha_fichiers_recents] {
     if {[file exists $fichier]} {
         .mb.fichier.recents add command -label $fichier -command "Katyusha_Charge $fichier"
     }
 }
 
-.mb.fichier add command -label $LOCALE(menu_charger) -command Katyusha_charger
-.mb.fichier add command -label $LOCALE(menu_prefs) -command INTERFACE_config_bdd
+.mb.fichier add command -label [phgt::mc "Charger"] -command Katyusha_charger
+.mb.fichier add command -label [phgt::mc "Configuration de la base de données"] -command INTERFACE_config_bdd
 
 # Menu modèle Merise
 #.mb.mcd add command -label $LOCALE(menu_mcd_entites) -command INTERFACE_liste_entites
-.mb.mcd add command -label $LOCALE(menu_mcd_ajout_table) -command "Katyusha_MCD_INTERFACE_Association_ajout_association 100 100"
+.mb.mcd add command -label [phgt::mc "Ajouter une entité"] -command "Katyusha_MCD_INTERFACE_Association_ajout_association 100 100"
 #.mb.mcd add command -label $LOCALE(menu_mcd_edit_table) -command INTERFACE_edit_table_liste
 #.mb.mcd add command -label $LOCALE(menu_mcd_sup_table) -command INTERFACE_liste_entites
-.mb.mcd add command -label $LOCALE(menu_mcd_ajout_relation) -command "Katyusha_MCD_INTERFACE_Entite_ajout_entite 100 100"
+.mb.mcd add command -label [phgt::mc "Ajouter une association"] -command "Katyusha_MCD_INTERFACE_Entite_ajout_entite 100 100"
 #.mb.mcd add command -label $LOCALE(menu_mcd_sup_relation) -command INTERFACE_liste_entitesv
-.mb.mcd add command -label $LOCALE(menu_mcd_verifier) -command {
+.mb.mcd add command -label [phgt::mc "Vérifier le MCD"] -command {
     global LOCALE
     
     set verif [Katyusha_verification_mcd_sql $sgbd]
     set erreurs [lindex $verif 2]
     if {$erreurs == "null"} {
-        set erreurs [list $LOCALE(mcd_correcte)]
+        set erreurs [list [phgt::mc "Le MCD est correct"]]
     }
     INTERFACE_erreurs_MCD $erreurs
 }
-.mb.mcd add command -label $LOCALE(menu_mcd_exporter_svg) -command INTERFACE_exporter_svg
-.mb.mcd add command -label $LOCALE(menu_mcd_imprimer) -command INTERFACE_imprimer
+.mb.mcd add command -label [phgt::mc "Exporter le MCD en SVG"] -command INTERFACE_exporter_svg
+.mb.mcd add command -label [phgt::mc "Imprimer le MCD"] -command INTERFACE_imprimer
 
 # Menu diagramme de classe UML
 #.mb.uml add command -label [phgt::mc "Modèle Merise"] -command INTERFACE_liste_entites
-.mb.uml add command -label [phgt::mc "En travaux, arrivera en version 1.x"]
+#.mb.uml add command -label [phgt::mc "En travaux, arrivera en version 1.x"]
 
 # Menu base de donnée
 #.mb.bdd add command -label $LOCALE(menu_config_bdd) -command INTERFACE_config_bdd
 #.mb.bdd add command -label $LOCALE(menu_connex_bdd) -command INTERFACE_connexion_bdd
-.mb.bdd add command -label $LOCALE(menu_gen_sql) -command INTERFACE_generation_sql
+.mb.bdd add command -label [phgt::mc "Préférences"] -command INTERFACE_generation_sql
 #.mb.bdd add command -label $LOCALE(menu_gen_mcd) -command INTERFACE_generation_mcd
 
 # Menu code
-.mb.code add command -label $LOCALE(menu_code_generer_php_fonctions) -command INTERFACE_Code_generation_php
-.mb.code add command -label $LOCALE(menu_code_generer_php_doctrine) -command INTERFACE_Code_generation_php_objet_doctrine
+.mb.code add command -label [phgt::mc "Préférences"] -command INTERFACE_Code_generation_php
+.mb.code add command -label [phgt::mc "Préférences"] -command INTERFACE_Code_generation_php_objet_doctrine
 
 # Menu Aide
 .mb.aide add command -label [phgt::mc "À propos"] -command INTERFACE_apropos
-.mb.aide add command -label $LOCALE(menu_aide_license) -command INTERFACE_license
+.mb.aide add command -label [phgt::mc "Licence"] -command INTERFACE_license
 
 ##
 # Le 4/5/2022 : Ajout d'un widget ttk::notebook qui contiendra deux élément :
@@ -142,7 +141,7 @@ pack .editeurs -fill both -expand 1
     ttk::frame .infos
         ttk::frame .infos.s
             if {$OS == "Windows" || $OS == "Win"} {
-                ttk::button .infos.s.splash -text $LOCALE(attention_os) -foreground red -activeforeground red -command INTERFACE_mise_en_garde
+                ttk::button .infos.s.splash -text [phgt::mc "Préférences"] -foreground red -activeforeground red -command INTERFACE_mise_en_garde
             } else {
                 ttk::label .infos.s.splash -text "                $splash" -foreground [dict get $STYLES "ddbackground"] -background [dict get $STYLES "graphics"]
             }
