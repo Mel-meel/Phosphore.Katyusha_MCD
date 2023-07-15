@@ -117,7 +117,7 @@ foreach fichier [Katyusha_fichiers_recents] {
 # Menu base de donnée
 #.mb.bdd add command -label $LOCALE(menu_config_bdd) -command INTERFACE_config_bdd
 #.mb.bdd add command -label $LOCALE(menu_connex_bdd) -command INTERFACE_connexion_bdd
-.mb.bdd add command -label [phgt::mc "Préférences"] -command INTERFACE_generation_sql
+.mb.bdd add command -label [phgt::mc "Générer le script SQL"] -command INTERFACE_generation_sql
 #.mb.bdd add command -label $LOCALE(menu_gen_mcd) -command INTERFACE_generation_mcd
 
 # Menu code
