@@ -18,7 +18,6 @@
 # À propos du logiciel
 ##
 proc INTERFACE_apropos {} {
-    global LOCALE
     global version
     global IMG
     global IMG
@@ -33,12 +32,12 @@ proc INTERFACE_apropos {} {
     wm iconphoto $f $IMG(logo)
     label $f.titre -text "Katyusha MCD v$version"
     label $f.logo -image $IMG(splash)
-    label $f.texte -text $LOCALE(TEXTE_a_propos)
+    label $f.texte -text [phgt::mc "À propos"]
     label $f.lien -text "http://katyusha-mcd.projet-phosphore.anazaar.org" -foreground blue -font Underline-Font
     button $f.ok -text "OK" -command "destroy $f"
     pack $f.titre $f.logo $f.texte $f.lien $f.ok -fill x
     # Titre le la présente fenêtre
-    wm title $f $LOCALE(TITRE_a_propos)
+    wm title $f [phgt::mc "À propos"]
     # Mise à jour forcée de l'affichage graphique
     update
 }
@@ -47,7 +46,6 @@ proc INTERFACE_apropos {} {
 # Fenêtre de paramètrage de la génération SQL
 ##
 proc INTERFACE_generation_sql {} {
-    global LOCALE
     global IMG
     global STYLES
     
@@ -62,11 +60,11 @@ proc INTERFACE_generation_sql {} {
     # Liste les SGBD dont Katyusha peut générer un script
     set SGBD_dispo [liste_sgbd]
     
-    ttk::label $f.texte -text $LOCALE(selectionner_sgbd)
+    ttk::label $f.texte -text [phgt::mc "Sélectionner un SGBD"]
     pack $f.texte -fill x -pady 10 -padx 50
     ttk::combobox $f.lb -values $SGBD_dispo
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command {
             set sgbd [.fen_gen_sql.lb get]
             set lscript [Katyusha_verification_mcd_sql $sgbd]
             #set lscript [Katyusha_generation_sql $sgbd]
@@ -80,13 +78,13 @@ proc INTERFACE_generation_sql {} {
             }
             destroy ".fen_gen_sql"
         }
-        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {destroy ".fen_gen_sql"}
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {destroy ".fen_gen_sql"}
         pack $f.commandes.ok $f.commandes.ko -fill x -side left -padx 50
     pack $f.lb -fill x
     pack $f.commandes -fill x -pady 10 -padx 50
     
     # Titre le la présente fenêtre
-    wm title $f $LOCALE(generer_sql)
+    wm title $f [phgt::mc "Générer le script SQL"]
     
     # Couleur de fond de la fenêtre
     $f configure -background [dict get $STYLES "lbackground"]
@@ -100,7 +98,6 @@ proc INTERFACE_generation_sql {} {
 ##
 proc INTERFACE_erreurs_MCD {erreurs} {
     global IMG
-    global LOCALE
     
     set texte ""
     
@@ -127,7 +124,7 @@ proc INTERFACE_erreurs_MCD {erreurs} {
     # Le script
     $f.texte.t insert end $texte
     # Titre le la présente fenêtre
-    wm title $f $LOCALE(erreurs_mcd)
+    wm title $f [phgt::mc "Erreurs du MCD"]
     # Mise à jour forcée de l'affichage graphique
     update
 }
@@ -137,7 +134,6 @@ proc INTERFACE_erreurs_MCD {erreurs} {
 ##
 proc INTERFACE_script_SQL {script fichier_script} {
     global IMG
-    global LOCALE
     global STYLES
     
     set f ".fen_script_sql"
@@ -157,14 +153,14 @@ proc INTERFACE_script_SQL {script fichier_script} {
         pack $f.texte.t -fill both -side left -expand 1
         pack $f.texte.ysbar -fill both -side left
     pack $f.texte -fill both -expand 1
-    ttk::label $f.info -text "$LOCALE(script_enregistre)$fichier_script"
+    ttk::label $f.info -text "[phgt::mc Préférences]$fichier_script"
     pack $f.info -fill x -padx 10 -pady 10
     # Le script
     $f.texte.t insert end $script
     # Coloration de termes SQL
     Katyusha_SQL_coloration $f.texte.t $script
     # Titre le la présente fenêtre
-    wm title $f $LOCALE(script_sql)
+    wm title $f [phgt::mc "Script SQL"]
     
     # Couleur de fond de la fenêtre
     $f configure -background [dict get $STYLES "lbackground"]
