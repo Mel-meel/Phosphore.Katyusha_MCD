@@ -20,6 +20,7 @@ global canvas_x
 global canvas_y
 global OS
 global ZONE_MCD
+global ZONE_UML
 
 # Détruit l'image de splash pour pouvoir afficher le reste
 destroy .image
@@ -154,6 +155,7 @@ pack .editeurs -fill both -expand 1
     pack .infos -fill x
 
 Katyusha_grille $ZONE_MCD.canvas.c
+Katyusha_grille $ZONE_UML.modelisation.c
 #maj_arbre_entites
 
 }
