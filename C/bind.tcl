@@ -314,8 +314,8 @@ $ZONE_MCD.canvas.c bind table <Double-Button-1> {
 }
 
 menu .menu_table -tearoff 0
-.menu_table add command -label $LOCALE(editer) -command {Katyusha_MCD_INTERFACE_Entite_ajout_entite 0 0 [lindex $selected 1]}
-.menu_table add command -label $LOCALE(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "table" [lindex $selected 1]}
+.menu_table add command -label [phgt::mc "Éditer"] -command {Katyusha_MCD_INTERFACE_Entite_ajout_entite 0 0 [lindex $selected 1]}
+.menu_table add command -label [phgt::mc "Supprimer"] -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "table" [lindex $selected 1]}
 
 ##
 # Menu de clic droit des associations
