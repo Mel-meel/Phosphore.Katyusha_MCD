@@ -172,7 +172,6 @@ proc Katyusha_UML_Classes_maj_classe_depuis_entite {id entite} {
 proc Katyusha_UML_Classes_ajout_attribut {nom type nsigne complement_type taille null valeur auto pk unique acces description {graphique 1}} {
     global classe_tmp
     global IMG
-    global LOCALE
     global STYLES
     
     set attributs [dict get $classe_tmp "attributs"]
@@ -208,7 +207,7 @@ proc Katyusha_UML_Classes_ajout_attribut {nom type nsigne complement_type taille
             ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.pk -text $pk -width 10 -background [dict get $STYLES "background"]  -relief solid
             ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_UML_Interface_Objets_deplacer_attribut $f.attributs.c.f.corps entite $id_attribut_graphique [expr $id_attribut_graphique - 1]"
             ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_UML_Interface_Objets_deplacer_attribut $f.attributs.c.f.corps entite $id_attribut_graphique [expr $id_attribut_graphique + 1]"
-            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.edit -text $LOCALE(editer) -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
+            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.edit -text [phgt::mc "Éditer"] -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
             pack $f.attributs.c.f.corps.$id_attribut_graphique.nom $f.attributs.c.f.corps.$id_attribut_graphique.type $f.attributs.c.f.corps.$id_attribut_graphique.acces $f.attributs.c.f.corps.$id_attribut_graphique.taille $f.attributs.c.f.corps.$id_attribut_graphique.valeur $f.attributs.c.f.corps.$id_attribut_graphique.pk $f.attributs.c.f.corps.$id_attribut_graphique.haut $f.attributs.c.f.corps.$id_attribut_graphique.bas $f.attributs.c.f.corps.$id_attribut_graphique.edit -fill both -expand 1 -side left
         pack $f.attributs.c.f.corps.$id_attribut_graphique -fill x
         
@@ -221,7 +220,7 @@ proc Katyusha_UML_Classes_ajout_attribut {nom type nsigne complement_type taille
 ##
 proc Katyusha_UML_Classes_MAJ_coords {id coords} {
     global classes
-    puts $classes
+    
     set classe [dict get $classes $id]
     dict set classe "coords" $coords
     dict set classes $id $classe
