@@ -156,7 +156,7 @@ puts "OS : $OS"
 after 2000
 
 Katyusha_Interface
-source "$rpr/C/bind.tcl"
+source "$rpr/C/MCD/Bind_MCD.tcl"
 source "$rpr/C/UML/Bind_UML.tcl"
 source "$rpr/C/Commandes.tcl"
 

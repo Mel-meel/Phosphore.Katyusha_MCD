@@ -16,7 +16,6 @@
 ##
 proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
     global IMG
-    global LOCALE
     global STYLES
     global etiquettes
     global etiquette_tmp
@@ -55,7 +54,7 @@ proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
     pack $f.nom -pady 10 -padx 50
     # Texte de l'étiquette
     ttk::frame $f.texte
-        ttk::label $f.texte.l -text $LOCALE(texte_etiquette)
+        ttk::label $f.texte.l -text [phgt::mc "Texte de l'étiquette : "]
         text $f.texte.t -background [dict get $STYLES "background"] -highlightbackground [dict get $STYLES "graphics"] -highlightcolor [dict get $STYLES "graphics"] -foreground [dict get $STYLES "foreground"] -insertbackground [dict get $STYLES "foreground"] -relief flat
         pack $f.texte.l $f.texte.t
     pack $f.texte -pady 10 -padx 50
@@ -74,7 +73,7 @@ proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
 
     # Titre le la présente fenêtre
     if {$id == "null"} {
-        wm title $f $LOCALE(ajouter_une_etiquette)
+        wm title $f [phgt::mc "Ajouter une étiquette"]
     } else {
         wm title $f [phgt::mc "Éditer l'étiquette %s" [list [dict get $etiquette nom]]]
     }
