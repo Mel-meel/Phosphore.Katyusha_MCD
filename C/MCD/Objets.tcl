@@ -16,7 +16,6 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
     global relations
     global heritages
     global procedures
-    global LOCALE
     global NOTEBOOK_MCD
     global STYLES
     
@@ -29,7 +28,7 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
         $c delete $e
     }
     # Affiche les tables
-    $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text $LOCALE(tables) -anchor w -tag "entite"
+    $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text [phgt::mc "Entités"] -anchor w -tag "entite"
     set hauteur [expr $hauteur + 20]
     set x [expr $x + 20]
     foreach {id table} $tables {
@@ -42,7 +41,7 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
     # Remet y à sa position initiale
     set x [expr $x - 20]
     # Affiche les relations
-    $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text $LOCALE(relations) -anchor w -tag "entite"
+    $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text $[phgt::mc "Associations"] -anchor w -tag "entite"
     set hauteur [expr $hauteur + 20]
     set x [expr $x + 20]
     foreach {id relation} $relations {
@@ -56,7 +55,7 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
     # Remet x à sa position initiale
     set x [expr $x - 20]
     # Affiche les héritages
-    $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text $LOCALE(heritages) -anchor w -tag "entite"
+    $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text [phgt::mc "Héritages"] -anchor w -tag "entite"
     set hauteur [expr $hauteur + 20]
     set x [expr $x + 20]
     foreach {id heritage} $heritages {
