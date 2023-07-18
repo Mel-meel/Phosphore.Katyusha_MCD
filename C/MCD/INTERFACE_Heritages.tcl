@@ -137,7 +137,6 @@ proc INTERFACE_Heritages_ajout_table_mere {} {
     global heritage_tmp
     global heritages
     global tables
-    global LOCALE
     global IMG
     global STYLES
     
@@ -186,7 +185,6 @@ proc INTERFACE_Heritages_ajout_table_fille {} {
     global heritage_tmp
     global heritages
     global tables
-    global LOCALE
     global IMG
     global STYLES
     
@@ -232,7 +230,6 @@ proc INTERFACE_Heritages_ajout_table_fille {} {
 proc INTERFACE_Heritages_supp_table_fille {} {
     global heritage_tmp
     global tables
-    global LOCALE
     global IMG
     global STYLES
     
@@ -280,7 +277,6 @@ proc INTERFACE_Heritages_supp_table_fille {} {
 
 proc INTERFACE_COMMANDE_suppression_table_fille {} {
     global heritage_tmp
-    global LOCALE
     
     set f ".fen_supp_table_fille"
     # Récupère la valeur de la listbox de choix de la table fille à supprimer
