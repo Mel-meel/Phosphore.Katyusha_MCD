@@ -210,4 +210,11 @@ proc Katyusha_Entites_controle_entite {entite} {
     return $ok
 }
 
+##
+# Créé un objet, soit une entité, soit une association depuis une classe UML
+##
+proc Katyusha_MCD_Objets_creer_objet_depuis_classe {id classe} {
+
+}
+
 

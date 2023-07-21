@@ -9,8 +9,8 @@
 ######################################################
 
 ##
-# Si aucune table n'est spécifiée en argument, il s'agira d'un ajout de table.
-# Si une table est passée en argument, il s'agira alors de l'éditer.
+# Si aucune classe n'est spécifiée en argument, il s'agira d'un ajout de classe.
+# Si une classe est passée en argument, il s'agira alors de l'éditer.
 # Pour un ajout, spécifier uniquement les coordonnées.
 # Pour une édition, indiquer en coordonnées 0:0 et passer son id
 ##
@@ -179,7 +179,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     $f.methodes.c configure -yscrollcommand "$f.methodes.yscroll set"
     
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command Katyusha_UML_Interface_Classes_ajout_classe_commande
         ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {
             if {[winfo exists .fen_ajout_attribut]} {
                 destroy .fen_ajout_attribut
@@ -202,4 +202,26 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     
     # Mise à jour forcée de l'affichage graphique
     update
+}
+
+
+##
+# Action de la procédure Katyusha_UML_Interface_Classes_ajout_classe
+##
+proc Katyusha_UML_Interface_Classes_ajout_classe_commande {} {
+    global classe_tmp
+    
+    set f ".fen_ajout_classe"
+    set id [dict get $classe_tmp "id"]
+    dict set classe_tmp "nom" [$f.nom.e get]
+    dict set classe_tmp "description" ""
+    #set ok [Katyusha_Tables_controle_table $table_tmp]
+    set ok 1
+    if {$id == "null" && $ok == 1} {
+        Katysha_UML_Classes_creer_classe $classe_tmp
+        destroy $f
+    } elseif {$id != "null" && $ok == 1} {
+        #Katysha_UML_Classes_modifier_classe $id $classe_tmp
+        destroy $f
+    }
 }

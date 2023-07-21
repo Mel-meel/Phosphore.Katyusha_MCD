@@ -108,6 +108,30 @@ proc Katyusha_UML_Classes_creer_affichage_graphique {id classe} {
     return $graph
 }
 
+proc Katysha_UML_Classes_creer_classe {classe_tmp} {
+    # Charge la variable globale contenant toutes les tables
+    global classes
+    global classes_graphique
+    global ID
+    
+    # Ajoute la nouvelle classe aux classes existantes
+    dict set classes $ID $classe_tmp
+    set graph [Katyusha_UML_Classes_creer_affichage_graphique $ID $classe_tmp]
+    # Ajoute la liste temporaire au dictionnaire graphique des classes
+    dict set classes_graphique $ID $graph
+    puts [phgt::mc "Ajout de la classe : [dict get $classe_tmp nom]"]
+    
+    # Créé l'entité MCD
+    Katyusha_MCD_Objets_creer_objet_depuis_classe $ID $classe_tmp
+    
+    set ID [expr $ID + 1]
+    #puts [.mcd.canvas.c coords [lindex $graph 0]]
+    unset graph id
+    # Met à jour l'arbre des entités
+    #Katyusha_MCD_Objets_maj_arbre_objets
+    #Katyusha_Historique_maj
+}
+
 ##
 # Créé une classes depuis le MCD
 ##
@@ -137,6 +161,9 @@ proc Katyusha_UML_Classes_creer_classe_depuis_entite {id entite} {
     unset graph id entite classe
 }
 
+##
+# Met à joour une classe depuis le MCD
+##
 proc Katyusha_UML_Classes_maj_classe_depuis_entite {id entite} {
     global classes
     global classes_graphique
