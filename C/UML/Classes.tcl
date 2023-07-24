@@ -126,9 +126,12 @@ proc Katysha_UML_Classes_creer_classe {classe_tmp} {
     
     set ID [expr $ID + 1]
     #puts [.mcd.canvas.c coords [lindex $graph 0]]
-    unset graph id
+    unset graph
     # Met à jour l'arbre des entités
-    #Katyusha_MCD_Objets_maj_arbre_objets
+    Katyusha_UML_Objets_maj_arbre_objets
+    
+    puts $classes_graphique
+    puts $classes
     #Katyusha_Historique_maj
 }
 
@@ -157,6 +160,8 @@ proc Katyusha_UML_Classes_creer_classe_depuis_entite {id entite} {
     set ID_UML [expr $ID_UML + 1]
     
     Katyusha_UML_Objets_maj_arbre_objets
+    
+    puts $classes
     
     unset graph id entite classe
 }
