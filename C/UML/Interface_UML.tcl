@@ -52,7 +52,7 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
         ttk::frame $parent.notebook_uml.uml.modelisation
             # C'est pas parfait, mais ça marche
             # À revoir completement
-            ttk::scrollbar $parent.notebook_uml.uml.modelisation.vs -command "$parent.notebook_uml.mcd.canvas.c yview"
+            ttk::scrollbar $parent.notebook_uml.uml.modelisation.vs -command "$parent.notebook_uml.uml.modelisation.c yview"
             set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
             set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
             canvas $parent.notebook_uml.uml.modelisation.c -background white -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand "$parent.notebook_uml.uml.hs set" -yscrollcommand "$parent.notebook_uml.uml.modelisation.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas"
