@@ -222,8 +222,8 @@ proc ajout_table {table_tmp} {
 ##
 proc Katyusha_MCD_Entites_creer_entite_depuis_classe {id classe} {
     global classes
-    global entites
-    global entite_graphique
+    global tables
+    global tables_graphique
     
     set entite [Katyusha_Tables_init_table]
     
@@ -234,16 +234,13 @@ proc Katyusha_MCD_Entites_creer_entite_depuis_classe {id classe} {
     set graph [Katyusha_Tables_creer_affichage_graphique $id $entite]
     
     
-    dict set entites $id $entite
-    dict set entites_graphique $id $graph
+    dict set tables $id $entite
+    dict set tables_graphique $id $graph
     
     
     Katyusha_MCD_Objets_maj_arbre_objets
     
     unset graph id entite classe
-    
-    puts $entites_graphique
-    puts $entites
 }
 
 ##
