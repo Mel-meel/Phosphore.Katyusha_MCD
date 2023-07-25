@@ -66,7 +66,6 @@ proc Katyusha_UML_Classes_creer_affichage_graphique {id classe} {
     global rpr
     global CONFIGS
     global ZONE_UML
-    global ENV
     
     # Créé l'affichage graphique de la nouvelle table dans une liste temporaire
     set x [lindex [dict get $classe "coords"] 0]
@@ -142,8 +141,6 @@ proc Katyusha_UML_Classes_creer_classe_depuis_entite {id entite} {
     global tables
     global classes
     global classes_graphique
-    global ENV
-    global ID_UML
     
     set classe [Katyusha_UML_Classes_init_classe]
     
@@ -151,13 +148,11 @@ proc Katyusha_UML_Classes_creer_classe_depuis_entite {id entite} {
     dict set classe "attributs" [dict get $entite "attributs"]
     dict set classe "coords" [dict get $entite "coords"]
     
-    set graph [Katyusha_UML_Classes_creer_affichage_graphique $ID_UML $classe]
+    set graph [Katyusha_UML_Classes_creer_affichage_graphique $id $classe]
     
     
-    dict set classes $ID_UML $classe
-    dict set classes_graphique $ID_UML $graph
-    
-    set ID_UML [expr $ID_UML + 1]
+    dict set classes $id $classe
+    dict set classes_graphique $id $graph
     
     Katyusha_UML_Objets_maj_arbre_objets
     
