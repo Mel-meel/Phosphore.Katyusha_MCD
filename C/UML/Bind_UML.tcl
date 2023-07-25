@@ -84,8 +84,6 @@ $ZONE_UML.modelisation.c bind objet_uml <B1-Motion> {
         # Vérifie que l'entité ne dépasse pas les limites du mcd
         # TODO : À revoir, la limitation de déplacement ne fonctionne pas correctement
         #if {$changed_x < $xbcanvas && $changed_x > 0 && $changed_y < $ybcanvas && $changed_y > 0} {
-        puts $tag
-        puts $tables_graphique
             foreach c [dict get $tables_graphique $tag] {
                 $ZONE_MCD.canvas.c move $c $changed_x $changed_y
             }
