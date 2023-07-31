@@ -1,13 +1,7 @@
 # Français
 
-# Initialisation du programme
-set LOCALE(chargement_locale_ok) " # OK!"
-set LOCALE(chargement_modules) "Chargement des modules........"
 msgid "Chargement des packages"
 msgstr "Chargement des packages"
-
-set LOCALE(chargement_module_tk_ok) " # OK!"
-set LOCALE(chargement_module_tdbc_ok) " # OK!"
 # Menu
 msgid "Katyusha!"
 msgstr "Katyusha!"
