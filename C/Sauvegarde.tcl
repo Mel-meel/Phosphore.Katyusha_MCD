@@ -43,16 +43,6 @@ proc Katyusha_sauvegarder_sous {} {
 }
 
 ##
-# Retourne le code XML des configurations de la base sauvegardée
-##
-proc Katyusha_Sauvegarde_base {} {
-    global MCD
-    
-    set xml "<base>\n\t<nom>$MCD(nom)</nom>\n\t<sgbd>$MCD(sgbd)</sgbd>\n\t<rep>$MCD(rep)</rep>\n\t<drop>$MCD(drop)</drop>\n</base>\n"
-    return $xml
-}
-
-##
 # 
 ##
 proc Katyusha_Sauvegarde_table {id table} {
@@ -274,15 +264,85 @@ proc Katyusha_Sauvegarde_heritages {heritages} {
 }
 
 ##
+# 
+##
+proc Katyusha_Sauvegarde_table {id table} {
+    global tables_graphique
+    global ZONE_MCD
+    
+    set nom_table [dict get $table nom]
+    set xml "\t<table id=$id>\n\t\t<nom>$nom_table</nom>\n\t\t<attributs>\n"
+    set attributs [dict get $table attributs]
+    # Balayage des attributs de la table
+    set id_attribut 0
+    foreach {k kb} $attributs {
+        set id_attribut [expr $id_attribut + 1]
+        set nom_attribut [dict get $kb nom]
+        set xml "$xml\t\t\t<attribut id=$id_attribut>\n\t\t\t\t<nom>$nom_attribut</nom>\n"
+        set type [dict get $kb type]
+        set xml "$xml\t\t\t\t<type>$type</type>\n"
+        set complement_type [dict get $kb complement_type]
+        set xml "$xml\t\t\t\t<complement_type>$complement_type</complement_type>\n"
+        set pk [dict get $kb pk]
+        set xml "$xml\t\t\t\t<pk>$pk</pk>\n"
+        set taille [dict get $kb taille]
+        set xml "$xml\t\t\t\t<taille>$taille</taille>\n"
+        set auto [dict get $kb auto]
+        set xml "$xml\t\t\t\t<auto_increment>$auto</auto_increment>\n"
+        set valeur [dict get $kb valeur]
+        set xml "$xml\t\t\t\t<valeur>$valeur</valeur>\n"
+        set null [dict get $kb null]
+        set xml "$xml\t\t\t\t<null>$null</null>\n"
+        set description [dict get $kb description]
+        set xml "$xml\t\t\t\t<description>$description</description>\n"
+        set xml "$xml\t\t\t</attribut>\n"
+    }
+    set xml "$xml\t\t</attributs>\n"
+    # Couleurs de la table
+    set xml "$xml\t\t<couleurs>\n"
+    foreach {k v} [dict get $table "couleurs"] {
+        set xml "$xml\t\t\t<$k>$v</$k>\n"
+    }
+    set xml "$xml\t\t</couleurs>\n"
+    # Coordonnées de la table graphique
+    set id_graphique [lindex [dict get $tables_graphique $id] 0]
+    set coords [$ZONE_MCD.canvas.c coords $id_graphique]
+    set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
+    set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
+    #set coords [dict get $table coords]
+    #set x [lindex $coords 0]
+    #set y [lindex $coords 1]
+    # Description de la table
+    set description [dict get $table description]
+    set xml "$xml\t\t<description>$description</description>\n"
+    set xml "$xml\t<coords>$x/$y</coords>\n\t</table>\n"
+    return $xml
+}
+
+##
+# Retourne le code XML de l'ensemble des classes
+##
+proc Katyusha_Sauvegarde_classes {classes} {
+    set xml "<classes>\n"
+    # Balayage des tables
+    foreach {ka table} $classes {
+        set xml "$xml[Katyusha_Sauvegarde_table $ka $table]"
+    }
+    set xml "$xml</classes>\n"
+    return $xml
+}
+
+##
 # Enregistre toutes les données dans un fichier au format XML
 ##
 proc Katyusha_Sauvegarde {} {
     global MCD
-    global LOCALE
     global tables
     global relations
     global heritages
     global etiquettes
+    global classes
+    global interfaces
     global fichier_sauvegarde
     global version
     global rep_configs
@@ -290,16 +350,33 @@ proc Katyusha_Sauvegarde {} {
     set xml ""
     # En tête XML
     set xml "$xml<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<katyusha>\n\t<version>$version</version>\n</katyusha>\n"
-    # Enregistrement des configurations de la base
-    set xml "$xml[Katyusha_Sauvegarde_base]"
-    # Enregistrement des tables
+    
+    ##
+    # Partie Merise
+    ##
+    set xml "$xml\n<diagramme_merise>"
+    
+    # Enregistrement des entités
     set xml "$xml[Katyusha_Sauvegarde_tables $tables]"
-    # Enregistrement des relations
+    # Enregistrement des associations
     set xml "$xml[Katyusha_Sauvegarde_relations $relations]"
     # Enregistrement des etiquettes
     set xml "$xml[Katyusha_Sauvegarde_etiquettes $etiquettes]"
     # Enregistrement des héritages
     set xml "$xml[Katyusha_Sauvegarde_heritages $heritages]"
+    
+    set xml "$xml\n</diagramme_merise>"
+    
+    ##
+    # Partie UML
+    ##
+    set xml "$xml\n<digramme_classes>"
+    
+    # Enregistrement des classes
+    set xml "$xml[Katyusha_Sauvegarde_relations $relations]"
+    
+    set xml "$xml\n</digramme_classes>"
+    
     # Enregistre dans le fichier
     set stream [open $fichier_sauvegarde "w+"]
     set MCD(rep) [file dirname $fichier_sauvegarde]
@@ -317,7 +394,7 @@ proc Katyusha_Sauvegarde {} {
     puts $stream $contenu
     close $stream
     
-    puts "$LOCALE(mcd_sauv_sous)$fichier_sauvegarde"
+    puts "$fichier_sauvegarde"
     # Met à jour les dictionnaires de sauvegarde
     Katyusha_MAJ_SC
 }
