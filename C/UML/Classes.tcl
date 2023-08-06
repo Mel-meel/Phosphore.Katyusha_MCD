@@ -262,6 +262,7 @@ proc Katyusha_UML_Classes_init_classe {} {
     set classe [dict create]
     dict set classe "attributs" [dict create]
     dict set classe "methodes" [dict create]
+    dict set classe "description" ""
     #dict set classe "couleurs" [dict create "fond_tete" $UML(couleur_fond_tete_table) "ligne" $UML(couleur_ligne_table) "fond_corps" $UML(couleur_fond_corps_table) "texte" $UML(couleur_texte_table)]
     
     return $classe

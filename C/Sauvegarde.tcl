@@ -63,7 +63,7 @@ proc Katyusha_Sauvegarde_entite {id entite} {
     set xml "$xml\t\t</attributs>\n"
     # Couleurs de la table
     set xml "$xml\t\t<couleurs>\n"
-    foreach {k v} [dict get $table "couleurs"] {
+    foreach {k v} [dict get $entite "couleurs"] {
         set xml "$xml\t\t\t<$k>$v</$k>\n"
     }
     set xml "$xml\t\t</couleurs>\n"
@@ -78,7 +78,7 @@ proc Katyusha_Sauvegarde_entite {id entite} {
     # Description de la table
     set description [dict get $entite description]
     set xml "$xml\t\t<description>$description</description>\n"
-    set xml "$xml\t<coords>\n\t\t<x>$x</x>\n\t\t<y>$y</y></coords>\n\t</entite>\n"
+    set xml "$xml\t\t<coords>\n\t\t<x>$x</x>\n\t\t<y>$y</y>\n\t\t</coords>\n\t</entite>\n"
     return $xml
 }
 
@@ -135,14 +135,14 @@ proc Katyusha_Sauvegarde_association {id association} {
     #set coords [dict get $relation coords]
     #set x [lindex $coords 0]
     #set y [lindex $coords 1]
-    set xml "$xml\t\t</liens>\n\t<coords>$x/$y</coords>\n\t</association>\n"
+    set xml "$xml\t\t</liens>\n\t<coords>\n\t\t<x>$x</x>\n\t\t<y>$y</y>\n\t\t</coords>\n\t</association>\n"
     return $xml
 }
 
 ##
 # Retourne le code XML de l'ensemble des associations
 ##
-proc Katyusha_Sauvegarde_relations {associations} {
+proc Katyusha_Sauvegarde_associations {associations} {
     set xml "<associations>\n"
     # Balayage des relations
     foreach {ka association} $associations {
@@ -168,7 +168,7 @@ proc Katyusha_Sauvegarde_etiquette {id etiquette} {
     set coords [dict get $etiquette coords]
     set x [lindex $coords 0]
     set y [lindex $coords 1]
-    set xml "$xml\t\t<coords>\n\t\t<x>$x</x>\n\t\t<y>$y</y></coords>\n\t</etiquette>\n"
+    set xml "$xml\t\t<coords>\n\t\t<x>$x</x>\n\t\t<y>$y</y>\n\t\t</coords>\n\t</etiquette>\n"
     return $xml
 }
 
@@ -214,7 +214,7 @@ proc Katyusha_Sauvegarde_heritage {id heritage} {
     set coords [$ZONE_MCD.canvas.c coords $id_graphique]
     set x [lindex $coords 4]
     set y [expr [lindex $coords 5] + 45]
-    set xml "$xml\t\t<coords>\n\t\t<x>$x</x>\n\t\t<y>$y</y></coords>\n\t</heritage>\n"
+    set xml "$xml\t\t<coords>\n\t\t<x>$x</x>\n\t\t<y>$y</y>\n\t\t</coords>\n\t</heritage>\n"
     return $xml
 }
 
@@ -259,21 +259,21 @@ proc Katyusha_Sauvegarde_classe {id classe} {
         set xml "$xml\t\t\t</methode>\n"
     }
     set xml "$xml\t\t</methodes>\n"
-    # Couleurs de la table
-    set xml "$xml\t\t<couleurs>\n"
-    foreach {k v} [dict get $table "couleurs"] {
-        set xml "$xml\t\t\t<$k>$v</$k>\n"
-    }
-    set xml "$xml\t\t</couleurs>\n"
+    # Couleurs de la classe
+    #set xml "$xml\t\t<couleurs>\n"
+    #foreach {k v} [dict get $classe "couleurs"] {
+    #    set xml "$xml\t\t\t<$k>$v</$k>\n"
+    #}
+    #set xml "$xml\t\t</couleurs>\n"
     # Coordonnées de la classe graphique
     set id_graphique [lindex [dict get $classes_graphique $id] 0]
     set coords [$ZONE_UML.modelisation.c coords $id_graphique]
     set x [expr [lindex $coords 0] + (([lindex $coords 2] - [lindex $coords 0]) / 2)]
     set y [expr ([lindex $coords 1] + (([lindex $coords 3] - [lindex $coords 1]) / 2)) - 20]
     # Description de la table
-    set description [dict get $table description]
+    set description [dict get $classe description]
     set xml "$xml\t\t<description>$description</description>\n"
-    set xml "$xml\t<coords>\n\t\t<x>$x</x>\n\t\t<y>$y</y></coords>\n\t</classe>\n"
+    set xml "$xml\t<coords>\n\t\t<x>$x</x>\n\t\t<y>$y</y>\n\t\t</coords>\n\t</classe>\n"
     return $xml
 }
 
@@ -283,7 +283,7 @@ proc Katyusha_Sauvegarde_classe {id classe} {
 proc Katyusha_Sauvegarde_classes {classes} {
     set xml "<classes>\n"
     # Balayage des tables
-    foreach {ka table} $classes {
+    foreach {ka classe} $classes {
         set xml "$xml[Katyusha_Sauvegarde_classe $ka $classe]"
     }
     set xml "$xml</classes>\n"
@@ -312,7 +312,7 @@ proc Katyusha_Sauvegarde {} {
     ##
     # Partie Merise
     ##
-    set xml "$xml\n<diagramme_merise>"
+    set xml "$xml\n<diagramme_merise>\n"
     
     # Enregistrement des entités
     set xml "$xml[Katyusha_Sauvegarde_entites $tables]"
@@ -328,7 +328,7 @@ proc Katyusha_Sauvegarde {} {
     ##
     # Partie UML
     ##
-    set xml "$xml\n<digramme_classes>"
+    set xml "$xml\n<digramme_classes>\n"
     
     # Enregistrement des classes
     set xml "$xml[Katyusha_Sauvegarde_classes $classes]"
