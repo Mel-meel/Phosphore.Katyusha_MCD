@@ -619,11 +619,12 @@ proc Katyusha_Tables_suppression_attribut_table {table id_attribut {graphique 1}
 proc Katyusha_Tables_init_table {} {
     global MCD
     
-    set table [dict create]
-    dict set table "attributs" [dict create]
-    dict set table "couleurs" [dict create "fond_tete" $MCD(couleur_fond_tete_table) "ligne" $MCD(couleur_ligne_table) "fond_corps" $MCD(couleur_fond_corps_table) "texte" $MCD(couleur_texte_table)]
+    set entite [dict create]
+    dict set entite "attributs" [dict create]
+    dict set entite "description" ""
+    dict set entite "couleurs" [dict create "fond_tete" $MCD(couleur_fond_tete_table) "ligne" $MCD(couleur_ligne_table) "fond_corps" $MCD(couleur_fond_corps_table) "texte" $MCD(couleur_texte_table)]
     
-    return $table
+    return $entite
 }
 
 ##
