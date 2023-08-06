@@ -17,6 +17,7 @@ proc Katyusha_UML_Objets_maj_depuis_mld {mld} {
 ##
 proc Katyusha_UML_Objets_maj_arbre_objets {} {
     global classes
+    global interfaces
     global NOTEBOOK_UML
     global STYLES
     
