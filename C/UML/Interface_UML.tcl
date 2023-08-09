@@ -27,7 +27,10 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
             # Bouton on/off d'ajout d'une classe
             button $parent.notebook_uml.panel.commandes.ajout_classe -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter une classe"] -image $IMG(ajouter_classe) -command {Katyusha_UML_action_boutons_ajout "classe"}
             tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_classe [phgt::mc "Ajouter une classe"]
-            pack $parent.notebook_uml.panel.commandes.ajout_classe -side left
+            # Bouton on/off d'ajout d'une interface
+            button $parent.notebook_uml.panel.commandes.ajout_interface -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter une classe"] -image $IMG(ajouter_interface) -command {Katyusha_UML_action_boutons_ajout "interface"}
+            tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_interface [phgt::mc "Ajouter une interface"]
+            pack $parent.notebook_uml.panel.commandes.ajout_classe $parent.notebook_uml.panel.commandes.ajout_interface -side left
         pack $parent.notebook_uml.panel.commandes
         ttk::label $parent.notebook_uml.panel.entites -text [phgt::mc "Objets du digramme de classes"] -justify left
         pack $parent.notebook_uml.panel.entites -fill x -pady 10 -padx 5
