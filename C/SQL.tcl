@@ -38,7 +38,7 @@ proc Katyusha_SQL_liste_types {} {
 }
 
 proc Katyusha_SQL_mots_clefs {} {
-    set mots [list "create" "table" "alter" "database" "view" "add" "column" "constraint" "references" "not null" "primary key" "foreign key" "default"]
+    set mots [list "create" "table" "alter" "database" "view" "add" "column" "constraint" "references" "not null" "primary key" "foreign key" "default" "unsigned" "unique"]
     return $mots
 }
 
