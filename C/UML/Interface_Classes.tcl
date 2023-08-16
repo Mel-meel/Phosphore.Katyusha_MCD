@@ -102,9 +102,9 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
                     # Ici viennent s'insérer les attributs
                     ##
                     # Si l'entité est en édition, on affiche la liste des attributs déjà existants
-                    if {$id != "null"} {
-                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $table "entite"
-                    }
+                    #if {$id != "null"} {
+                    #    Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $table "entite"
+                    #}
             pack $f.attributs.c.f.liste -side left -fill x
         pack $f.attributs.c -side left -expand 1 -fill both
         $f.attributs.c create window 0 0 -anchor nw -window $f.attributs.c.f
@@ -136,16 +136,14 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
                 pack $f.methodes.table_tete.f.titre -fill both -anchor center -padx 10 -pady 10 -expand 1
                 ttk::frame $f.methodes.table_tete.f.tete
                     ttk::label $f.methodes.table_tete.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.accces -text [phgt::mc "Accès"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.id -text [phgt::mc "Identifiant?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.parametres -text [phgt::mc "Paramètres"] -width 30 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.type -text [phgt::mc "Type"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.acces -text [phgt::mc "Accès"] -width 10 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.methodes.table_tete.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.methodes.table_tete.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
                     ttk::label $f.methodes.table_tete.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
                     
-                    pack $f.methodes.table_tete.f.tete.nom $f.methodes.table_tete.f.tete.type $f.methodes.table_tete.f.tete.accces $f.methodes.table_tete.f.tete.taille $f.methodes.table_tete.f.tete.valeur $f.methodes.table_tete.f.tete.id $f.methodes.table_tete.f.tete.m $f.methodes.table_tete.f.tete.d $f.methodes.table_tete.f.tete.e -fill both -expand 1 -side left
+                    pack $f.methodes.table_tete.f.tete.nom $f.methodes.table_tete.f.tete.parametres $f.methodes.table_tete.f.tete.type $f.methodes.table_tete.f.tete.acces $f.methodes.table_tete.f.tete.m $f.methodes.table_tete.f.tete.d $f.methodes.table_tete.f.tete.e -fill both -expand 1 -side left
                 pack $f.methodes.table_tete.f.tete -fill both -anchor w -expand 1
             pack $f.methodes.table_tete.f -fill both -anchor w -expand 1
         pack $f.methodes.table_tete -anchor w -expand 1
