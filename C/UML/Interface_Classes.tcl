@@ -161,9 +161,9 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
                     # Ici viennent s'insérer les attributs
                     ##
                     # Si l'entité est en édition, on affiche la liste des attributs déjà existants
-                    if {$id != "null"} {
-                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.methodes.c.f.corps $table "entite"
-                    }
+                    #if {$id != "null"} {
+                    #    Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.methodes.c.f.corps $table "entite"
+                    #}
             pack $f.methodes.c.f.liste -side left -fill x
         pack $f.methodes.c -side left -expand 1 -fill both
         $f.methodes.c create window 0 0 -anchor nw -window $f.methodes.c.f
