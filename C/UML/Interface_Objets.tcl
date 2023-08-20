@@ -35,7 +35,7 @@ proc Katyusha_UML_Interface_Objets_deplacer_attribut {f type_objet id_ancien id_
 # Fenêtre d'ajout d'une méthodes à un objet du diagramme UML
 # Si l'ID d'un attribut est passé en paramètre, il s'agira alors de l'éditer
 ##
-proc Katyusha_Interface_Objets_UML_ajout_methode {objet {id "null"}} {
+proc Katyusha_UML_Interface_Objets_ajout_methode {objet {id "null"}} {
     global classe_tmp
     global interface_tmp
     global STYLES
@@ -52,14 +52,14 @@ proc Katyusha_Interface_Objets_UML_ajout_methode {objet {id "null"}} {
     if {[winfo exists $f]} {
         destroy $f
     }
-    # Si l'attribut est en édition
-    if {$id != "null"} {
+    # Si l'id de la méthode est en édition
+    #if {$id != "null"} {
         if {$objet == "classe"} {
             set methodes [dict get $classe_tmp "methodes"]
         } elseif {$objet == "interface"} {
             set methodes [dict get $interface_tmp "methodes"]
         }
-    }
+    #}
     
 
     
@@ -69,22 +69,15 @@ proc Katyusha_Interface_Objets_UML_ajout_methode {objet {id "null"}} {
         set E_type_methode ""
         set E_acces_methode "private"
         set E_description_methode ""
-        set E_nom_methode "Methode_[expr [llength $methodes]]"
+        set E_nom_methode "Methode_[expr [dict size $methodes]]"
     } else {
         # Charge les données de l'attribut en édition
-        set attribut [dict get $methodes $id]
-        set E_nom_attribut "[dict get $attribut nom]"
-        set E_type_attribut "[dict get $attribut type]"
-        set E_nsigne_attribut "[dict get $attribut signe]"
-        set E_ctype_attribut "[dict get $attribut complement_type]"
-        set E_taille_attribut "[dict get $attribut taille]"
-        set E_valeur_attribut "[dict get $attribut valeur]"
-        set E_null_attribut "[dict get $attribut null]"
-        set E_auto_attribut "[dict get $attribut auto]"
-        set E_pk_attribut "[dict get $attribut pk]"
-        set E_unique_attribut "[dict get $attribut unique]"
-        set E_acces_attribut "[dict get $attribut acces]"
+        set methode [dict get $methodes $id]
+        set E_parametres_methode [dict get $methode "parametres"]
+        set E_type_methode [dict get $methode "type"]
+        set E_acces_methode [dict get $methode "access"]
         set E_description_attribut ""
+        set E_nom_methode [dict get $methode "nom"]
     }
     
     toplevel $f
@@ -93,125 +86,40 @@ proc Katyusha_Interface_Objets_UML_ajout_methode {objet {id "null"}} {
     
     # Frame de titre
     ttk::frame $f.nom
-        ttk::label $f.nom.l -text [phgt::mc "Propriétés de l'attribut"]
+        ttk::label $f.nom.l -text [phgt::mc "Propriétés de la méthode"]
         pack $f.nom.l -fill x
     pack $f.nom -fill x -pady 10 -padx 50
     
-    # Propriétés de l'attribut
+    # Propriétés de la méthode
     ttk::frame $f.prop
-        # Nom de l'attribut
+        # Nom de la méthode
         ttk::frame $f.prop.nom
-            ttk::label $f.prop.nom.l -text [phgt::mc "Nom de l'attribut : "] -width 40 -anchor w
-            ttk::entry $f.prop.nom.e -textvariable E_nom_attribut
+            ttk::label $f.prop.nom.l -text [phgt::mc "Nom de la méthode : "] -width 40 -anchor w
+            ttk::entry $f.prop.nom.e -textvariable E_nom_methode
             pack $f.prop.nom.l $f.prop.nom.e -side left -fill x
         
-        # Type de l'attribut
+        # Type de la méthode
         ttk::frame $f.prop.type
-            ttk::label $f.prop.type.l -text [phgt::mc "Type de l'attribut : "] -width 40 -anchor w
+            ttk::label $f.prop.type.l -text [phgt::mc "Type de la méthode : "] -width 40 -anchor w
             ttk::combobox $f.prop.type.cb -values [Katyusha_SQL_liste_types]
             pack $f.prop.type.l $f.prop.type.cb -side left -fill x
             if {$id != "null"} {
-                $f.prop.type.cb set $E_type_attribut
+                $f.prop.type.cb set $E_type_methode
             }
         
-        # L'attribut peut-l être unique
-        ttk::frame $f.prop.signe
-            ttk::label $f.prop.signe.l -text [phgt::mc "Cocher si l'attribut est non-signé : "] -width 40 -anchor w
-            ttk::checkbutton $f.prop.signe.cb -onvalue 1 -offvalue 0 -variable E_nsigne_attribut
-            pack $f.prop.signe.l $f.prop.signe.cb -side left -fill x
+        # Accès de la méthode
+        ttk::frame $f.prop.access
+            ttk::label $f.prop.access.l -text [phgt::mc "Accès de la méthode : "] -width 40 -anchor w
+            ttk::combobox $f.prop.access.cb -values [list "private" "public" "protected"]
+            pack $f.prop.access.l $f.prop.access.cb -side left -fill x
+            $f.prop.access.cb set $E_acces_methode
         
-        # Complément du type de l'attribut
-        ttk::frame $f.prop.ctype
-            ttk::label $f.prop.ctype.l -text [phgt::mc "Complément du type de l'attribut : "] -width 40 -anchor w
-            ttk::entry $f.prop.ctype.e -textvariable $E_ctype_attribut
-            #pack $f.prop.ctype.l $f.prop.ctype.e -side left -fill x
-        #pack $f.prop.ctype -fill x
-        # Taille de l'attribut (0 pour la valeur par défaut du SGBD)
-        ttk::frame $f.prop.taille
-            ttk::label $f.prop.taille.l -text [phgt::mc "Taille de l'attribut : "] -width 40 -anchor w
-            ttk::spinbox $f.prop.taille.sb -from 0 -to 255 -increment 1
-            pack $f.prop.taille.l $f.prop.taille.sb -side left -fill x
-        
-        ttk::label $f.prop.info_taille -text [phgt::mc "Attention, tous les type ne possèdent pas de taille. Si c'est le cas, ce paramètre sera simplement ignoré.\nLaisser \"0\" pour utiliser la valeur par défaut du SGBD."] -foreground red -anchor w -justify left
-        
-        # Null?
-        ttk::frame $f.prop.null
-            ttk::label $f.prop.null.l -text [phgt::mc "Cocher si l'attribut peu être nul : "] -width 40 -anchor w
-            ttk::checkbutton $f.prop.null.cb -onvalue 1 -offvalue 0 -variable E_null_attribut
-            pack $f.prop.null.l $f.prop.null.cb -side left -fill x
-        
-        # Valeur par défaut
-        ttk::frame $f.prop.valeur
-            ttk::label $f.prop.valeur.l -text [phgt::mc "Valeur par défaut de l'attribut : "] -width 40 -anchor w
-            ttk::entry $f.prop.valeur.e -textvariable E_valeur_attribut
-            pack $f.prop.valeur.l $f.prop.valeur.e -side left -fill x
-        
-        # Incrémentation automatique?
-        ttk::frame $f.prop.auto
-            ttk::label $f.prop.auto.l -text [phgt::mc "Incrémentation automatique? : "] -width 40 -anchor w
-            ttk::checkbutton $f.prop.auto.cb -onvalue 1 -offvalue 0 -variable E_auto_attribut
-            pack $f.prop.auto.l $f.prop.auto.cb -side left -fill x
-        
-        # L'attribut peut-l être unique
-        ttk::frame $f.prop.unique
-            ttk::label $f.prop.unique.l -text [phgt::mc "Cocher si l'attribut est unique : "] -width 40 -anchor w
-            ttk::checkbutton $f.prop.unique.cb -onvalue 1 -offvalue 0 -variable E_unique_attribut
-            pack $f.prop.unique.l $f.prop.unique.cb -side left -fill x
-        
-        
-        # Si l'attribut est en incrémentation automatique, il ne peut pas être null
-        # TODO : Sortir le bind de là, c'est pas propre
-        bind $f.prop.auto.cb <Button-1> {
-            global E_auto_attribut
-            global E_null_attribut
-            global E_valeur_attribut
-            
-            set f ".fen_ajout_attribut"
-            
-            if {$E_auto_attribut == 0} {
-                set E_null_attribut 0
-                $f.prop.null.cb configure -state disabled
-                set E_valeur_attribut ""
-                $f.prop.valeur.e configure -state disabled
-                $f.prop.type.cb set "integer"
-            } else {
-                set E_null_attribut 1
-                $f.prop.null.cb configure -state normal
-                set E_valeur_attribut "null"
-                $f.prop.valeur.e configure -state normal
-            }
-        }
-        # Clef primaire?
-        ttk::frame $f.prop.pk
-            if {$env == "mcd"} {
-                set texte [phgt::mc "Cocher si l'attribut est une clef primaire : "]
-            } else {
-                set texte [phgt::mc "Cocher si l'attribut est un identifiant : "]
-            }
-        
-            ttk::label $f.prop.pk.l -text $texte -width 40 -anchor w
-            ttk::checkbutton $f.prop.pk.cb -onvalue 1 -offvalue 0 -variable E_pk_attribut
-            pack $f.prop.pk.l $f.prop.pk.cb -side left -fill x
-        
-        # Accès de l'attribut
-        ttk::frame $f.prop.acces
-            ttk::label $f.prop.acces.l -text [phgt::mc "Accès de l'attribut : "] -width 40 -anchor w
-            ttk::combobox $f.prop.acces.cb -values [list "private" "public" "protected"]
-            pack $f.prop.acces.l $f.prop.acces.cb -side left -fill x
-            $f.prop.acces.cb set $E_acces_attribut
-        
-        pack $f.prop.nom $f.prop.type $f.prop.valeur $f.prop.pk -fill x
-        
-        if {$env == "mcd"} {
-            pack $f.prop.signe $f.prop.taille $f.prop.info_taille $f.prop.null $f.prop.auto $f.prop.unique -fill x
-        } else {
-            pack $f.prop.acces
-        }
+        pack $f.prop.nom $f.prop.type $f.prop.access -fill x
         
     pack $f.prop -fill x -padx 20
     
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command "Katyusha_Interface_Objets_MCD_UML_commande_ajout_attribut $objet $id $env"
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command "Katyusha_UML_Interface_Objets_ommande_ajout_methode $objet $id"
         ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
@@ -226,7 +134,7 @@ proc Katyusha_Interface_Objets_UML_ajout_methode {objet {id "null"}} {
     update
 }
 
-proc Katyusha_Interface_Objets_UML_commande_ajout_methode {objet {id "null"}} {
+proc Katyusha_UML_Interface_Objets_ommande_ajout_methode {objet {id "null"}} {
     global E_nsigne_attribut
     global E_auto_attribut
     global E_pk_attribut
