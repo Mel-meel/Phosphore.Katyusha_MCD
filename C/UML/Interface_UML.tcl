@@ -63,7 +63,7 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
             pack $parent.notebook_uml.uml.modelisation.vs -side left -fill y
             #.mcd.canvas.c configure -scrollregion [.mcd.canvas.c bbox all]
         pack $parent.notebook_uml.uml.modelisation -fill x -fill both -expand 1
-        ttk::scrollbar $parent.notebook_uml.uml.hs -orient horiz -command "$parent.notebook_mcd.uml.modelisation.c xview"
+        ttk::scrollbar $parent.notebook_uml.uml.hs -orient horiz -command "$parent.notebook_uml.uml.modelisation.c xview"
         pack $parent.notebook_uml.uml.hs -side top -fill x
     pack $parent.notebook_uml.uml -side left -fill both -expand 1
     
