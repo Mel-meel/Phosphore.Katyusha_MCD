@@ -135,43 +135,22 @@ proc Katyusha_UML_Interface_Objets_ajout_methode {objet {id "null"}} {
 }
 
 proc Katyusha_UML_Interface_Objets_ommande_ajout_methode {objet {id "null"}} {
-    global E_nsigne_attribut
-    global E_auto_attribut
-    global E_pk_attribut
-    global E_null_attribut
-    global E_description_attribut
-    global E_unique_attribut
-    global E_acces_attribut
+    global E_parametres_methode
+    global E_nom_methode
+    global E_type_methode
+    global E_description_methode
+    global E_acces_methode
     
-    set f ".fen_ajout_attribut"
+    set f ".fen_ajout_methode"
     
-    if {$objet == "table"} {
-        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut]
+    if {$objet == "classe"} {
+        #set ok [Katyusha_UML_Objets_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut]
+        set ok 1
         if {$ok == 1} {
             if {$id == "null"} {
-                Katyusha_Tables_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
+                Katyusha_UML_Classes_ajout_methode [$f.prop.nom.e get] $E_parametres_methode [$f.prop.type.cb get] $E_acces_methode $E_description_methode
             } else {
-                Katyusha_Tables_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
-            }
-            destroy $f
-        }
-    } elseif {$objet == "relation"} {
-        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut]
-        if {$ok == 1} {
-            if {$id == "null"} {
-                Katyusha_Relations_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
-            } else {
-                Katyusha_Relations_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
-            }
-            destroy $f
-        }
-    } elseif {$objet == "classe"} {
-        set ok [Katyusha_UML_Objets_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut]
-        if {$ok == 1} {
-            if {$id == "null"} {
-                Katyusha_UML_Classes_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
-            } else {
-                Katyusha_UML_Classes_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
+                #Katyusha_UML_Classes_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] $E_nsigne_attribut [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_unique_attribut $E_acces_attribut $E_description_attribut
             }
             destroy $f
         }
