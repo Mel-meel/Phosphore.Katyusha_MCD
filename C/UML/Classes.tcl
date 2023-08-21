@@ -72,7 +72,7 @@ proc Katyusha_UML_Classes_creer_affichage_graphique_taille_classe {nom attributs
     # Méthodes
     foreach {k methode} $methodes {
         if {[string length "! [dict get $methode nom]"] > $largeur} {
-            set largeur [string length "! [dict get $methode nom]"]
+            set largeur [string length "! [dict get $methode nom]\(\)"]
         }
     }
     return $largeur

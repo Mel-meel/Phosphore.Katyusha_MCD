@@ -53,13 +53,11 @@ proc Katyusha_UML_Interface_Objets_ajout_methode {objet {id "null"}} {
         destroy $f
     }
     # Si l'id de la méthode est en édition
-    #if {$id != "null"} {
-        if {$objet == "classe"} {
-            set methodes [dict get $classe_tmp "methodes"]
-        } elseif {$objet == "interface"} {
-            set methodes [dict get $interface_tmp "methodes"]
-        }
-    #}
+    if {$objet == "classe"} {
+        set methodes [dict get $classe_tmp "methodes"]
+    } elseif {$objet == "interface"} {
+        set methodes [dict get $interface_tmp "methodes"]
+    }
     
 
     
@@ -69,9 +67,9 @@ proc Katyusha_UML_Interface_Objets_ajout_methode {objet {id "null"}} {
         set E_type_methode ""
         set E_acces_methode "private"
         set E_description_methode ""
-        set E_nom_methode "Methode_[expr [dict size $methodes]]"
+        set E_nom_methode "Methode_[expr [dict size $methodes] + 1]"
     } else {
-        # Charge les données de l'attribut en édition
+        # Charge les données de la méthode en édition
         set methode [dict get $methodes $id]
         set E_parametres_methode [dict get $methode "parametres"]
         set E_type_methode [dict get $methode "type"]

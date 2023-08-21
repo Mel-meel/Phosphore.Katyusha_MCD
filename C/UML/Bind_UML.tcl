@@ -109,3 +109,43 @@ $ZONE_UML.modelisation.c bind objet_uml <B1-Motion> {
     }
     update
 }
+
+##
+# Menu de clic droit des classes
+##
+$ZONE_UML.modelisation.c bind objet_uml <Button-3> {
+    global CONFIGS
+    global ZONE_UML
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [$ZONE_UML.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [$ZONE_MCD.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [$ZONE_UML.modelisation.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [$ZONE_UML.modelisation.c gettags $id]
+    popupMenu .menu_heritage %x %y "classe"
+}
+
+
+##################
+# Menu d'édition #
+##################
+
+
+
+proc popupMenu {menu X Y objet} {
+    destroy .menu_clic_droit_objets_uml
+    menu .menu_clic_droit_objets_uml -tearoff 0
+    .menu_clic_droit_objets_uml add command -label [phgt::mc "Éditer"] -command {INTERFACE_Heritages_ajout 0 0 [lindex $selected 1]}
+    .menu_clic_droit_objets_uml add command -label [phgt::mc "Supprimer"] -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "heritage" [lindex $selected 1]}
+    global ZONE_UML
+    set x [expr [winfo rootx $ZONE_UML.modelisation.c] + int($X)]
+    set y [expr [winfo rooty $ZONE_UML.modelisation.c] + int($Y)]
+    tk_popup $menu $x $y
+}
