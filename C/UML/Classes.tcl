@@ -38,7 +38,24 @@ proc Katyusha_UML_Classes_creer_affichage_graphique_attributs {attributs} {
 }
 
 proc Katyusha_UML_Classes_creer_affichage_graphique_methodes {methodes} {
-
+    set res [list]
+    
+    foreach {k methode} $methodes {
+        set acces [dict get $methode "acces"]
+        set nom [dict get $methode "nom"]
+        
+        if {$acces == "private"} {
+            set acces_symbole "-"
+        } elseif {$acces == "public"} {
+            set acces_symbole "+"
+        } elseif {$acces == "protected"} {
+            set acces_symbole "#"
+        }
+        
+        lappend res "$acces_symbole  $nom\(\)"
+    }
+    
+    return $res
 }
 
 ##
