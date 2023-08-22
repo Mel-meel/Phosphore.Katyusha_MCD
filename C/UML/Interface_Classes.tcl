@@ -177,7 +177,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     $f.methodes.c configure -yscrollcommand "$f.methodes.yscroll set"
     
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command Katyusha_UML_Interface_Classes_ajout_classe_commande
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command "Katyusha_UML_Interface_Classes_ajout_classe_commande $id"
         ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {
             if {[winfo exists .fen_ajout_attribut]} {
                 destroy .fen_ajout_attribut
@@ -192,7 +192,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     if {$id == "null"} {
         wm title $f [phgt::mc "Ajouter une classe"]
     } else {
-        wm title $f [phgt::mc "Éditer la classe : %s" [list $E_nom_table]]
+        wm title $f [phgt::mc "Éditer la classe : %s" [list $E_nom_classe]]
     }
     
     # Couleur de fond de la fenêtre
@@ -206,7 +206,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
 ##
 # Action de la procédure Katyusha_UML_Interface_Classes_ajout_classe
 ##
-proc Katyusha_UML_Interface_Classes_ajout_classe_commande {} {
+proc Katyusha_UML_Interface_Classes_ajout_classe_commande {id} {
     global classe_tmp
     
     set f ".fen_ajout_classe"
@@ -219,7 +219,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe_commande {} {
         Katysha_UML_Classes_creer_classe $classe_tmp
         destroy $f
     } elseif {$id != "null" && $ok == 1} {
-        #Katysha_UML_Classes_modifier_classe $id $classe_tmp
+        Katysha_UML_Classes_modifier_classe $id $classe_tmp
         destroy $f
     }
 }
