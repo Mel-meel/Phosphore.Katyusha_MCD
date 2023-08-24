@@ -8,6 +8,40 @@
 #                                                    #
 ######################################################
 
+
+##
+# Met à jour l'affichage graphique des attributs de l'objet dans la fenêtre d'édition
+##
+proc Katyusha_UML_Interface_Objets_MAJ_attributs {f objet type_objet} {
+    global IMG
+    global STYLES
+    
+    set attributs [dict get $objet "attributs"]
+    
+    foreach {id_attribut_graphique attribut} $attributs {
+        if {[winfo exists $f.f.corps]} {
+            destroy $f.f.corps.$id_attribut_graphique
+        }
+        ttk::frame $f.f.corps.$id_attribut_graphique
+            ttk::label $f.f.corps.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 30 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 15 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.acces -text [dict get $attribut "acces"] -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::button $f.f.corps.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_UML_Interface_Objets_deplacer_attribut $f.attributs.c.f.corps entite $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            ttk::button $f.f.corps.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_UML_Interface_Objets_deplacer_attribut $f.attributs.c.f.corps entite $id_attribut_graphique [expr $id_attribut_graphique + 1]"
+            ttk::button $f.f.corps.$id_attribut_graphique.edit -text [phgt::mc "Éditer"] -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
+            pack $f.f.corps.$id_attribut_graphique.nom $f.f.corps.$id_attribut_graphique.type $f.f.corps.$id_attribut_graphique.acces $f.f.corps.$id_attribut_graphique.taille $f.f.corps.$id_attribut_graphique.valeur $f.f.corps.$id_attribut_graphique.pk $f.f.corps.$id_attribut_graphique.haut $f.f.corps.$id_attribut_graphique.bas $f.f.corps.$id_attribut_graphique.edit -fill both -expand 1 -side left
+        pack $f.f.corps.$id_attribut_graphique -fill x
+    }
+    
+    $f configure -scrollregion [$f bbox all]
+    
+    # Mise à jour forcée de l'affichage graphique
+    update
+}
+
 proc Katyusha_UML_Interface_Objets_ajout_attribut {objet} {
 
 }

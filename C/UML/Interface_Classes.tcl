@@ -101,10 +101,10 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
                     ##
                     # Ici viennent s'insérer les attributs
                     ##
-                    # Si l'entité est en édition, on affiche la liste des attributs déjà existants
-                    #if {$id != "null"} {
-                    #    Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $table "entite"
-                    #}
+                    # Si la classe est en édition, on affiche la liste des attributs déjà existants
+                    if {$id != "null"} {
+                        Katyusha_UML_Interface_Objets_MAJ_attributs $f.attributs.c $classe_tmp "classe"
+                    }
             pack $f.attributs.c.f.liste -side left -fill x
         pack $f.attributs.c -side left -expand 1 -fill both
         $f.attributs.c create window 0 0 -anchor nw -window $f.attributs.c.f
