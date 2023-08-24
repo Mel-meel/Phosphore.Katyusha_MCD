@@ -61,11 +61,11 @@ proc Katyusha_Interface_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "m
         set E_acces_attribut "private"
         set E_description_attribut ""
         if {$objet == "table"} {
-            set E_nom_attribut "Attribut_[expr [llength [dict get $table_tmp attributs]]]"
+            set E_nom_attribut "Attribut_[expr [dict size [dict get $table_tmp attributs]] + 1]"
         } elseif {$objet == "relation"} {
-            set E_nom_attribut "Attribut_[expr [llength [dict get $relation_tmp attributs]]]"
+            set E_nom_attribut "Attribut_[expr [dict size [dict get $relation_tmp attributs]] + 1]"
         } elseif {$objet == "classe"} {
-            set E_nom_attribut "Attribut_[expr [llength [dict get $classe_tmp attributs]]]"
+            set E_nom_attribut "Attribut_[expr [dict size [dict get $classe_tmp attributs]] + 1]"
         }
         set E_unique_attribut 0
     } else {
