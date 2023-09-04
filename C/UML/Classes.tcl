@@ -235,6 +235,40 @@ proc Katyusha_UML_Classes_init_classe {} {
     return $classe
 }
 
+##
+# Suppression d'une classe
+##
+proc Katyusha_UML_Classes_supprimer_classe {id} {
+    global classes
+    global classes_graphique
+    global ZONE_UML
+    
+    # Récupère le nom de la classe
+    set nom [dict get [dict get $classes $id] "nom"]
+    # Supprime la relation du tableau général
+    dict unset relations $id
+    # Supprime l'affichage de la relation
+    foreach c [dict get $classes_graphique $id] {
+        $ZONE_UML.modelisation.c delete $c
+    }
+    
+    Katyusha_UML_Objets_maj_arbre_objets
+}
+
+##
+# Mise à jour d'une classe
+##
+proc Katysha_UML_Classes_modifier_classe {id classe_tmp} {
+    global classes
+    
+    Katyusha_UML_Classes_supprimer_classe $id
+    dict set classes $id $classe_tmp
+    
+    Katyusha_UML_Classes_creer_affichage_graphique $id $classe_tmp
+    
+    Katyusha_UML_Objets_maj_arbre_objets
+}
+
 ###############################
 #    MÉTHODES DE LA CLASSE    #
 ###############################
