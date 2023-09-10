@@ -12,6 +12,7 @@
 ./C/MCD/Associations.tcl
 ./C/MCD/Entites.tcl
 ./C/MCD/Interface_MCD.tcl
+./C/MCD/Bind_MCD.tcl
 
 ./C/UML/Classes.tcl
 ./C/UML/Etiquettes.tcl
@@ -25,7 +26,6 @@
 ./C/UML/UML.tcl
 ./C/UML/Bind_UML.tcl
 
-./C/bind.tcl
 ./C/Commandes.tcl
 ./C/Charge.tcl
 ./C/Code_gen.tcl
@@ -36,6 +36,8 @@
 ./C/Historique.tcl
 ./C/Images.tcl
 ./C/INTERFACE_Code.tcl
+./C/Interface_MCD_Objets.tcl
+./C/Interface_Objets_MCD_UML.tcl
 ./C/Interface.tcl
 ./C/Reseau.tcl
 ./C/sauvegarde_charge.tcl
@@ -58,7 +60,6 @@
 ./configs/defaut.conf
 ./configs/recents
 
-./images/ajouter.a.png
 ./images/ajouter.png
 ./images/ajouter_etiquette.png
 ./images/ajouter_heritage.png
@@ -96,7 +97,6 @@
 ./images/pk.png
 ./images/license.png
 
-./locale/fr.tcl
 ./locale/fr.po
 ./locale/en.tcl
 ./locale/de.tcl
