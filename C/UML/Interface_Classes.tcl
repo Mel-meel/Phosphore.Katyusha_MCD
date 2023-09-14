@@ -202,7 +202,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     update
 }
 
-proc Katyusha_UML_Interface_Classes_notebook_attributs {} {
+proc Katyusha_UML_Interface_Classes_notebook_attributs {f} {
     ##
     # Attributs de la classe
     ##
@@ -263,6 +263,8 @@ proc Katyusha_UML_Interface_Classes_notebook_attributs {} {
     # Ajout de la commande de scroll du canvas des attributs ici, sinon erreur mais fonctionne.
     # À voir pour faire fonctionner correctement plus tard
     $f.attributs.c configure -yscrollcommand "$f.attributs.yscroll set"
+    
+    return $f.attributs
 }
 
 proc Katyusha_UML_Interface_Classes_notebook_methodes {f} {
@@ -324,6 +326,8 @@ proc Katyusha_UML_Interface_Classes_notebook_methodes {f} {
     # Ajout de la commande de scroll du canvas des attributs ici, sinon erreur mais fonctionne.
     # À voir pour faire fonctionner correctement plus tard
     $f.methodes.c configure -yscrollcommand "$f.methodes.yscroll set"
+    
+    return $f.methodes
 }
 
 
