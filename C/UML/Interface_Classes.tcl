@@ -56,6 +56,11 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
         pack $f.nom.l $f.nom.e -side left
     pack $f.nom -pady 10 -padx 50
 # TODO
+
+    ttk::notebook .corps
+        .corps add [Katyusha_UML_Interface_Classes_notebook_attributs "$f.corps"] -text "fdsfdf"
+        .corps add [Katyusha_UML_Interface_Classes_notebook_methodes "$f.corps"] -text "uhukhkjhjk"
+    pack .corps
     
     # Ajout de la commande de scroll du canvas des attributs ici, sinon erreur mais fonctionne.
     # À voir pour faire fonctionner correctement plus tard
