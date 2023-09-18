@@ -210,7 +210,7 @@ proc Katyusha_UML_Interface_Classes_notebook_methodes {f id} {
             pack $f.methodes.c.f.liste -side left -fill x
         pack $f.methodes.c -side left -expand 1 -fill both
         $f.methodes.c create window 0 0 -anchor nw -window $f.methodes.c.f
-        ttk::scrollbar $f.methodes.yscroll -command "$f.attributs.c yview"
+        ttk::scrollbar $f.methodes.yscroll -command "$f.methodes.c yview"
         pack $f.methodes.yscroll -side right -fill y
         $f.methodes.c configure -scrollregion "0 0 1000 10000"
     pack $f.methodes -fill x -padx 10
