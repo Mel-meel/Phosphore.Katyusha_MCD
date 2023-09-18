@@ -58,8 +58,8 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
 # TODO
 
     ttk::notebook $f.corps
-        $f.corps add [Katyusha_UML_Interface_Classes_notebook_attributs "$f.corps" $id] -text "fdsfdf"
-        $f.corps add [Katyusha_UML_Interface_Classes_notebook_methodes "$f.corps" $id] -text "uhukhkjhjk"
+        $f.corps add [Katyusha_UML_Interface_Classes_notebook_attributs "$f.corps" $id] -text [phgt::mc "Attributs"]
+        $f.corps add [Katyusha_UML_Interface_Classes_notebook_methodes "$f.corps" $id] -text [phgt::mc "Méthodes"]
     pack $f.corps
     
     ttk::frame $f.commandes
