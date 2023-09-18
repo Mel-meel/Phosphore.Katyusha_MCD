@@ -57,14 +57,10 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     pack $f.nom -pady 10 -padx 50
 # TODO
 
-    ttk::notebook .corps
-        .corps add [Katyusha_UML_Interface_Classes_notebook_attributs "$f.corps"] -text "fdsfdf"
-        .corps add [Katyusha_UML_Interface_Classes_notebook_methodes "$f.corps"] -text "uhukhkjhjk"
-    pack .corps
-    
-    # Ajout de la commande de scroll du canvas des attributs ici, sinon erreur mais fonctionne.
-    # À voir pour faire fonctionner correctement plus tard
-    $f.methodes.c configure -yscrollcommand "$f.methodes.yscroll set"
+    ttk::notebook $f.corps
+        $f.corps add [Katyusha_UML_Interface_Classes_notebook_attributs "$f.corps" $id] -text "fdsfdf"
+        $f.corps add [Katyusha_UML_Interface_Classes_notebook_methodes "$f.corps" $id] -text "uhukhkjhjk"
+    pack $f.corps
     
     ttk::frame $f.commandes
         ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command "Katyusha_UML_Interface_Classes_ajout_classe_commande $id"
@@ -92,7 +88,10 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     update
 }
 
-proc Katyusha_UML_Interface_Classes_notebook_attributs {f} {
+proc Katyusha_UML_Interface_Classes_notebook_attributs {f id} {
+    global IMG
+    global STYLES
+    
     ##
     # Attributs de la classe
     ##
@@ -157,7 +156,10 @@ proc Katyusha_UML_Interface_Classes_notebook_attributs {f} {
     return $f.attributs
 }
 
-proc Katyusha_UML_Interface_Classes_notebook_methodes {f} {
+proc Katyusha_UML_Interface_Classes_notebook_methodes {f id} {
+    global IMG
+    global STYLES
+    
     ###
     # Méthodes de la classe
     ##
