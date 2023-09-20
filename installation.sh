@@ -1,18 +1,22 @@
 ## Define error code
 E_NOTROOT=87 # Non-root exit error.
 
-## Check si l'utilisateur a les permissions nécessaires
-if ! $(sudo -l &> /dev/null); then
-    echo 'Error: root privileges are needed to run this script'
-    exit $E_NOTROOT
+opt=/opt
+
+if [ -w $opt ]; then
+    echo "OK"
+else
+    echo "Root privileges are needed for this installation"
 fi
+
+
+
 
 
 
 distrib="uname -d"
 version="uname -r"
 
-echo $distrib
 
 # Pour Debian
 if [ "$distrib" = "*Debian*" ] ; then
