@@ -1,3 +1,14 @@
+## Define error code
+E_NOTROOT=87 # Non-root exit error.
+
+## Check si l'utilisateur a les permissions nécessaires
+if ! $(sudo -l &> /dev/null); then
+    echo 'Error: root privileges are needed to run this script'
+    exit $E_NOTROOT
+fi
+
+
+
 distrib="uname -d"
 version="uname -r"
 
