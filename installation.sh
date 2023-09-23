@@ -4,7 +4,7 @@ E_NOTROOT=87 # Non-root exit error.
 opt=/opt
 
 if [ -w $opt ]; then
-    echo "OK"
+    echo "Privileges are dones"
 else
     echo "Root privileges are needed for this installation"
 fi
