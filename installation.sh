@@ -35,9 +35,9 @@ if [ "$distrib" = "*Ubuntu*" ] ; then
 fi
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        # ...
+        opt=/opt
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-        # Mac OSX
+        opt=/usr/share/opt
 elif [[ "$OSTYPE" == "cygwin" ]]; then
         # POSIX compatibility layer and Linux environment emulation for Windows
 elif [[ "$OSTYPE" == "msys" ]]; then
