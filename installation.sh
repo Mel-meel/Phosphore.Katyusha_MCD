@@ -39,10 +39,22 @@ else
 fi
 
 
-mkdir "$opt/Katyusha_MCD"
+mkdir $opt/Katyusha_MCD
 
-cp ./latests.tar.gz "$opt/Katyusha_MCD"
+cp ./latests.tar.gz $opt/Katyusha_MCD
 
-tar xvf "$opt/Katyusha_MCD/tatest.tar.gz"
+tar xvf $opt/Katyusha_MCD/latest.tar.gz
+
+# Fichier desktop
+echo "[Desktop Entry]
+Type=Application
+Name=Katyusha! MCD
+GenericName=SQL Merise and UML
+Exec=katyushamcd
+Icon=$opt/KatyushaMCD/images/katyusha_mcd_icone.png
+Terminal=false
+Categories=Development;Engineering;
+MimeType=text/x-mcd
+Keywords=SQL; Merise; UML; Devleppment;" > $opt/Katyusha_MCD/Katyusha_MCD.desktop
 
 # Création d'entré dans le menu
