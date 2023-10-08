@@ -22,12 +22,16 @@ if [ "$distrib" = "*Ubuntu*" ] ; then
 fi
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    bin=/usr/bin
     opt=/opt
 elif [[ "$OSTYPE" == "darwin"* ]]; then
+    bin=/usr/bin
     opt=/usr/share/opt
 elif [[ "$OSTYPE" == "freebsd"* ]]; then
+    bin=/usr/bin
     opt=/usr/share/opt
 else
+    bin=/usr/bin
     opt=/opt
 fi
 
@@ -44,6 +48,10 @@ mkdir $opt/Katyusha_MCD
 cp ./latests.tar.gz $opt/Katyusha_MCD
 
 tar xvf $opt/Katyusha_MCD/latest.tar.gz
+
+echo "#!/bin/sh
+tclsh $opt/Katyusha_MCD/Katyusha.tcl \$1" > $bin/katyushamcd
+chmod +x $bin/katyushamcd
 
 # Fichier desktop
 echo "[Desktop Entry]
