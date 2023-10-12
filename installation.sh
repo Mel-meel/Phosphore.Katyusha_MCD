@@ -66,3 +66,4 @@ MimeType=text/x-mcd
 Keywords=SQL; Merise; UML; Devleppment;" > $opt/Katyusha_MCD/Katyusha_MCD.desktop
 
 # Création d'entré dans le menu
+cp $opt/Katyusha_MCD/Katyusha_MCD.desktop ~/.local/share/application/Katyusha_MCD.desktop
