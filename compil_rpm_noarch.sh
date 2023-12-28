@@ -1,10 +1,4 @@
-mkdir ~/rpmbuild
-mkdir ~/rpmbuild/BUILDS
-mkdir ~/rpmbuild/BUILDROOT
-mkdir ~/rpmbuild/RPMS
-mkdir ~/rpmbuild/SOURCES
-mkdir ~/rpmbuild/SPECS
-mkdir ~/rpmbuild/SRPMS
+
 
 tar -czvf ~/rpmbuild/SOURCES/KatyushaMCD-$1.$2.tar.gz ./Katyusha.tcl ./C/ ./images/ ./locale/ ./configs/ ./gpl-3.0.txt
 
@@ -12,7 +6,7 @@ echo "
 Name:      KatyushaMCD
 Version:   $1
 Release:   $2
-Summary:   Say hello, Texas style
+Summary:   Katysha? Katyusha!
 BuildArch: noarch
 
 License:   GPL
@@ -30,3 +24,9 @@ Katyusha! MCD permet de concevoir des bases de données pour différents SGBD en
 %{_datadir}/Phosphore/KatyushaMCD/
 " > ~/rpmbuild/SPECS/katyusha.spec
 
+
+rpmlint ~/rpmbuild/SPECS/katyusha.spec
+
+rpmbuild -bs ~/rpmbuild/SPECS/katysha.spec
+
+rpmbuild -bb ~/rpmbuild/SPECS/katysha.spec
