@@ -15,6 +15,8 @@ if { $ap ni $::auto_path } {
 unset ap
 package require awthemes
 
+set STYLES [dict create "background" "#2c2c2c" "foreground" "#f5f5f5" "graphics" "#ff9429" "dbackground" "#1c1c21" "lbackground" "#44413e" "ddbackground" "#352f2b" "textwidget" "#0e0e10"]
+
 namespace eval ::ttk::theme::breeze {
 
   proc setBaseColors { } {

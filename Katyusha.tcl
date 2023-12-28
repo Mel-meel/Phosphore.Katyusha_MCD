@@ -63,7 +63,7 @@ source "$rpr/C/Liens.tcl"
 source "$rpr/libs/canvas2svg.tcl"
 source "$rpr/libs/arabe.tcl"
 
-set theme katyusha
+set theme "katyusha"
 
 source "$rpr/Themes/colorutils.tcl"
 source "$rpr/Themes/awthemes.tcl"

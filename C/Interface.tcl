@@ -233,7 +233,7 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
             ttk::scrollbar $parent.notebook_mcd.mcd.canvas.vs -command "$parent.notebook_mcd.mcd.canvas.c yview"
             set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
             set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
-            canvas $parent.notebook_mcd.mcd.canvas.c -background white -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand "$parent.notebook_mcd.mcd.hs set" -yscrollcommand "$parent.notebook_mcd.mcd.canvas.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas" -highlightbackground [dict get $STYLES "graphics"]
+            canvas $parent.notebook_mcd.mcd.canvas.c -background [dict get $STYLES "dbackground"] -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand "$parent.notebook_mcd.mcd.hs set" -yscrollcommand "$parent.notebook_mcd.mcd.canvas.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas" -highlightbackground [dict get $STYLES "graphics"]
             pack $parent.notebook_mcd.mcd.canvas.c -side left -fill both -expand 1
             pack $parent.notebook_mcd.mcd.canvas.vs -side left -fill y
             #.mcd.canvas.c configure -scrollregion [.mcd.canvas.c bbox all]
@@ -292,12 +292,12 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
             ttk::scrollbar $parent.notebook_uml.uml.modelisation.vs -command "$parent.notebook_uml.mcd.canvas.c yview"
             set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
             set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
-            canvas $parent.notebook_uml.uml.modelisation.c -background white -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand "$parent.notebook_uml.uml.hs set" -yscrollcommand "$parent.notebook_uml.uml.modelisation.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas"
+            canvas $parent.notebook_uml.uml.modelisation.c -background [dict get $STYLES "dbackground"] -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand "$parent.notebook_uml.uml.hs set" -yscrollcommand "$parent.notebook_uml.uml.modelisation.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas"
             pack $parent.notebook_uml.uml.modelisation.c -side left -fill both -expand 1
             pack $parent.notebook_uml.uml.modelisation.vs -side left -fill y
             #.mcd.canvas.c configure -scrollregion [.mcd.canvas.c bbox all]
         pack $parent.notebook_uml.uml.modelisation -fill x
-            ttk::scrollbar $parent.notebook_uml.uml.hs -orient horiz -command "$parent.notebook_mcd.uml.modelisation.c xview"
+            ttk::scrollbar $parent.notebook_uml.uml.hs -orient horiz -command "$parent.notebook_uml.uml.modelisation.c xview"
             pack $parent.notebook_uml.uml.hs -side top -fill x
     pack $parent.notebook_uml.uml -side left
     
