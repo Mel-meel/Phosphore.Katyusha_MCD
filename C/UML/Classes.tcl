@@ -299,7 +299,7 @@ proc Katyusha_UML_Classes_ajout_methode {nom parametres type acces description {
     dict set classe_tmp "methodes" $methodes
     
     if {$graphique == 1} {
-        set f ".fen_ajout_classe"
+        set f ".fen_ajout_classe.corps"
         #
         frame $f.methodes.c.f.corps.$id_methode_graphique
             ttk::label $f.methodes.c.f.corps.$id_methode_graphique.nom -text $nom -width 30 -background [dict get $STYLES "background"]  -relief solid

@@ -9,7 +9,7 @@ Release:   $2
 Summary:   Katysha? Katyusha!
 BuildArch: noarch
 
-License:   GPL
+License:   GPL-3
 Source0:   KatyushaMCD-$1.$2.tar.gz
 
 Requires:  tcl, tk

@@ -89,7 +89,7 @@ proc Katyusha_UML_Objets_ajout_attribut {nom type nsigne complement_type taille 
     }
     
     if {$graphique == 1} {
-        set f ".fen_ajout_$objet"
+        set f ".fen_ajout_$objet.corps"
         #
         ttk::frame $f.attributs.c.f.corps.$id_attribut_graphique
             ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.nom -text $nom -width 30 -background [dict get $STYLES "background"]  -relief solid
