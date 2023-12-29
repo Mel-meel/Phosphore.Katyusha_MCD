@@ -5,9 +5,17 @@
 # Copyright (c) -- none, but stolen by wiki.tcl.tk/gtklook.tcl (2006)
 #
 
-package provide style::gtk 0.1
+package provide ttk::theme::gtk 0.1
 
-namespace eval style::gtk {
+namespace eval ttk {
+  namespace eval theme {
+    namespace eval gtk {
+      variable version 0.1
+    }
+  }
+}
+
+namespace eval ttk::theme::gtk {
     if { [tk windowingsystem] == "x11" } {
 	option add *borderWidth 1 widgetDefault
 	option add *activeBorderWidth 1 widgetDefault
@@ -50,3 +58,5 @@ namespace eval style::gtk {
     }
 }
 # end of namespace style::gtk
+
+package provide ttk::theme::gtk $::ttk::theme::gtk::version
