@@ -93,6 +93,7 @@ if {[catch {package require Tk}]} {
 # FreeWrap ne supporte pas l'importation de packages traditionnel
 source "$rpr/packages/tooltip.tcl"
 source "$rpr/packages/phgettext/phgettext.tcl"
+source "$rpr/packages/phxml/phxml.tcl"
 
 array set CONFIG {}
 array set MCD {}
