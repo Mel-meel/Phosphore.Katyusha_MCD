@@ -1,6 +1,5 @@
 set STYLES [dict create "background" "#242529" "frame" "#202328" "foreground" "#f5f5f5" "graphics" "#f4ba0e" "dbackground" "#000407" "lbackground" "#202328" "ddbackground" "#1c1d1f" "textwidget" "#0e0e10"]
 
-
 namespace eval ttk::theme::adapta {
 
     # Widget colors

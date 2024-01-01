@@ -81,7 +81,7 @@ if {[catch {package require Tk}]} {
     puts " # OK!"
 }
 
-source "$rpr/Themes/katyusha/katyusha_dark.tcl"
+source "$rpr/Themes/katyusha/katyusha_darkblue.tcl"
 
 ttk::style theme use $theme
 set tbg [ttk::style lookup TFrame -background]

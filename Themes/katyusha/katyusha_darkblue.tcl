@@ -1,9 +1,5 @@
-# Copyright (C) 2018 RedFantom
-# Derived from https://github.com/adapta-project/adapta-gtk-theme (GNU GPLv2)
-# Based on /ttkthemes/ttkthemes/themes/arc/arc.tcl (GNU GPLv3)
-# Available under the GNU GPLv3, or at your option any later version
+set STYLES [dict create "background" "#1c2023" "frame" "#1c2023" "foreground" "#f5f5f5" "graphics" "#f4ba0e" "dbackground" "#000407" "lbackground" "#202328" "ddbackground" "#1c1d1f" "textwidget" "#0e0e10"]
 
-# Theme Adapta
 namespace eval ttk::theme::adapta {
 
     # Widget colors
@@ -11,7 +7,7 @@ namespace eval ttk::theme::adapta {
   array set colors {
     -disabledfg	"DarkGrey"
     -nbframe  	"#2c2c2c"
-    -frame  	"#44413e"
+    -frame  	"#1c2023"
     -dark	"#222222"
     -darker 	"#1c1c21"
     -darkest	"#352f2b"
@@ -20,12 +16,17 @@ namespace eval ttk::theme::adapta {
     -selectbg	"#84644a"
     -selectfg	"#ffffff"
     -checklight "#ff9429"
+    -graphics   "#f4ba0e"
+    -buttonbg   "#0f1213"
+    -buttonhoverbg   "#626a6d"
+    -buttonactivebg   "#626a6d"
+    -border           "#626a6d"
   }
 
     # Function to load images from subdirectory
     variable directory
     # Subdirectory /adapta
-    set directory [file join [file dirname [info script]] dark]
+    set directory [file join [file dirname [info script]] darkblue]
     variable images
     # Load the images
     foreach file [glob -directory $directory *.png] {
@@ -132,13 +133,6 @@ namespace eval ttk::theme::adapta {
 
         # Style elements
 
-        # Button
-        ttk::style element create Button.button image [list $images(button) \
-                pressed     $images(button-active) \
-                active      $images(button-hover) \
-                disabled    $images(button-insensitive) \
-            ] -border 3 -padding {3 2} -sticky ewns
-
         # Toolbutton
         ttk::style element create Toolbutton.button image [list $images(toolbutton) \
                 selected            $images(toolbutton-active) \
@@ -166,28 +160,6 @@ namespace eval ttk::theme::adapta {
                 {disabled selected} $images(radio-on-insensitive) \
             ] -width 25 -sticky w -padding {0 4 0 0}
 
-        # Scrollbars
-        ttk::style element create Horizontal.Scrollbar.trough \
-            image [list $images(scroll-horiz-bg) \
-                        disabled $images(scroll-horiz-bg-insensitive) \
-            ]
-        ttk::style element create Horizontal.Scrollbar.thumb \
-            image [list $images(scroll-horiz-slider) \
-                        {pressed !disabled} $images(scroll-horiz-slider-active) \
-                        {active !disabled}  $images(scroll-horiz-slider-hover) \
-                        disabled            $images(scroll-horiz-slider-insensitive) \
-            ] -border 7 -sticky ew
-        ttk::style element create Vertical.Scrollbar.trough \
-            image [list $images(scroll-vert-bg) \
-                        disabled $images(scroll-vert-bg-insensitive) \
-            ]
-        ttk::style element create Vertical.Scrollbar.thumb \
-            image [list $images(scroll-vert-slider) \
-                        {pressed !disabled} $images(scroll-vert-slider-active) \
-                        {active !disabled}  $images(scroll-vert-slider-hover) \
-                        disabled            $images(scroll-vert-slider-insensitive) \
-            ] -border 7 -sticky ns
-
         # Scales
         ttk::style element create Horizontal.Scale.trough \
             image [list $images(scale-horiz-bg) \
@@ -211,13 +183,6 @@ namespace eval ttk::theme::adapta {
                         active $images(scale-slider-hover)
             ] \
             -sticky {}
-
-        # Entry
-        ttk::style element create Entry.field \
-            image [list $images(entry) \
-                        focus $images(entry-active) \
-                        disabled $images(entry-insensitive)] \
-            -border 4 -padding {6 6} -sticky news
 
         # LabelFrame
         # ttk::style element create Labelframe.border image $images(labelframe) \
@@ -321,10 +286,12 @@ namespace eval ttk::theme::adapta {
         #     -width 15 -sticky w
 
         # Settings
-        ttk::style map TButton -background [list active $colors(-darkest) selected $colors(-darker)]
-        ttk::style configure TButton -padding {8 4 8 4} -width -10 -anchor center -relief sunken -background $colors(-frame) -foreground $colors(-lighter)
+        ttk::style map TButton -background [list selected $colors(-buttonhoverbg) active $colors(-buttonactivebg)]
+        ttk::style configure TButton -padding {8 4 8 4} -width -10 -anchor center -relief solid -background $colors(-buttonbg) -foreground $colors(-lightest) -bordercolor $colors(-border)
         ttk::style configure TMenubutton -padding {8 4 4 4}
         ttk::style configure Toolbutton -anchor center
+        ttk::style configure TEntry -anchor center -padding {8 4 8 4} -relief flat -insertcolor $colors(-selectfg) -fieldbackground $colors(-darkest) -darkcolor $colors(-darkest) -lightcolor $colors(-darkest) -bordercolor $colors(-darkest)
+        ttk::style configure TCombobox -anchor center -padding {8 4 4 4} -relief flat -insertcolor $colors(-selectfg) -fieldbackground $colors(-darkest) -darkcolor $colors(-darkest) -lightcolor $colors(-darkest) -bordercolor $colors(-darkest) -selectbackground $colors(-darkest)
         ttk::style map TCheckbutton -background [list active $colors(-checklight)]
         ttk::style configure TCheckbutton -padding 3
         ttk::style map TRadiobutton -background [list active $colors(-checklight)]
