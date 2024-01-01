@@ -70,16 +70,7 @@ source "$rpr/C/Liens.tcl"
 source "$rpr/libs/canvas2svg.tcl"
 source "$rpr/libs/arabe.tcl"
 
-set theme katyusha
-
-source "$rpr/Themes/colorutils.tcl"
-source "$rpr/Themes/awthemes.tcl"
-source "$rpr/Themes/$theme.tcl"
-
-ttk::style theme use $theme
-set tbg [ttk::style lookup TFrame -background]
-lassign [winfo rgb . $tbg] bg_r bg_g bg_b
-. configure -background $tbg
+set theme adapta
 
 # Tk
 puts -nonewline "Chargement de Tk"
@@ -89,6 +80,13 @@ if {[catch {package require Tk}]} {
 } else {
     puts " # OK!"
 }
+
+source "$rpr/Themes/katyusha/katyusha_dark.tcl"
+
+ttk::style theme use $theme
+set tbg [ttk::style lookup TFrame -background]
+lassign [winfo rgb . $tbg] bg_r bg_g bg_b
+. configure -background $tbg
 
 # FreeWrap ne supporte pas l'importation de packages traditionnel
 source "$rpr/packages/tooltip.tcl"
@@ -120,7 +118,7 @@ set ENV "null"
 Katyusha_MCD_init
 Katyusha_UML_init
 
-set version 1.0.0
+set version "1.0.0 alpha 1"
 set splash [lindex [list "Катюша!" "Katyusha!" "!کاتیوشا" "कात्युषा" "კატიუშა" "Կատյուշա" "Катюша!"] [expr int((rand() * 7) + 1) - 1]]
 set sgbd 0
 # Fichier dans lequel toutes les sauvegardes simples se feronts

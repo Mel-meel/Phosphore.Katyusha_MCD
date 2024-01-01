@@ -25,16 +25,16 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
     ttk::frame $parent.notebook_mcd.panel
         ttk::frame $parent.notebook_mcd.panel.commandes
             # Bouton on/off d'ajout d'une entité
-            button $parent.notebook_mcd.panel.commandes.ajout_table -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter une entité"] -image $IMG(ajouter_table) -command {Katyusha_MCD_action_boutons_ajout "table"}
+            button $parent.notebook_mcd.panel.commandes.ajout_table -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "dbackground"] -text [phgt::mc "Ajouter une entité"] -image $IMG(ajouter_table) -command {Katyusha_MCD_action_boutons_ajout "table"}
             tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_table [phgt::mc "Ajouter une table"]
             # Bouton on/off d'ajout d'une association
-            button $parent.notebook_mcd.panel.commandes.ajout_relation -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter une association"] -image $IMG(ajouter_relation) -command {Katyusha_MCD_action_boutons_ajout "relation"}
+            button $parent.notebook_mcd.panel.commandes.ajout_relation -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "dbackground"] -text [phgt::mc "Ajouter une association"] -image $IMG(ajouter_relation) -command {Katyusha_MCD_action_boutons_ajout "relation"}
             tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_relation [phgt::mc "Ajouter une association"]
             # Bouton on/off d'ajout d'un héritage
-            button $parent.notebook_mcd.panel.commandes.ajout_heritage -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter un héritage"] -image $IMG(ajouter_heritage) -command {Katyusha_MCD_action_boutons_ajout "heritage"}
+            button $parent.notebook_mcd.panel.commandes.ajout_heritage -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "dbackground"] -text [phgt::mc "Ajouter un héritage"] -image $IMG(ajouter_heritage) -command {Katyusha_MCD_action_boutons_ajout "heritage"}
             tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_heritage [phgt::mc "Ajouter un héritage"]
             # Bouton on/off d'ajout d'une étiquette
-            button $parent.notebook_mcd.panel.commandes.ajout_etiquette -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text [phgt::mc "Ajouter une étiquette"] -image $IMG(ajouter_etiquette) -command {Katyusha_MCD_action_boutons_ajout "etiquette"}
+            button $parent.notebook_mcd.panel.commandes.ajout_etiquette -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "dbackground"] -text [phgt::mc "Ajouter une étiquette"] -image $IMG(ajouter_etiquette) -command {Katyusha_MCD_action_boutons_ajout "etiquette"}
             tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_etiquette [phgt::mc "Ajouter une étiquette"]
             pack $parent.notebook_mcd.panel.commandes.ajout_table $parent.notebook_mcd.panel.commandes.ajout_relation $parent.notebook_mcd.panel.commandes.ajout_etiquette $parent.notebook_mcd.panel.commandes.ajout_heritage -side left
         pack $parent.notebook_mcd.panel.commandes
@@ -42,7 +42,7 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
         pack $parent.notebook_mcd.panel.entites -fill x -pady 10 -padx 5
         # Arbre des objets du MCD
         ttk::frame $parent.notebook_mcd.panel.arbre
-            canvas $parent.notebook_mcd.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_mcd.panel.arbre.vs set" -background [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"]
+            canvas $parent.notebook_mcd.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_mcd.panel.arbre.vs set" -background [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "dbackground"]
             ttk::scrollbar $parent.notebook_mcd.panel.arbre.vs -command "$parent.notebook_mcd.panel.arbre.c yview"
             pack $parent.notebook_mcd.panel.arbre.c $parent.notebook_mcd.panel.arbre.vs -side left -fill both
         pack $parent.notebook_mcd.panel.arbre
@@ -64,7 +64,7 @@ proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
             ttk::scrollbar $parent.notebook_mcd.mcd.canvas.vs -command "$parent.notebook_mcd.mcd.canvas.c yview"
             set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
             set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
-            canvas $parent.notebook_mcd.mcd.canvas.c -background [dict get $STYLES "dbackground"] -xscrollcommand "$parent.notebook_mcd.mcd.hs set" -yscrollcommand "$parent.notebook_mcd.mcd.canvas.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas" -highlightbackground [dict get $STYLES "graphics"]
+            canvas $parent.notebook_mcd.mcd.canvas.c -background [dict get $STYLES "dbackground"] -xscrollcommand "$parent.notebook_mcd.mcd.hs set" -yscrollcommand "$parent.notebook_mcd.mcd.canvas.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas" -highlightbackground [dict get $STYLES "dbackground"]
             pack $parent.notebook_mcd.mcd.canvas.c -side left -fill both -expand 1
             pack $parent.notebook_mcd.mcd.canvas.vs -side left -fill y
             #.mcd.canvas.c configure -scrollregion [.mcd.canvas.c bbox all]

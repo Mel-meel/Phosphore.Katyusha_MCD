@@ -51,7 +51,7 @@ set x [winfo screenwidth .]
 set y [winfo screenheight .]
 #wm geometry . "$x\x$y+0+0"
 
-menu .mb -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
+menu .mb -background [dict get $STYLES "ddbackground"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
 menu .mb.katyusha -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
 menu .mb.fichier -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
 menu .mb.bdd -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
@@ -144,9 +144,9 @@ pack .editeurs -fill both -expand 1
             if {$OS == "Windows" || $OS == "Win"} {
                 ttk::button .infos.s.splash -text [phgt::mc "Préférences"] -foreground red -activeforeground red -command INTERFACE_mise_en_garde
             } else {
-                ttk::label .infos.s.splash -text "                $splash" -foreground [dict get $STYLES "ddbackground"] -background [dict get $STYLES "graphics"]
+                ttk::label .infos.s.splash -text "                $splash" -foreground [dict get $STYLES "graphics"]
             }
-            ttk::label .infos.s.position_curseur -text "" -foreground [dict get $STYLES "ddbackground"] -background [dict get $STYLES "graphics"]
+            ttk::label .infos.s.position_curseur -text "" -foreground [dict get $STYLES "graphics"]
             pack .infos.s.position_curseur -padx 1 -side right -fill x -expand 1
             pack .infos.s.splash -padx 1 -side right -fill x -expand 1
         pack .infos.s -fill x
