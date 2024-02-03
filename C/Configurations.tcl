@@ -169,10 +169,10 @@ proc Katyusha_Configurations_liste_langues {} {
 proc Katyusha_Configurations_langue_code {code} {
     global rpr
     
-    if {[file exists "$rpr/locale/$code.tcl"]} {
-        set langue "$rpr/locale/$code.tcl"
+    if {[file exists "$rpr/locale/$code.po"]} {
+        set langue "$rpr/locale/$code.po"
     } else {
-        set langue "$rpr/locale/fr.tcl"
+        set langue "$rpr/locale/fr.po"
     }
     set fp [open $langue "r"]
     set contenu_fichier [read $fp]

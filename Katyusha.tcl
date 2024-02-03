@@ -50,6 +50,7 @@ source "$rpr/C/Interface_Objets_MCD_UML.tcl"
 source "$rpr/C/Objets_MCD_UML.tcl"
 
 source "$rpr/C/INTERFACE_Code.tcl"
+source "$rpr/C/INTERFACE_Configurations.tcl"
 source "$rpr/C/C.tcl"
 source "$rpr/C/SQL_gen.tcl"
 source "$rpr/C/XML.tcl"
