@@ -70,7 +70,7 @@ menu .mb.fichier.recents -tearoff 0 -background [dict get $STYLES "background"] 
 .mb add cascade -menu .mb.aide -label [phgt::mc "Aide"]
 
 # Menu Katyusha
-.mb.katyusha add command -label [phgt::mc "Préférences"] -command INTERFACE_preferences
+.mb.katyusha add command -label [phgt::mc "Préférences"] -command INTERFACE_Configurations_preferences
 #.mb.katyusha add command -label $LOCALE(menu_katyusha_maj) -command INTERFACE_MAJ
 .mb.katyusha add command -label [phgt::mc "Quitter"] -command Katyusha_exit_verif
 

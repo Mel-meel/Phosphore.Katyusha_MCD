@@ -13,7 +13,35 @@
 ##
 
 proc INTERFACE_Configurations_preferences {} {
-
+    global IMG
+    
+    set f ".fen_preferences"
+    
+    # Détruit la fenêtre si elle existe déjà
+    if {[winfo exists $f]} {
+        destroy $f
+    }
+    
+    toplevel $f
+    # Icone de la fenêtre
+    wm iconphoto $f $IMG(logo)
+    
+    # Titre général des préférences et icones
+    ttk::frame $f.titre
+        ttk::label $f.titre.logo -image $IMG(logo_x48)
+        ttk::label $f.titre.texte -text [phgt::mc "Préférences de Katyusha MCD"]
+        ttk::label $f.titre.icone -image $IMG(icone_preferences_x48)
+        pack $f.titre.logo $f.titre.texte $f.titre.icone -fill x -pady 10 -padx 50 -side left
+    pack $f.titre
+    
+    # Onglets de navigation pour les différents types de réglages
+    ttk::notebook $f.onglets
+    
+    pack $f.onglets
+    
+    set tbg [ttk::style lookup TFrame -background]
+    lassign [winfo rgb . $tbg] bg_r bg_g bg_b
+    $f configure -background $tbg
 }
 
 ##

@@ -13,6 +13,8 @@ proc Katyusha_Images {} {
     global IMG
     
     set IMG(logo) [image create photo -file "$rpr/images/katyusha_mcd_icone.png"]
+    set IMG(icone_preferences_x48) [image create photo -file "$rpr/images/preferences-x48.png"]
+    set IMG(logo_x48) [image create photo -file "$rpr/images/logo-x48.png"]
     set IMG(ajouter) [image create photo -file "$rpr/images/ajouter.png"]
     set IMG(supprimer) [image create photo -file "$rpr/images/supprimer.png"]
     set IMG(ajouter_table) [image create photo -file "$rpr/images/ajouter_table.png"]
