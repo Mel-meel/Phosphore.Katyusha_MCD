@@ -51,6 +51,8 @@ proc Katyusha_GenerationSQL_attribut {id attribut sgbd si_pk} {
     set null_attribut [dict get $attribut "null"]
     set auto_attribut [dict get $attribut "auto"]
     set valeur_attribut [dict get $attribut "valeur"]
+    set signe [dict get $attribut "signe"]
+    set unique [dict get $attribut "unique"]
     
     set sql_nom $nom_attribut
     
@@ -84,13 +86,25 @@ proc Katyusha_GenerationSQL_attribut {id attribut sgbd si_pk} {
         set sql_pk ""
     }
     
+    if {$unique == 1} {
+        set sql_unique " UNIQUE"
+    } else {
+        set sql_unique ""
+    }
+    
+    if {$signe == 1} {
+        set sql_signe " UNSIGNED"
+    } else {
+        set sql_signe ""
+    }
+    
     # Valeur par défaut de l'attribut
     if {$auto_attribut == 0 && $valeur_attribut != "" && $valeur_attribut != "null"} {
         set sql_valeur " DEFAULT [Katyusha_GenerationSQL_format_cotes $valeur_attribut]"
     } else {
         set sql_valeur ""
     }
-    set SQL "$sql_nom$sql_type$sql_taille$sql_ctype$sql_null$sql_pk$sql_valeur$sql_auto"
+    set SQL "$sql_nom$sql_type$sql_taille$sql_ctype$sql_null$sql_signe$sql_unique$sql_pk$sql_valeur$sql_auto"
     return $SQL
 }
 

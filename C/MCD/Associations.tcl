@@ -446,23 +446,26 @@ proc Katyusha_Association_suppression_lignes {id_relation} {
 # Ajout d'un attribut à l'association
 # Ici, on suppose que les données ont été controlée avant injection
 ##
-proc Katyusha_Relations_ajout_attribut {nom type complement_type taille null valeur auto pk description {graphique 1}} {
+proc Katyusha_Relations_ajout_attribut {nom type nsigne complement_type taille null valeur auto pk unique acces description {graphique 1}} {
     global relation_tmp
     global id_attribut_graphique
     global IMG
-    global LOCALE
+    global STYLES
     
     set attributs [dict get $relation_tmp "attributs"]
     
     dict set attribut "nom" $nom
     dict set attribut "type" $type
+    dict set attribut "signe" $nsigne
     dict set attribut "complement_type" $complement_type
     dict set attribut "taille" $taille
     dict set attribut "null" $null
     dict set attribut "valeur" $valeur
     dict set attribut "auto" $auto
     dict set attribut "pk" $pk
-    dict set attribut "description" $description
+    dict set attribut "unique" $unique
+    dict set attribut "acces" $acces
+    dict set attribut "description" ""
     
     set ids [dict keys $attributs]
     set id_attribut_graphique [expr [lindex $ids [expr [llength $ids] - 1]] + 1]
@@ -474,16 +477,18 @@ proc Katyusha_Relations_ajout_attribut {nom type complement_type taille null val
         set f ".fen_ajout_relation"
         #
         frame $f.attributs.c.f.corps.$id_attribut_graphique
-            label $f.attributs.c.f.corps.$id_attribut_graphique.nom -text $nom -width 20 -height 2 -background white -relief solid
-            label $f.attributs.c.f.corps.$id_attribut_graphique.type -text $type -width 20 -height 2 -background white -relief solid
-            label $f.attributs.c.f.corps.$id_attribut_graphique.taille -text $taille -width 20 -height 2 -background white -relief solid
-            label $f.attributs.c.f.corps.$id_attribut_graphique.valeur -text $valeur -width 20 -height 2 -background white -relief solid
-            label $f.attributs.c.f.corps.$id_attribut_graphique.auto -text $auto -width 20 -height 2 -background white -relief solid
-            label $f.attributs.c.f.corps.$id_attribut_graphique.pk -text $pk -width 20 -height 2 -background white -relief solid
-            button $f.attributs.c.f.corps.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.attributs.c.f.corps association $id_attribut_graphique [expr $id_attribut_graphique - 1]"
-            button $f.attributs.c.f.corps.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.attributs.c.f.corps association $id_attribut_graphique [expr $id_attribut_graphique + 1]"
-            button $f.attributs.c.f.corps.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "INTERFACE_ajout_attribut relation $id_attribut_graphique"
-            pack $f.attributs.c.f.corps.$id_attribut_graphique.nom $f.attributs.c.f.corps.$id_attribut_graphique.type $f.attributs.c.f.corps.$id_attribut_graphique.taille $f.attributs.c.f.corps.$id_attribut_graphique.valeur $f.attributs.c.f.corps.$id_attribut_graphique.auto $f.attributs.c.f.corps.$id_attribut_graphique.pk $f.attributs.c.f.corps.$id_attribut_graphique.haut $f.attributs.c.f.corps.$id_attribut_graphique.bas $f.attributs.c.f.corps.$id_attribut_graphique.edit -side left
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.nom -text $nom -width 30 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.type -text $type -width 15 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.signe -text $nsigne -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.taille -text $taille -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.valeur -text $valeur -width 20 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.auto -text $auto -width 15 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.pk -text $pk -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.unique -text $unique -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.attributs.c.f.corps $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.attributs.c.f.corps $id_attribut_graphique [expr $id_attribut_graphique + 1]"
+            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.edit -text [phgt::mc "Éditer"] -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
+            pack $f.attributs.c.f.corps.$id_attribut_graphique.nom $f.attributs.c.f.corps.$id_attribut_graphique.type $f.attributs.c.f.corps.$id_attribut_graphique.signe $f.attributs.c.f.corps.$id_attribut_graphique.taille $f.attributs.c.f.corps.$id_attribut_graphique.valeur $f.attributs.c.f.corps.$id_attribut_graphique.auto $f.attributs.c.f.corps.$id_attribut_graphique.pk $f.attributs.c.f.corps.$id_attribut_graphique.unique $f.attributs.c.f.corps.$id_attribut_graphique.haut $f.attributs.c.f.corps.$id_attribut_graphique.bas $f.attributs.c.f.corps.$id_attribut_graphique.edit -fill both -expand 1 -side left
         pack $f.attributs.c.f.corps.$id_attribut_graphique -fill x
     }
     update
@@ -524,7 +529,6 @@ proc Katyusha_Relations_suppression_attribut_relation {relation id_attribut {gra
 ##
 proc Katyusha_Relations_ajout_lien {table_liee lien relatif {graphique 1}} {
     global relation_tmp
-    global LOCALE
     global IMG
     
     set liens [dict get $relation_tmp "liens"]
@@ -575,7 +579,6 @@ proc Katyusha_Relations_controle_relation {relation} {
 # Supprime l'association passée en paramètre
 ##
 proc suppression_relation {relation} {
-    global LOCALE
     global relations
     global relations_graphique
     global ZONE_MCD
@@ -592,7 +595,7 @@ proc suppression_relation {relation} {
     Katyusha_Association_suppression_lignes $relation
     dict unset relations_graphique $relation
     Katyusha_MCD_Objets_maj_arbre_objets
-    puts "Association $nom supprimée"
+    puts [phgt::mc "Association %s supprimée" [list $nom]]
     unset nom
 }
 
@@ -613,8 +616,8 @@ proc Katyusha_Relations_init_relation {} {
 ##
 # Modifie un attribut
 ##
-proc Katyusha_Relations_modification_attribut {id_attribut nom type complement_type taille null valeur auto pk description {graphique 1}} {
-    Katyusha_Entites_modification_attribut $id_attribut $nom $type $complement_type $taille $null $valeur $auto $pk $description "relation" $graphique
+proc Katyusha_Relations_modification_attribut {id_attribut nom type nsigne complement_type taille null valeur auto pk unique acces description {graphique 1}} {
+    Katyusha_Entites_modification_attribut $id_attribut $nom $type $nsigne $complement_type $taille $null $valeur $auto $pk $unique $acces $description "relation" $graphique
     unset id_attribut nom type complement_type taille null valeur auto pk description graphique
 }
 

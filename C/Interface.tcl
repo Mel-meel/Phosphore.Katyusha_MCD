@@ -13,7 +13,6 @@ proc Katyusha_Interface {} {
 global IMG
 global CONFIGS
 global STYLES
-global LOCALE
 global MCD
 global splash
 global fichier_sauvegarde
@@ -21,6 +20,7 @@ global canvas_x
 global canvas_y
 global OS
 global ZONE_MCD
+global ZONE_UML
 
 # Détruit l'image de splash pour pouvoir afficher le reste
 destroy .image
@@ -51,7 +51,7 @@ set x [winfo screenwidth .]
 set y [winfo screenheight .]
 #wm geometry . "$x\x$y+0+0"
 
-menu .mb -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
+menu .mb -background [dict get $STYLES "ddbackground"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
 menu .mb.katyusha -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
 menu .mb.fichier -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
 menu .mb.bdd -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
@@ -64,70 +64,70 @@ menu .mb.fichier.recents -tearoff 0 -background [dict get $STYLES "background"] 
 .mb add cascade -menu .mb.katyusha -label [phgt::mc "Katyusha!"]
 .mb add cascade -menu .mb.fichier -label [phgt::mc "Projet"]
 .mb add cascade -menu .mb.mcd -label [phgt::mc "Modèle Merise"]
-.mb add cascade -menu .mb.uml -label [phgt::mc "Diagramme de classe UML"]
-.mb add cascade -menu .mb.bdd -label $LOCALE(menu_bdd)
-.mb add cascade -menu .mb.code -label $LOCALE(menu_code)
-.mb add cascade -menu .mb.aide -label $LOCALE(menu_aide)
+.mb add cascade -menu .mb.uml -label [phgt::mc "Diagramme de classes"]
+.mb add cascade -menu .mb.bdd -label [phgt::mc "Base de données"]
+.mb add cascade -menu .mb.code -label [phgt::mc "Code"]
+.mb add cascade -menu .mb.aide -label [phgt::mc "Aide"]
 
 # Menu Katyusha
-.mb.katyusha add command -label $LOCALE(menu_katyusha_pref) -command INTERFACE_preferences
+.mb.katyusha add command -label [phgt::mc "Préférences"] -command INTERFACE_Configurations_preferences
 #.mb.katyusha add command -label $LOCALE(menu_katyusha_maj) -command INTERFACE_MAJ
-.mb.katyusha add command -label $LOCALE(menu_quitter) -command Katyusha_exit_verif
+.mb.katyusha add command -label [phgt::mc "Quitter"] -command Katyusha_exit_verif
 
 # Menu Fichier
-.mb.fichier add command -label $LOCALE(menu_mcd_nouveau) -command Katyusha_MCD_nouveau
-.mb.fichier add command -label $LOCALE(menu_sauver_sous) -command Katyusha_sauvegarder_sous
-.mb.fichier add command -label $LOCALE(menu_sauver) -command Katyusha_sauvegarder
+.mb.fichier add command -label [phgt::mc "Nouveau projet"] -command Katyusha_MCD_nouveau
+.mb.fichier add command -label [phgt::mc "Sauvegarder sous"] -command Katyusha_sauvegarder_sous
+.mb.fichier add command -label [phgt::mc "Sauvegarder"] -command Katyusha_sauvegarder
 
 # Projets récement chargés
-.mb.fichier add cascade -menu .mb.fichier.recents -label $LOCALE(menu_recents)
-.mb.fichier.recents add command -label $LOCALE(recents_init) -command Katyusha_projets_recents_init
+.mb.fichier add cascade -menu .mb.fichier.recents -label [phgt::mc "Récents"]
+.mb.fichier.recents add command -label [phgt::mc "Effacer la liste"] -command Katyusha_projets_recents_init
 foreach fichier [Katyusha_fichiers_recents] {
     if {[file exists $fichier]} {
         .mb.fichier.recents add command -label $fichier -command "Katyusha_Charge $fichier"
     }
 }
 
-.mb.fichier add command -label $LOCALE(menu_charger) -command Katyusha_charger
-.mb.fichier add command -label $LOCALE(menu_prefs) -command INTERFACE_config_bdd
+.mb.fichier add command -label [phgt::mc "Charger"] -command Katyusha_charger
+.mb.fichier add command -label [phgt::mc "Configuration de la base de données"] -command INTERFACE_config_bdd
 
 # Menu modèle Merise
 #.mb.mcd add command -label $LOCALE(menu_mcd_entites) -command INTERFACE_liste_entites
-.mb.mcd add command -label $LOCALE(menu_mcd_ajout_table) -command "Katyusha_MCD_INTERFACE_Association_ajout_association 100 100"
+.mb.mcd add command -label [phgt::mc "Ajouter une entité"] -command "Katyusha_MCD_INTERFACE_Association_ajout_association 100 100"
 #.mb.mcd add command -label $LOCALE(menu_mcd_edit_table) -command INTERFACE_edit_table_liste
 #.mb.mcd add command -label $LOCALE(menu_mcd_sup_table) -command INTERFACE_liste_entites
-.mb.mcd add command -label $LOCALE(menu_mcd_ajout_relation) -command "Katyusha_MCD_INTERFACE_Entite_ajout_entite 100 100"
+.mb.mcd add command -label [phgt::mc "Ajouter une association"] -command "Katyusha_MCD_INTERFACE_Entite_ajout_entite 100 100"
 #.mb.mcd add command -label $LOCALE(menu_mcd_sup_relation) -command INTERFACE_liste_entitesv
-.mb.mcd add command -label $LOCALE(menu_mcd_verifier) -command {
+.mb.mcd add command -label [phgt::mc "Vérifier le MCD"] -command {
     global LOCALE
     
     set verif [Katyusha_verification_mcd_sql $sgbd]
     set erreurs [lindex $verif 2]
     if {$erreurs == "null"} {
-        set erreurs [list $LOCALE(mcd_correcte)]
+        set erreurs [list [phgt::mc "Le MCD est correct"]]
     }
     INTERFACE_erreurs_MCD $erreurs
 }
-.mb.mcd add command -label $LOCALE(menu_mcd_exporter_svg) -command INTERFACE_exporter_svg
-.mb.mcd add command -label $LOCALE(menu_mcd_imprimer) -command INTERFACE_imprimer
+.mb.mcd add command -label [phgt::mc "Exporter le MCD en SVG"] -command INTERFACE_exporter_svg
+.mb.mcd add command -label [phgt::mc "Imprimer le MCD"] -command INTERFACE_imprimer
 
 # Menu diagramme de classe UML
 #.mb.uml add command -label [phgt::mc "Modèle Merise"] -command INTERFACE_liste_entites
-.mb.uml add command -label [phgt::mc "En travaux, arrivera en version 1.x"]
+#.mb.uml add command -label [phgt::mc "En travaux, arrivera en version 1.x"]
 
 # Menu base de donnée
 #.mb.bdd add command -label $LOCALE(menu_config_bdd) -command INTERFACE_config_bdd
 #.mb.bdd add command -label $LOCALE(menu_connex_bdd) -command INTERFACE_connexion_bdd
-.mb.bdd add command -label $LOCALE(menu_gen_sql) -command INTERFACE_generation_sql
+.mb.bdd add command -label [phgt::mc "Générer le script SQL"] -command INTERFACE_generation_sql
 #.mb.bdd add command -label $LOCALE(menu_gen_mcd) -command INTERFACE_generation_mcd
 
 # Menu code
-.mb.code add command -label $LOCALE(menu_code_generer_php_fonctions) -command INTERFACE_Code_generation_php
-.mb.code add command -label $LOCALE(menu_code_generer_php_doctrine) -command INTERFACE_Code_generation_php_objet_doctrine
+.mb.code add command -label [phgt::mc "Préférences"] -command INTERFACE_Code_generation_php
+.mb.code add command -label [phgt::mc "Préférences"] -command INTERFACE_Code_generation_php_objet_doctrine
 
 # Menu Aide
 .mb.aide add command -label [phgt::mc "À propos"] -command INTERFACE_apropos
-.mb.aide add command -label $LOCALE(menu_aide_license) -command INTERFACE_license
+.mb.aide add command -label [phgt::mc "Licence"] -command INTERFACE_license
 
 ##
 # Le 4/5/2022 : Ajout d'un widget ttk::notebook qui contiendra deux élément :
@@ -136,17 +136,17 @@ foreach fichier [Katyusha_fichiers_recents] {
 ##
 ttk::notebook .editeurs
 .editeurs add [Katyusha_Interface_editeur_MCD ".editeurs" $canvas_x $canvas_y] -text [phgt::mc "Modèle Merise"]
-.editeurs add [Katyusha_Interface_editeur_UML ".editeurs" $canvas_x $canvas_y] -text [phgt::mc "Modèle Merise"]
+.editeurs add [Katyusha_Interface_editeur_UML ".editeurs" $canvas_x $canvas_y] -text [phgt::mc "Diagramme de classes"]
 #.editeurs add [Katyusha_Interface_editeur_UML ".editeurs" $canvas_x $canvas_y] -text [phgt::mc "Diagramme de classe UML"]
 pack .editeurs -fill both -expand 1
     ttk::frame .infos
         ttk::frame .infos.s
             if {$OS == "Windows" || $OS == "Win"} {
-                ttk::button .infos.s.splash -text $LOCALE(attention_os) -foreground red -activeforeground red -command INTERFACE_mise_en_garde
+                ttk::button .infos.s.splash -text [phgt::mc "Préférences"] -foreground red -activeforeground red -command INTERFACE_mise_en_garde
             } else {
-                ttk::label .infos.s.splash -text "                $splash" -foreground [dict get $STYLES "ddbackground"] -background [dict get $STYLES "graphics"]
+                ttk::label .infos.s.splash -text "                $splash" -foreground [dict get $STYLES "graphics"]
             }
-            ttk::label .infos.s.position_curseur -text "" -foreground [dict get $STYLES "ddbackground"] -background [dict get $STYLES "graphics"]
+            ttk::label .infos.s.position_curseur -text "" -foreground [dict get $STYLES "graphics"]
             pack .infos.s.position_curseur -padx 1 -side right -fill x -expand 1
             pack .infos.s.splash -padx 1 -side right -fill x -expand 1
         pack .infos.s -fill x
@@ -155,151 +155,7 @@ pack .editeurs -fill both -expand 1
     pack .infos -fill x
 
 Katyusha_grille $ZONE_MCD.canvas.c
+Katyusha_grille $ZONE_UML.modelisation.c
 #maj_arbre_entites
 
-}
-
-
-proc Katyusha_Interface_editeur_UML_2 {parent canvas_x canvas_y} {
-    global LOCALE
-    global IMG
-    global CONFIGS
-    global ZONE_MCD
-    global OS
-    
-    set f [ttk::frame $parent.notebook_uml]
-    
-    ttk::frame $f.notebook_uml_panel
-        ttk::label $f.notebook_uml_panel.tmp -text [phgt::mc "En travaux, arrivera en version majeure 1.x"]
-        pack $f.notebook_uml_panel.tmp
-    pack $f.notebook_uml_panel
-    
-    return $f
-}
-
-##
-# Interface de la modélisation Merise
-##
-proc Katyusha_Interface_editeur_MCD {parent canvas_x canvas_y} {
-    global LOCALE
-    global IMG
-    global CONFIGS
-    global STYLES
-    global ZONE_MCD
-    global OS
-    global splash
-    
-    set f [ttk::frame $parent.notebook_mcd]
-    
-    ttk::frame $parent.notebook_mcd.panel
-        ttk::frame $parent.notebook_mcd.panel.commandes
-            # Bouton on/off d'ajout d'une entité
-            button $parent.notebook_mcd.panel.commandes.ajout_table -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_MCD_action_boutons_ajout "table"}
-            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_table $LOCALE(ajouter_table)
-            # Bouton on/off d'ajout d'une association
-            button $parent.notebook_mcd.panel.commandes.ajout_relation -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_relation) -image $IMG(ajouter_relation) -command {Katyusha_MCD_action_boutons_ajout "relation"}
-            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_relation $LOCALE(ajouter_relation)
-            # Bouton on/off d'ajout d'un héritage
-            button $parent.notebook_mcd.panel.commandes.ajout_heritage -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_heritage) -image $IMG(ajouter_heritage) -command {Katyusha_MCD_action_boutons_ajout "heritage"}
-            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_heritage $LOCALE(ajouter_heritage)
-            # Bouton on/off d'ajout d'une étiquette
-            button $parent.notebook_mcd.panel.commandes.ajout_etiquette -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"] -text $LOCALE(ajouter_etiquette) -image $IMG(ajouter_etiquette) -command {Katyusha_MCD_action_boutons_ajout "etiquette"}
-            tooltip::tooltip $parent.notebook_mcd.panel.commandes.ajout_etiquette $LOCALE(ajouter_etiquette)
-            pack $parent.notebook_mcd.panel.commandes.ajout_table $parent.notebook_mcd.panel.commandes.ajout_relation $parent.notebook_mcd.panel.commandes.ajout_etiquette $parent.notebook_mcd.panel.commandes.ajout_heritage -side left
-        pack $parent.notebook_mcd.panel.commandes
-        ttk::label $parent.notebook_mcd.panel.entites -text [phgt::mc "Objets du MCD"] -justify left
-        pack $parent.notebook_mcd.panel.entites -fill x -pady 10 -padx 5
-        # Arbre des objets du MCD
-        ttk::frame $parent.notebook_mcd.panel.arbre
-            canvas $parent.notebook_mcd.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_mcd.panel.arbre.vs set" -scrollregion "0 0 250 4000" -background [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"]
-            ttk::scrollbar $parent.notebook_mcd.panel.arbre.vs -command "$parent.notebook_mcd.panel.arbre.c yview"
-            pack $parent.notebook_mcd.panel.arbre.c $parent.notebook_mcd.panel.arbre.vs -side left -fill both
-        pack $parent.notebook_mcd.panel.arbre
-    pack $parent.notebook_mcd.panel -side left
-    ttk::frame $parent.notebook_mcd.mcd
-        # Infos de la base de données
-        ttk::frame $parent.notebook_mcd.mcd.infos_bdd
-            ttk::button $parent.notebook_mcd.mcd.infos_bdd.zoom_plus -text "+" -image $IMG(zoom_plus) -command "Katyusha_zoom_plus $ZONE_MCD.canvas.c"
-            ttk::button $parent.notebook_mcd.mcd.infos_bdd.zoom_moins -text "-" -image $IMG(zoom_moins) -command "Katyusha_zoom_moins $ZONE_MCD.canvas.c"
-            ttk::button $parent.notebook_mcd.mcd.infos_bdd.zoom_initial -text "1:1" -image $IMG(zoom_initial) -command "Katyusha_zoom_initial $ZONE_MCD.canvas.c"
-            ttk::button $parent.notebook_mcd.mcd.infos_bdd.defaire -text "défaire" -image $IMG(defaire) -command Katyusha_Historique_defaire
-            ttk::button $parent.notebook_mcd.mcd.infos_bdd.refaire -text "refaire" -image $IMG(refaire) -command Katyusha_Historique_refaire
-            pack $parent.notebook_mcd.mcd.infos_bdd.zoom_plus $parent.notebook_mcd.mcd.infos_bdd.zoom_moins $parent.notebook_mcd.mcd.infos_bdd.zoom_initial $parent.notebook_mcd.mcd.infos_bdd.defaire $parent.notebook_mcd.mcd.infos_bdd.refaire -side left
-        pack $parent.notebook_mcd.mcd.infos_bdd -fill x
-        # Canvas principal
-        ttk::frame $parent.notebook_mcd.mcd.canvas
-            # C'est pas parfait, mais ça marche
-            # À revoir completement
-            ttk::scrollbar $parent.notebook_mcd.mcd.canvas.vs -command "$parent.notebook_mcd.mcd.canvas.c yview"
-            set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
-            set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
-            canvas $parent.notebook_mcd.mcd.canvas.c -background [dict get $STYLES "dbackground"] -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand "$parent.notebook_mcd.mcd.hs set" -yscrollcommand "$parent.notebook_mcd.mcd.canvas.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas" -highlightbackground [dict get $STYLES "graphics"]
-            pack $parent.notebook_mcd.mcd.canvas.c -side left -fill both -expand 1
-            pack $parent.notebook_mcd.mcd.canvas.vs -side left -fill y
-            #.mcd.canvas.c configure -scrollregion [.mcd.canvas.c bbox all]
-        pack $parent.notebook_mcd.mcd.canvas -fill x
-            ttk::scrollbar $parent.notebook_mcd.mcd.hs -orient horiz -command "$parent.notebook_mcd.mcd.canvas.c xview"
-            pack $parent.notebook_mcd.mcd.hs -side top -fill x
-    pack $parent.notebook_mcd.mcd -side left
-    
-    return $f
-}
-
-##
-# Interface de la modélisation UML
-##
-proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
-    global LOCALE
-    global IMG
-    global CONFIGS
-    global STYLES
-    global ZONE_UML
-    global OS
-    global splash
-    
-    set f [ttk::frame $parent.notebook_uml]
-    
-    ttk::frame $parent.notebook_uml.panel
-        ttk::frame $parent.notebook_uml.panel.commandes
-            # Bouton on/off d'ajout d'une classe
-            button $parent.notebook_uml.panel.commandes.ajout_classe -text $LOCALE(ajouter_table) -image $IMG(ajouter_table) -command {Katyusha_UML_action_boutons_ajout "classe"}
-            tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_classe $LOCALE(ajouter_table)
-            pack $parent.notebook_uml.panel.commandes.ajout_classe -side left
-        pack $parent.notebook_uml.panel.commandes
-        ttk::label $parent.notebook_uml.panel.entites -text [phgt::mc "Objets du digramme de classes"] -justify left
-        pack $parent.notebook_uml.panel.entites -fill x -pady 10 -padx 5
-        # Arbre des objets du MCD
-        ttk::frame $parent.notebook_uml.panel.arbre
-            canvas $parent.notebook_uml.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_uml.panel.arbre.vs set" -scrollregion "0 0 250 4000" -background [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "graphics"]
-            ttk::scrollbar $parent.notebook_uml.panel.arbre.vs -command "$parent.notebook_uml.panel.arbre.c yview"
-            pack $parent.notebook_uml.panel.arbre.c $parent.notebook_uml.panel.arbre.vs -side left -fill both
-        pack $parent.notebook_uml.panel.arbre
-    pack $parent.notebook_uml.panel -side left
-    ttk::frame $parent.notebook_uml.uml
-        # Actions sur le canvas
-        ttk::frame $parent.notebook_uml.uml.infos_bdd
-            ttk::button $parent.notebook_uml.uml.infos_bdd.zoom_plus -text "+" -image $IMG(zoom_plus) -command "Katyusha_zoom_plus $ZONE_UML.canvas.c"
-            ttk::button $parent.notebook_uml.uml.infos_bdd.zoom_moins -text "-" -image $IMG(zoom_moins) -command "Katyusha_zoom_moins $ZONE_UML.canvas.c"
-            ttk::button $parent.notebook_uml.uml.infos_bdd.zoom_initial -text "1:1" -image $IMG(zoom_initial) -command "Katyusha_zoom_initial $ZONE_UML.canvas.c"
-            ttk::button $parent.notebook_uml.uml.infos_bdd.defaire -text "défaire" -image $IMG(defaire) -command Katyusha_Historique_defaire
-            ttk::button $parent.notebook_uml.uml.infos_bdd.refaire -text "refaire" -image $IMG(refaire) -command Katyusha_Historique_refaire
-            pack $parent.notebook_uml.uml.infos_bdd.zoom_plus $parent.notebook_uml.uml.infos_bdd.zoom_moins $parent.notebook_uml.uml.infos_bdd.zoom_initial $parent.notebook_uml.uml.infos_bdd.defaire $parent.notebook_uml.uml.infos_bdd.refaire -side left
-        pack $parent.notebook_uml.uml.infos_bdd -fill x
-        # Canvas principal
-        ttk::frame $parent.notebook_uml.uml.modelisation
-            # C'est pas parfait, mais ça marche
-            # À revoir completement
-            ttk::scrollbar $parent.notebook_uml.uml.modelisation.vs -command "$parent.notebook_uml.mcd.canvas.c yview"
-            set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
-            set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
-            canvas $parent.notebook_uml.uml.modelisation.c -background [dict get $STYLES "dbackground"] -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand "$parent.notebook_uml.uml.hs set" -yscrollcommand "$parent.notebook_uml.uml.modelisation.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas"
-            pack $parent.notebook_uml.uml.modelisation.c -side left -fill both -expand 1
-            pack $parent.notebook_uml.uml.modelisation.vs -side left -fill y
-            #.mcd.canvas.c configure -scrollregion [.mcd.canvas.c bbox all]
-        pack $parent.notebook_uml.uml.modelisation -fill x
-            ttk::scrollbar $parent.notebook_uml.uml.hs -orient horiz -command "$parent.notebook_uml.uml.modelisation.c xview"
-            pack $parent.notebook_uml.uml.hs -side top -fill x
-    pack $parent.notebook_uml.uml -side left
-    
-    return $f
 }

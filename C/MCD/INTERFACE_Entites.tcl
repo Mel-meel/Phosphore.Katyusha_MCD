@@ -15,7 +15,6 @@
 # Pour une édition, indiquer en coordonnées 0:0 et passer son id
 ##
 proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
-    global LOCALE
     global STYLES
     global coords
     global IMG
@@ -33,7 +32,7 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
         set coords [list $x $y]
         set table_tmp [Katyusha_Tables_init_table]
         dict set table_tmp "coords" $coords
-        set E_nom_table "Table_[expr [dict size $tables] + 1]"
+        set E_nom_table [phgt::mc "Entite_%s" [list [expr [dict size $tables] + 1]]]
     } else {
         set table [dict get $tables $id]
         set table_tmp $table
@@ -52,7 +51,7 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
     
     # Frame de choix du nom de la table
     ttk::frame $f.nom
-        ttk::label $f.nom.l -text $LOCALE(nom_table)
+        ttk::label $f.nom.l -text [phgt::mc "Nom de l'entité : "]
         ttk::entry $f.nom.e -textvariable E_nom_table
         pack $f.nom.l $f.nom.e -side left
     pack $f.nom -pady 10 -padx 50
@@ -61,29 +60,41 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
         # Commandes des attributs
         ttk::frame $f.attributs.commandes
             # Bouton d'ajout d'un nouvel attribut
-            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_MCD_INTERFACE_Objets_ajout_attribut "table"}
+            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_Interface_Objets_MCD_UML_ajout_attribut "table"}
             # Bouton de supression d'un nouvel attribut
             ttk::button $f.attributs.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_attribut "table"}
             pack $f.attributs.commandes.ajout $f.attributs.commandes.supp -padx 10
         pack $f.attributs.commandes -side left -fill x
         
+        
+        ttk::frame $f.attributs.table_tete
+            ttk::frame $f.attributs.table_tete.f
+                ttk::label $f.attributs.table_tete.f.titre -text [phgt::mc "Liste des attributs de l'entité"]
+                pack $f.attributs.table_tete.f.titre -fill both -anchor center -padx 10 -pady 10 -expand 1
+                ttk::frame $f.attributs.table_tete.f.tete
+                    ttk::label $f.attributs.table_tete.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.signe -text [phgt::mc "Non signé?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.auto -text [phgt::mc "Incrémentation\nautomatique?"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.pk -text [phgt::mc "Clef\nprimaire?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.unique -text [phgt::mc "Unique?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
+                    
+                    pack $f.attributs.table_tete.f.tete.nom $f.attributs.table_tete.f.tete.type $f.attributs.table_tete.f.tete.signe $f.attributs.table_tete.f.tete.taille $f.attributs.table_tete.f.tete.valeur $f.attributs.table_tete.f.tete.auto $f.attributs.table_tete.f.tete.pk $f.attributs.table_tete.f.tete.unique $f.attributs.table_tete.f.tete.m $f.attributs.table_tete.f.tete.d $f.attributs.table_tete.f.tete.e -fill both -expand 1 -side left
+                pack $f.attributs.table_tete.f.tete -fill both -anchor w -expand 1
+            pack $f.attributs.table_tete.f -fill both -anchor w -expand 1
+        pack $f.attributs.table_tete -anchor w -expand 1
+        
+        
         # Attributs dans un canvas pour pouvoir utiliser une scrollbar
-        canvas $f.attributs.c -width 1200 -height 400 -background [dict get $STYLES "background"] -highlightbackground [dict get $STYLES "graphics"]
+        canvas $f.attributs.c -background [dict get $STYLES "lbackground"] -highlightbackground [dict get $STYLES "graphics"]
         ttk::frame $f.attributs.c.f
             # Liste des attributs
             ttk::frame $f.attributs.c.f.liste
-                ttk::label $f.attributs.c.f.titre -text $LOCALE(liste_attributs_table)
-                pack $f.attributs.c.f.titre -fill x
-                ttk::frame $f.attributs.c.f.tete
-                    ttk::label $f.attributs.c.f.tete.nom -text $LOCALE(nom) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.type -text $LOCALE(type) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.taille -text $LOCALE(taille) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.valeur -text $LOCALE(valeur) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.auto -text $LOCALE(auto) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.pk -text $LOCALE(pk) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    
-                    pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.auto $f.attributs.c.f.tete.pk -fill x -side left
-                pack $f.attributs.c.f.tete -fill both
                 ttk::frame $f.attributs.c.f.corps
                 
                 pack $f.attributs.c.f.corps -fill x
@@ -92,23 +103,23 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
                     ##
                     # Si l'entité est en édition, on affiche la liste des attributs déjà existants
                     if {$id != "null"} {
-                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $table "entite"
+                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c $table "entite"
                     }
-            pack $f.attributs.c.f.liste -side left -fill x
-        pack $f.attributs.c -side left
+            pack $f.attributs.c.f.liste -side left -fill both
+        pack $f.attributs.c -side left -expand 1 -fill both
         $f.attributs.c create window 0 0 -anchor nw -window $f.attributs.c.f
         ttk::scrollbar $f.attributs.yscroll -command "$f.attributs.c yview"
         pack $f.attributs.yscroll -side right -fill y
-        $f.attributs.c configure -scrollregion "0 0 1000 10000"
-    pack $f.attributs -fill x -padx 10
+        
+    pack $f.attributs -fill both -padx 10
     
     # Ajout de la commande de scroll du canvas des attributs ici, sinon erreur mais fonctionne.
     # À voir pour faire fonctionner correctement plus tard
     $f.attributs.c configure -yscrollcommand "$f.attributs.yscroll set"
     
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table
-        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {
             if {[winfo exists .fen_ajout_attribut]} {
                 destroy .fen_ajout_attribut
             }
@@ -120,9 +131,9 @@ proc Katyusha_MCD_INTERFACE_Entite_ajout_entite {x y {id "null"}} {
     
     # Titre le la présente fenêtre
     if {$id == "null"} {
-        wm title $f $LOCALE(ajouter_une_table)
+        wm title $f [phgt::mc "Ajouter une entité"]
     } else {
-        wm title $f "$LOCALE(editer_la_table) : $E_nom_table"
+        wm title $f [phgt::mc "Éditer l'entité %s" [list $E_nom_table]]
     }
     
     # Couleur de fond de la fenêtre
@@ -143,7 +154,8 @@ proc Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table {} {
     set id [dict get $table_tmp "id"]
     dict set table_tmp "nom" [$f.nom.e get]
     dict set table_tmp "description" ""
-    set ok [Katyusha_Tables_controle_table $table_tmp]
+    #set ok [Katyusha_Tables_controle_table $table_tmp]
+    set ok 1
     if {$id == "null" && $ok == 1} {
         ajout_table $table_tmp
         destroy $f
@@ -155,7 +167,6 @@ proc Katyusha_MCD_INTERFACE_Entites_COMMANDE_ajout_table {} {
 
 proc INTERFACE_Tables_choix_table {nombre_tables_possibles} {
     global tables
-    global LOCALE
     global STYLES
     global IMG
     global table_choisie
@@ -171,23 +182,23 @@ proc INTERFACE_Tables_choix_table {nombre_tables_possibles} {
     wm iconphoto $f $IMG(logo)
     
     ttk::frame $f.table -padx 10 -pady 10
-        ttk::label $f.table.l -text "Choisir une entité :"
+        ttk::label $f.table.l -text [phgt::mc "Choisir une entité :"]
         ttk::combobox $f.table.cb -values [liste_tables]
         pack $f.table.l $f.table.cb -fill both -side left
     pack $f.table -fill x
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command {
             set f ".fen_choix_table"
             global table_choisie
             set table_choisie [$f.table.cb get]
         }
-        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes -fill x
     
     # Titre le la présente fenêtre
-    wm title $f "Choisir une entité"
+    wm title $f [phgt::mc "Choisir une entité"]
     
     # Couleur de fond de la fenêtre
     $f configure -background [dict get $STYLES "lbackground"]

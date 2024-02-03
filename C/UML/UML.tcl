@@ -15,6 +15,8 @@
 proc Katyusha_UML_init {} {
     global classes
     global classes_graphique
+    global interfaces
+    global interfaces_graphique
     global ID_UML
     global ID
     
@@ -22,6 +24,11 @@ proc Katyusha_UML_init {} {
     set classes [dict create]
     #
     set classes_graphique [dict create]
+    
+    # Dictionnaire contenant toutes les interfaces et leurs informations, sauf graphiques
+    set interfaces [dict create]
+    #
+    set interfaces_graphique [dict create]
     set ID_UML $ID
 }
 

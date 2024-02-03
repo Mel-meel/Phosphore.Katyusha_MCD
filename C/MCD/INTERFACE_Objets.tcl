@@ -16,29 +16,34 @@
 ##
 proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f objet type_objet} {
     global IMG
-    global LOCALE
     global STYLES
     
     set attributs [dict get $objet "attributs"]
     
     foreach {id_attribut_graphique attribut} $attributs {
-        if {[winfo exists $f]} {
-            destroy $f.$id_attribut_graphique
+        if {[winfo exists $f.f.corps]} {
+            destroy $f.f.corps.$id_attribut_graphique
         }
         #set nom_attribut_graphique [dict get $attribut "nom"]
-        ttk::frame $f.$id_attribut_graphique
-            ttk::label $f.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::button $f.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique - 1]"
-            ttk::button $f.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique + 1]"
-            ttk::button $f.$id_attribut_graphique.edit -text "Éditer" -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
-            pack $f.$id_attribut_graphique.nom $f.$id_attribut_graphique.type $f.$id_attribut_graphique.taille $f.$id_attribut_graphique.valeur $f.$id_attribut_graphique.auto $f.$id_attribut_graphique.pk $f.$id_attribut_graphique.haut $f.$id_attribut_graphique.bas $f.$id_attribut_graphique.edit -side left
-        pack $f.$id_attribut_graphique -fill x
+        ttk::frame $f.f.corps.$id_attribut_graphique
+            ttk::label $f.f.corps.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 15 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.signe -text "true" -width 10 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 15 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 10 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.unique -text "" -width 10 -background [dict get $STYLES "background"] -relief solid
+            
+            ttk::button $f.f.corps.$id_attribut_graphique.haut -text "Remonter" -width 6 -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            ttk::button $f.f.corps.$id_attribut_graphique.bas -text "Descendre" -width 6 -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique + 1]"
+            ttk::button $f.f.corps.$id_attribut_graphique.edit -text "Éditer" -width 5 -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
+            pack $f.f.corps.$id_attribut_graphique.nom $f.f.corps.$id_attribut_graphique.type $f.f.corps.$id_attribut_graphique.taille $f.f.corps.$id_attribut_graphique.signe $f.f.corps.$id_attribut_graphique.valeur $f.f.corps.$id_attribut_graphique.auto $f.f.corps.$id_attribut_graphique.pk $f.f.corps.$id_attribut_graphique.unique $f.f.corps.$id_attribut_graphique.haut $f.f.corps.$id_attribut_graphique.bas $f.f.corps.$id_attribut_graphique.edit -fill y -expand 1 -side left
+        pack $f.f.corps.$id_attribut_graphique -fill x
     }
+    
+    $f configure -scrollregion [$f bbox all]
+    
     # Mise à jour forcée de l'affichage graphique
     update
 }
@@ -57,215 +62,11 @@ proc Katyusha_MCD_INTERFACE_Objets_deplacer_attribut {f type_objet id_ancien id_
 }
 
 ##
-# Fenêtre d'ajout d'un attribut à une entité ou une association
-# Si l'ID d'un attribut est passé en paramètre, il s'agira alors de l'éditer
-##
-proc Katyusha_MCD_INTERFACE_Objets_ajout_attribut {entite {id "null"}} {
-    global table_tmp
-    global relation_tmp
-    global LOCALE
-    global STYLES
-    global IMG
-    global E_valeur_attribut
-    global E_nom_attribut
-    global E_type_attribut
-    global E_ctype_attribut
-    global E_null_attribut
-    global E_description_attribut
-    global E_auto_attribut
-    
-    set f ".fen_ajout_attribut"
-    
-    # Détruit la fenêtre si elle existe déjà
-    if {[winfo exists $f]} {
-        destroy $f
-    }
-    # Si l'attribut est en édition
-    if {$id != "null"} {
-        if {$entite == "table"} {
-            set attributs [dict get $table_tmp "attributs"]
-        } elseif {$entite == "relation"} {
-            set attributs [dict get $relation_tmp "attributs"]
-        }
-    }
-    
-
-    
-    # Valeurs par défaut de l'attribut
-    if {$id == "null"} {
-        set E_valeur_attribut "null"
-        set E_auto_attribut 0
-        set E_null_attribut 1
-        set E_pk_attribut 0
-        set E_type_attribut ""
-        set E_ctype_attribut ""
-        set E_description_attribut ""
-        if {$entite == "table"} {
-            set E_nom_attribut "Attribut_[expr [llength [dict get $table_tmp attributs]]]"
-        } elseif {$entite == "relation"} {
-            set E_nom_attribut "Attribut_[expr [llength [dict get $relation_tmp attributs]]]"
-        }
-    } else {
-        # Charge les données de l'attribut en édition
-        set attribut [dict get $attributs $id]
-        set E_nom_attribut "[dict get $attribut nom]"
-        set E_type_attribut "[dict get $attribut type]"
-        set E_ctype_attribut "[dict get $attribut complement_type]"
-        set E_taille_attribut "[dict get $attribut taille]"
-        set E_valeur_attribut "[dict get $attribut valeur]"
-        set E_null_attribut "[dict get $attribut null]"
-        set E_auto_attribut "[dict get $attribut auto]"
-        set E_pk_attribut "[dict get $attribut pk]"
-        set E_description_attribut ""
-    }
-    
-    toplevel $f
-    # Icone de la fenêtre
-    wm iconphoto $f $IMG(logo)
-    
-    # Frame de titre
-    ttk::frame $f.nom
-        ttk::label $f.nom.l -text $LOCALE(prop_attribut)
-        pack $f.nom.l -fill x
-    pack $f.nom -fill x -pady 10 -padx 50
-    
-    # Propriétés de l'attribut
-    ttk::frame $f.prop
-        # Nom de l'attribut
-        ttk::frame $f.prop.nom
-            ttk::label $f.prop.nom.l -text $LOCALE(nom_attribut) -width 40 -anchor w
-            ttk::entry $f.prop.nom.e -textvariable E_nom_attribut
-            pack $f.prop.nom.l $f.prop.nom.e -side left -fill x
-        pack $f.prop.nom -fill x
-        # Type de l'attribut
-        ttk::frame $f.prop.type
-            ttk::label $f.prop.type.l -text $LOCALE(type_attribut) -width 40 -anchor w
-            ttk::combobox $f.prop.type.cb -values [Katyusha_SQL_liste_types]
-            pack $f.prop.type.l $f.prop.type.cb -side left -fill x
-            if {$id != "null"} {
-                $f.prop.type.cb set $E_type_attribut
-            }
-        pack $f.prop.type -fill x
-        # Complément du type de l'attribut
-        ttk::frame $f.prop.ctype
-            ttk::label $f.prop.ctype.l -text $LOCALE(ctype_attribut) -width 40 -anchor w
-            ttk::entry $f.prop.ctype.e -textvariable $E_ctype_attribut
-            pack $f.prop.ctype.l $f.prop.ctype.e -side left -fill x
-        pack $f.prop.ctype -fill x
-        # Taille de l'attribut (0 pour la valeur par défaut du SGBD)
-        ttk::frame $f.prop.taille
-            ttk::label $f.prop.taille.l -text $LOCALE(taille_attribut) -width 40 -anchor w
-            ttk::spinbox $f.prop.taille.sb -from 0 -to 255 -increment 1
-            pack $f.prop.taille.l $f.prop.taille.sb -side left -fill x
-        pack $f.prop.taille -fill x
-        ttk::label $f.prop.info_taille -text $LOCALE(taille_info_attribut) -foreground red -anchor w -justify left
-        pack $f.prop.info_taille -fill x
-        # Null?
-        ttk::frame $f.prop.null
-            ttk::label $f.prop.null.l -text $LOCALE(null_attribut) -width 40 -anchor w
-            ttk::checkbutton $f.prop.null.cb -onvalue 1 -offvalue 0 -variable E_null_attribut
-            pack $f.prop.null.l $f.prop.null.cb -side left -fill x
-        pack $f.prop.null -fill x
-        # Valeur par défaut
-        ttk::frame $f.prop.valeur
-            ttk::label $f.prop.valeur.l -text $LOCALE(valeur_attribut) -width 40 -anchor w
-            ttk::entry $f.prop.valeur.e -textvariable E_valeur_attribut
-            pack $f.prop.valeur.l $f.prop.valeur.e -side left -fill x
-        pack $f.prop.valeur -fill x
-        # Incrémentation automatique?
-        ttk::frame $f.prop.auto
-            ttk::label $f.prop.auto.l -text $LOCALE(auto_attribut) -width 40 -anchor w
-            ttk::checkbutton $f.prop.auto.cb -onvalue 1 -offvalue 0 -variable E_auto_attribut
-            pack $f.prop.auto.l $f.prop.auto.cb -side left -fill x
-        pack $f.prop.auto -fill x
-        # Si l'attribut est en incrémentation utomatique, il ne peut pas être null
-        # TODO : Sortir le bind de là, c'est pas propre
-        bind $f.prop.auto.cb <Button-1> {
-            global E_auto_attribut
-            global E_null_attribut
-            global E_valeur_attribut
-            
-            set f ".fen_ajout_attribut"
-            
-            if {$E_auto_attribut == 0} {
-                set E_null_attribut 0
-                $f.prop.null.cb configure -state disabled
-                set E_valeur_attribut ""
-                $f.prop.valeur.e configure -state disabled
-                $f.prop.type.cb set "integer"
-            } else {
-                set E_null_attribut 1
-                $f.prop.null.cb configure -state normal
-                set E_valeur_attribut "null"
-                $f.prop.valeur.e configure -state normal
-            }
-        }
-        # Clef primaire?
-        ttk::frame $f.prop.pk
-            ttk::label $f.prop.pk.l -text $LOCALE(pk_attribut) -width 40 -anchor w
-            ttk::checkbutton $f.prop.pk.cb -onvalue 1 -offvalue 0 -variable E_pk_attribut
-            pack $f.prop.pk.l $f.prop.pk.cb -side left -fill x
-        pack $f.prop.pk -fill x
-    pack $f.prop -fill x -padx 20
-    
-    ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "Katyusha_MCD_INTERFACE_COMMANDE_Objets_ajout_attribut $entite $id"
-        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
-        pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
-        pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
-    pack $f.commandes -fill x
-    
-    # Titre le la présente fenêtre
-    wm title $f $LOCALE(ajouter_attribut)
-    
-    # Couleur de fond de la fenêtre
-    $f configure -background [dict get $STYLES "lbackground"]
-    
-    update
-}
-
-proc Katyusha_MCD_INTERFACE_COMMANDE_Objets_ajout_attribut {entite {id "null"}} {
-    global E_auto_attribut
-    global E_pk_attribut
-    global E_null_attribut
-    global E_description_attribut
-    
-    set f ".fen_ajout_attribut"
-    
-    if {$entite == "table"} {
-        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut]
-        if {$ok == 1} {
-            if {$id == "null"} {
-                Katyusha_Tables_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut
-            } else {
-                Katyusha_Tables_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut
-            }
-            destroy $f
-        }
-    } elseif {$entite == "relation"} {
-        set ok [Katyusha_Tables_controle_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut]
-        if {$ok == 1} {
-            if {$id == "null"} {
-                Katyusha_Relations_ajout_attribut [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut
-            } else {
-                Katyusha_Relations_modification_attribut $id [$f.prop.nom.e get] [$f.prop.type.cb get] [$f.prop.ctype.e get] [$f.prop.taille.sb get] $E_null_attribut [$f.prop.valeur.e get] $E_auto_attribut $E_pk_attribut $E_description_attribut
-            }
-            destroy $f
-        }
-    }
-    
-    unset E_auto_attribut
-    unset E_null_attribut
-    unset E_pk_attribut
-}
-
-##
 # Fenêtre de choix d'un attribut à supprimer pour le type d'objet passé en paramètre
 ##
 proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {entite} {
     global table_tmp
     global relation_tmp
-    global LOCALE
     global STYLES
     global IMG
     
@@ -294,20 +95,20 @@ proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {entite} {
     
     # Frame de titre
     ttk::frame $f.nom
-        ttk::label $f.nom.l -text $LOCALE(supprimer_attribut_selection)
+        ttk::label $f.nom.l -text [phgt::mc "Sélectionner un attribut à supprimer"]
         pack $f.nom.l -fill x
     pack $f.nom -fill x -pady 10 -padx 50
     ttk::combobox $f.cb -value $liste_attributs -width 50
     pack $f.cb
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "Katyusha_MCD_INTERFACE_COMMANDE_Objets_suppression_attribut $entite"
-        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {destroy .fen_supp_attribut}
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command "Katyusha_MCD_INTERFACE_COMMANDE_Objets_suppression_attribut $entite"
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {destroy .fen_supp_attribut}
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes
     
     # Titre le la présente fenêtre
-    wm title $f $LOCALE(supprimer_attribut)
+    wm title $f [phgt::mc "Supprimer un attribut"]
     
     # Couleur de fond de la fenêtre
     $f configure -background [dict get $STYLES "lbackground"]
@@ -318,7 +119,6 @@ proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {entite} {
 proc Katyusha_MCD_INTERFACE_COMMANDE_Objets_suppression_attribut {entite} {
     global table_tmp
     global relation_tmp
-    global LOCALE
     
     set f ".fen_supp_attribut"
     # Récupère la valeur de la listbox de choix de l'attribut à supprimer
@@ -343,7 +143,7 @@ proc Katyusha_MCD_INTERFACE_COMMANDE_Objets_suppression_attribut {entite} {
         # Destruction de la fenêtre de choix
         destroy $f
     } else {
-        set ok [tk_messageBox -icon error -message $LOCALE(aucun_attribut_selectionne) -type ok]
+        set ok [tk_messageBox -icon error -message [phgt::mc "Aucun attribut n'a été sélectionné"] -type ok]
     }
     
     # Mise à jour de l'affichage graphique
@@ -354,9 +154,7 @@ proc Katyusha_MCD_INTERFACE_COMMANDE_Objets_suppression_attribut {entite} {
 # Confirme pour supprimer l'objet sélectionné
 ##
 proc Katyusha_MCD_INTERFACE_Objets_suppression_objet {type_entite id_entite} {
-    global LOCALE
-    
-    set rep [tk_messageBox -message "$LOCALE(sure_supprimer_entite)$type_entite" -type "yesno"]
+    set rep [tk_messageBox -message [phgt::mc "Sure?"] -type "yesno"]
     if {$rep == "yes"} {
         if {$type_entite == "table"} {
             suppression_table $id_entite

@@ -88,7 +88,7 @@ proc liste_tables {} {
 ##
 # Création de la grille du canvas
 ##
-proc Katyusha_grille {canvas} {
+proc Katyusha_grille {canvas {pas 10}} {
     global CONFIGS
     global STYLES
 
@@ -99,14 +99,14 @@ proc Katyusha_grille {canvas} {
     set dx 0
     set c 0
     while {$dx < [expr $xbcanvas + 1000]} {
-        if {$c == 100} {
+        if {$c == [expr $pas * 10]} {
             set c 0
             set couleur "#A6A6A6"
         } else {
-            set c [expr $c + 10]
+            set c [expr $c + $pas]
             set couleur [dict get $STYLES "lbackground"]
         }
-        set dx [expr $dx + 10]
+        set dx [expr $dx + $pas]
         $canvas create line $dx 0 $dx [expr $xbcanvas + 1000] -fill $couleur -tag "grille"
         update
     }
@@ -114,14 +114,14 @@ proc Katyusha_grille {canvas} {
     set dy 0
     set c 0
     while {$dy < [expr $ybcanvas + 1000]} {
-        if {$c == 100} {
+        if {$c == [expr $pas * 10]} {
             set c 0
             set couleur "#A6A6A6"
         } else {
-            set c [expr $c + 10]
+            set c [expr $c + $pas]
             set couleur [dict get $STYLES "dbackground"]
         }
-        set dy [expr $dy + 10]
+        set dy [expr $dy + $pas]
         $canvas create line 0 $dy [expr $ybcanvas + 1000] $dy -fill $couleur -tag "grille"
         update
     }

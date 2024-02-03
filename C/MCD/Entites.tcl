@@ -196,6 +196,7 @@ proc ajout_table {table_tmp} {
     global tables
     global tables_graphique
     global ID
+    
     # Créé un id pour la nouvelle table
     set id [expr [dict size $tables]]
     # Ajoute la nouvelle table aux tables existantes
@@ -217,9 +218,35 @@ proc ajout_table {table_tmp} {
 }
 
 ##
+# Créé une entité depuis une classe UML
+##
+proc Katyusha_MCD_Entites_creer_entite_depuis_classe {id classe} {
+    global classes
+    global tables
+    global tables_graphique
+    
+    set entite [Katyusha_Tables_init_table]
+    
+    dict set entite "nom" [dict get $classe "nom"]
+    dict set entite "attributs" [dict get $classe "attributs"]
+    dict set entite "coords" [dict get $classe "coords"]
+    
+    set graph [Katyusha_Tables_creer_affichage_graphique $id $entite]
+    
+    
+    dict set tables $id $entite
+    dict set tables_graphique $id $graph
+    
+    
+    Katyusha_MCD_Objets_maj_arbre_objets
+    
+    unset graph id entite classe
+}
+
+##
 # Enregistre les modifications d'une table
 ##
-proc Katyusha_Tables_modification_table {id table} {
+proc Katyusha_Tables_modification_table {id entite} {
     global tables
     global tables_graphique
     global ZONE_MCD
@@ -228,10 +255,14 @@ proc Katyusha_Tables_modification_table {id table} {
     foreach c [dict get $tables_graphique $id] {
         $ZONE_MCD.canvas.c delete $c
     }
-    Katyusha_Relations_modification_nom_table [dict get $tables $id] $table
-    dict set tables $id $table
+    Katyusha_Relations_modification_nom_table [dict get $tables $id] $entite
+    dict set tables $id $entite
     dict unset tables_graphique $id
-    Katyusha_Tables_modification_graphique $id $table
+    Katyusha_Tables_modification_graphique $id $entite
+    
+    # Modifie la classe associée
+    Katyusha_UML_Classes_maj_classe_depuis_entite $id $entite
+    
     Katyusha_MCD_Objets_maj_arbre_objets
     Katyusha_Historique_maj
 }
@@ -240,7 +271,6 @@ proc Katyusha_Tables_modification_table {id table} {
 # Supprime la table passée en paramètre
 ##
 proc suppression_table {{table "null"}} {
-    global LOCALE
     global tables
     global tables_graphique
     global id_entite
@@ -488,7 +518,7 @@ proc Katyusha_Tables_controle_table {table} {
 ##
 # Contrôle les éléments de l'attribut à ajouter
 ##
-proc Katyusha_Tables_controle_attribut {nom type complement_type taille null valeur auto pk description} {
+proc Katyusha_Tables_controle_attribut {nom type signe complement_type taille null valeur auto pk unique acces description} {
     set ok 1
     # Contrôle avant acceptation
     if {$nom == ""} {
@@ -497,21 +527,27 @@ proc Katyusha_Tables_controle_attribut {nom type complement_type taille null val
     if {[lsearch -exact [Katyusha_SQL_liste_types] $type] < 0} {
         set ok 0
     }
-    if {[string first "," $taille] == -1} {
-        if {$taille < 0 || $taille > 255} {
-            set ok 0
-        }
-    } else {
-        foreach t set taille1 [split $taille ","] {
-            if {$t < 0 || $t > 255} {
-                set ok 0
-            }
-        }
+    if {$signe != 0 && $signe != 1} {
+        set ok 0
     }
+    #if {[string first "," $taille] == -1} {
+    #    if {$taille < 0 || $taille > 255} {
+    #        set ok 0
+    #    }
+    #} else {
+    #    foreach t set taille1 [split $taille ","] {
+    #        if {$t < 0 || $t > 255} {
+    #            set ok 0
+    #        }
+    #    }
+    #}
     if {$auto != 0 && $auto != 1} {
         set ok 0
     }
     if {$pk != 0 && $pk != 1} {
+        set ok 0
+    }
+    if {$unique != 0 && $unique != 1} {
         set ok 0
     }
     
@@ -521,21 +557,24 @@ proc Katyusha_Tables_controle_attribut {nom type complement_type taille null val
 ##
 # Ici, on suppose que les données ont été controlée avant injection
 ##
-proc Katyusha_Tables_ajout_attribut {nom type complement_type taille null valeur auto pk description {graphique 1}} {
+proc Katyusha_Tables_ajout_attribut {nom type nsigne complement_type taille null valeur auto pk unique acces description {graphique 1}} {
     global table_tmp
     global IMG
-    global LOCALE
+    global STYLES
     
     set attributs [dict get $table_tmp "attributs"]
     
     dict set attribut "nom" $nom
     dict set attribut "type" $type
+    dict set attribut "signe" $nsigne
     dict set attribut "complement_type" $complement_type
     dict set attribut "taille" $taille
     dict set attribut "null" $null
     dict set attribut "valeur" $valeur
     dict set attribut "auto" $auto
     dict set attribut "pk" $pk
+    dict set attribut "unique" $unique
+    dict set attribut "acces" $acces
     dict set attribut "description" ""
     
     set ids [dict keys $attributs]
@@ -548,16 +587,18 @@ proc Katyusha_Tables_ajout_attribut {nom type complement_type taille null valeur
         set f ".fen_ajout_table"
         #
         frame $f.attributs.c.f.corps.$id_attribut_graphique
-            label $f.attributs.c.f.corps.$id_attribut_graphique.nom -text $nom -width 20 -height 2 -background white -relief solid
-            label $f.attributs.c.f.corps.$id_attribut_graphique.type -text $type -width 20 -height 2 -background white -relief solid
-            label $f.attributs.c.f.corps.$id_attribut_graphique.taille -text $taille -width 20 -height 2 -background white -relief solid
-            label $f.attributs.c.f.corps.$id_attribut_graphique.valeur -text $valeur -width 20 -height 2 -background white -relief solid
-            label $f.attributs.c.f.corps.$id_attribut_graphique.auto -text $auto -width 20 -height 2 -background white -relief solid
-            label $f.attributs.c.f.corps.$id_attribut_graphique.pk -text $pk -width 20 -height 2 -background white -relief solid
-            button $f.attributs.c.f.corps.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.attributs.c.f.corps $id_attribut_graphique [expr $id_attribut_graphique - 1]"
-            button $f.attributs.c.f.corps.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.attributs.c.f.corps $id_attribut_graphique [expr $id_attribut_graphique + 1]"
-            button $f.attributs.c.f.corps.$id_attribut_graphique.edit -text $LOCALE(editer) -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
-            pack $f.attributs.c.f.corps.$id_attribut_graphique.nom $f.attributs.c.f.corps.$id_attribut_graphique.type $f.attributs.c.f.corps.$id_attribut_graphique.taille $f.attributs.c.f.corps.$id_attribut_graphique.valeur $f.attributs.c.f.corps.$id_attribut_graphique.auto $f.attributs.c.f.corps.$id_attribut_graphique.pk $f.attributs.c.f.corps.$id_attribut_graphique.haut $f.attributs.c.f.corps.$id_attribut_graphique.bas $f.attributs.c.f.corps.$id_attribut_graphique.edit -side left
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.nom -text $nom -width 30 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.type -text $type -width 15 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.signe -text $nsigne -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.taille -text $taille -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.valeur -text $valeur -width 20 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.auto -text $auto -width 15 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.pk -text $pk -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.attributs.c.f.corps.$id_attribut_graphique.unique -text $unique -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.attributs.c.f.corps table $id_attribut_graphique [expr $id_attribut_graphique - 1]"
+            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f.attributs.c.f.corps table $id_attribut_graphique [expr $id_attribut_graphique + 1]"
+            ttk::button $f.attributs.c.f.corps.$id_attribut_graphique.edit -text [phgt::mc "Éditer"] -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut table $id_attribut_graphique"
+            pack $f.attributs.c.f.corps.$id_attribut_graphique.nom $f.attributs.c.f.corps.$id_attribut_graphique.type $f.attributs.c.f.corps.$id_attribut_graphique.signe $f.attributs.c.f.corps.$id_attribut_graphique.taille $f.attributs.c.f.corps.$id_attribut_graphique.valeur $f.attributs.c.f.corps.$id_attribut_graphique.auto $f.attributs.c.f.corps.$id_attribut_graphique.pk $f.attributs.c.f.corps.$id_attribut_graphique.unique $f.attributs.c.f.corps.$id_attribut_graphique.haut $f.attributs.c.f.corps.$id_attribut_graphique.bas $f.attributs.c.f.corps.$id_attribut_graphique.edit -fill both -expand 1 -side left
         pack $f.attributs.c.f.corps.$id_attribut_graphique -fill x
         
         update
@@ -578,18 +619,19 @@ proc Katyusha_Tables_suppression_attribut_table {table id_attribut {graphique 1}
 proc Katyusha_Tables_init_table {} {
     global MCD
     
-    set table [dict create]
-    dict set table "attributs" [dict create]
-    dict set table "couleurs" [dict create "fond_tete" $MCD(couleur_fond_tete_table) "ligne" $MCD(couleur_ligne_table) "fond_corps" $MCD(couleur_fond_corps_table) "texte" $MCD(couleur_texte_table)]
+    set entite [dict create]
+    dict set entite "attributs" [dict create]
+    dict set entite "description" ""
+    dict set entite "couleurs" [dict create "fond_tete" $MCD(couleur_fond_tete_table) "ligne" $MCD(couleur_ligne_table) "fond_corps" $MCD(couleur_fond_corps_table) "texte" $MCD(couleur_texte_table)]
     
-    return $table
+    return $entite
 }
 
 ##
 # Modifie un attribut
 ##
-proc Katyusha_Tables_modification_attribut {id_attribut nom type complement_type taille null valeur auto pk description {graphique 1}} {
-    Katyusha_Entites_modification_attribut $id_attribut $nom $type $complement_type $taille $null $valeur $auto $pk $description "table" $graphique
+proc Katyusha_Tables_modification_attribut {id_attribut nom type nsigne complement_type taille null valeur auto pk unique acces description {graphique 1}} {
+    Katyusha_Objets_modification_attribut $id_attribut $nom $type $nsigne $complement_type $taille $null $valeur $auto $pk $unique $acces $description "table" $graphique
 }
 
 ##

@@ -14,6 +14,7 @@
 proc Katyusha_Etiquettes_maj {} {
     global etiquettes
     global etiquettes_graphique
+    
     foreach {id etiquette} $etiquettes {
         #set ID $id
         set graph [Katyusha_Etiquettes_creer_affichage_graphique $id $etiquette]
@@ -34,6 +35,7 @@ proc Katyusha_Etiquettes_ajout_etiquette {etiquette_tmp} {
     global etiquettes
     global etiquettes_graphique
     global ID
+        
     # Créé un id pour la nouvelle table
     set id [expr [dict size $etiquettes]]
     # Ajoute la nouvelle table aux etiquettes existantes
@@ -101,7 +103,6 @@ proc Katyusha_Etiquettes_MAJ_coords {id_etiquette coords} {
 }
 
 proc Etiquettes_supression_etiquette {etiquette} {
-    global LOCALE
     global etiquettes
     global etiquettes_graphique
     global ZONE_MCD

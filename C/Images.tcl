@@ -13,12 +13,16 @@ proc Katyusha_Images {} {
     global IMG
     
     set IMG(logo) [image create photo -file "$rpr/images/katyusha_mcd_icone.png"]
+    set IMG(icone_preferences_x48) [image create photo -file "$rpr/images/preferences-x48.png"]
+    set IMG(logo_x48) [image create photo -file "$rpr/images/logo-x48.png"]
     set IMG(ajouter) [image create photo -file "$rpr/images/ajouter.png"]
     set IMG(supprimer) [image create photo -file "$rpr/images/supprimer.png"]
     set IMG(ajouter_table) [image create photo -file "$rpr/images/ajouter_table.png"]
     set IMG(ajouter_relation) [image create photo -file "$rpr/images/ajouter_relation.png"]
     set IMG(ajouter_heritage) [image create photo -file "$rpr/images/ajouter_heritage.png"]
     set IMG(ajouter_etiquette) [image create photo -file "$rpr/images/ajouter_etiquette.png"]
+    set IMG(ajouter_classe) [image create photo -file "$rpr/images/ajouter_classe.png"]
+    set IMG(ajouter_interface) [image create photo -file "$rpr/images/ajouter_interface.png"]
     set IMG(splash) [image create photo -file "$rpr/images/splash_1.0.x.png"]
     set IMG(editer) [image create photo -file "$rpr/images/editer-x32.png"]
     set IMG(valider) [image create photo -file "$rpr/images/valider-x32.png"]

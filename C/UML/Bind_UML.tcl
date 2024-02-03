@@ -32,8 +32,8 @@ bind $ZONE_UML.modelisation.c <Button-1> {
         puts "Rien à faire en position $px : $py"
     } elseif {$ACTION_B1 == "ajout_classe"} {
         # Si la fenêtre d'ajout d'entité n'existe pas déjà, la créer
-        if {![winfo exists .fen_uml_ajout_classe]} {
-            Katyusha_UML_INTERFACE_Objets_ajout_entite $px $py
+        if {![winfo exists ".fen_uml_ajout_classe"]} {
+            Katyusha_UML_Interface_Classes_ajout_classe $px $py
             Katyusha_UML_boutons_ajout_off
         }
     }
@@ -108,4 +108,50 @@ $ZONE_UML.modelisation.c bind objet_uml <B1-Motion> {
         puts "Oups..."
     }
     update
+}
+
+##
+# Menu de clic droit des classes
+##
+$ZONE_UML.modelisation.c bind objet_uml <Button-3> {
+    global CONFIGS
+    global ZONE_UML
+    
+    set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
+    set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
+    
+    set scrollbar_x_coords [$ZONE_UML.hs get]
+    set scrollbar_x_debut [lindex $scrollbar_x_coords 0]
+    set scrollbar_x_fin [lindex $scrollbar_x_coords 1]
+    set scrollbar_y_coords [$ZONE_MCD.canvas.vs get]
+    set scrollbar_y_debut [lindex $scrollbar_y_coords 0]
+    set scrollbar_y_fin [lindex $scrollbar_y_coords 1]
+    
+    set id [$ZONE_UML.modelisation.c find closest [expr %x + ($scrollbar_x_debut * $xbcanvas)] [expr %y + ($scrollbar_y_debut * $ybcanvas)]]
+    set selected [$ZONE_UML.modelisation.c gettags $id]
+    
+    # Type d'objet
+    set objet [lindex $selected 1]
+    
+    set id_objet [lindex $selected 2]
+    
+    popupMenu .menu_clic_droit_objets_uml %x %y $objet $id_objet
+}
+
+
+##################
+# Menu d'édition #
+##################
+
+
+
+proc popupMenu {menu X Y objet id_objet} {
+    destroy .menu_clic_droit_objets_uml
+    menu .menu_clic_droit_objets_uml -tearoff 0
+    .menu_clic_droit_objets_uml add command -label [phgt::mc "Éditer"] -command "Katyusha_UML_Interface_Classes_ajout_$objet 0 0 $id_objet"
+    .menu_clic_droit_objets_uml add command -label [phgt::mc "Supprimer"] -command {Katyusha_MCD_INTERFACE_Objets_suppression_objet "heritage" [lindex $selected 1]}
+    global ZONE_UML
+    set x [expr [winfo rootx $ZONE_UML.modelisation.c] + int($X)]
+    set y [expr [winfo rooty $ZONE_UML.modelisation.c] + int($Y)]
+    tk_popup $menu $x $y
 }

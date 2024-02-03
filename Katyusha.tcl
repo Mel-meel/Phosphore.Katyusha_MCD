@@ -23,26 +23,34 @@ source "$rpr/C/fonctions_interface.tcl"
 source "$rpr/C/Images.tcl"
 source "$rpr/C/Splash.tcl"
 
+source "$rpr/C/MCD/MCD.tcl"
 source "$rpr/C/MCD/INTERFACE_Objets.tcl"
 source "$rpr/C/MCD/Objets.tcl"
-source "$rpr/C/MCD/INTERFACE_Associations.tcl"
-source "$rpr/C/MCD/INTERFACE_Etiquettes.tcl"
-source "$rpr/C/MCD/INTERFACE_Entites.tcl"
-source "$rpr/C/MCD/INTERFACE_Heritages.tcl"
 source "$rpr/C/MCD/Heritages.tcl"
 source "$rpr/C/MCD/Associations.tcl"
 source "$rpr/C/MCD/Etiquettes.tcl"
 source "$rpr/C/MCD/Entites.tcl"
 source "$rpr/C/MCD/Attributs.tcl"
-source "$rpr/C/MCD/MCD.tcl"
+source "$rpr/C/MCD/Interface_MCD.tcl"
+source "$rpr/C/MCD/INTERFACE_Associations.tcl"
+source "$rpr/C/MCD/INTERFACE_Etiquettes.tcl"
+source "$rpr/C/MCD/INTERFACE_Entites.tcl"
+source "$rpr/C/MCD/INTERFACE_Heritages.tcl"
 
 
+source "$rpr/C/UML/UML.tcl"
 source "$rpr/C/UML/Objets.tcl"
 source "$rpr/C/UML/Classes.tcl"
-source "$rpr/C/UML/UML.tcl"
+source "$rpr/C/UML/Interface_UML.tcl"
+source "$rpr/C/UML/Interface_Classes.tcl"
+source "$rpr/C/UML/Interface_Objets.tcl"
 
+
+source "$rpr/C/Interface_Objets_MCD_UML.tcl"
+source "$rpr/C/Objets_MCD_UML.tcl"
 
 source "$rpr/C/INTERFACE_Code.tcl"
+source "$rpr/C/INTERFACE_Configurations.tcl"
 source "$rpr/C/C.tcl"
 source "$rpr/C/SQL_gen.tcl"
 source "$rpr/C/XML.tcl"
@@ -63,16 +71,7 @@ source "$rpr/C/Liens.tcl"
 source "$rpr/libs/canvas2svg.tcl"
 source "$rpr/libs/arabe.tcl"
 
-set theme "katyusha"
-
-source "$rpr/Themes/colorutils.tcl"
-source "$rpr/Themes/awthemes.tcl"
-source "$rpr/Themes/$theme.tcl"
-
-ttk::style theme use $theme
-set tbg [ttk::style lookup TFrame -background]
-lassign [winfo rgb . $tbg] bg_r bg_g bg_b
-. configure -background $tbg
+set theme adapta
 
 # Tk
 puts -nonewline "Chargement de Tk"
@@ -83,17 +82,17 @@ if {[catch {package require Tk}]} {
     puts " # OK!"
 }
 
+source "$rpr/Themes/katyusha/katyusha_darkblue.tcl"
+
+ttk::style theme use $theme
+set tbg [ttk::style lookup TFrame -background]
+lassign [winfo rgb . $tbg] bg_r bg_g bg_b
+. configure -background $tbg
+
 # FreeWrap ne supporte pas l'importation de packages traditionnel
 source "$rpr/packages/tooltip.tcl"
 source "$rpr/packages/phgettext/phgettext.tcl"
-
-# Img
-#package ifneeded Img 1.4.13 [list load [file join "$rpr/libs/Img1.4.13" pkgIndex.tcl] Img]
-
-#ttk::style theme use breeze
-#set tbg [ttk::style lookup TFrame -background]
-#lassign [winfo rgb . $tbg] bg_r bg_g bg_b
-#. configure -background $tbg
+source "$rpr/packages/phxml/phxml.tcl"
 
 array set CONFIG {}
 array set MCD {}
@@ -120,7 +119,7 @@ set ENV "null"
 Katyusha_MCD_init
 Katyusha_UML_init
 
-set version 0.4.6
+set version "1.0.0 alpha 1"
 set splash [lindex [list "Катюша!" "Katyusha!" "!کاتیوشا" "कात्युषा" "კატიუშა" "Կատյուշա" "Катюша!"] [expr int((rand() * 7) + 1) - 1]]
 set sgbd 0
 # Fichier dans lequel toutes les sauvegardes simples se feronts
@@ -137,11 +136,6 @@ phgt::src "$rpr/locale" "fr"
 
 
 # Par défaut, français
-if {![file exists "$rpr/locale/$CONFIGS(LANG).tcl"]} {
-    source "$rpr/locale/fr.tcl"
-} else {
-    source "$rpr/locale/$CONFIGS(LANG).tcl"
-}
 
 
 #Katyusha_Configurations_packages
@@ -162,7 +156,7 @@ puts "OS : $OS"
 after 2000
 
 Katyusha_Interface
-source "$rpr/C/bind.tcl"
+source "$rpr/C/MCD/Bind_MCD.tcl"
 source "$rpr/C/UML/Bind_UML.tcl"
 source "$rpr/C/Commandes.tcl"
 

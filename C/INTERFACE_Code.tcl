@@ -9,7 +9,6 @@
 ######################################################
 
 proc INTERFACE_Code_generation_php {} {
-    global LOCALE
     global version
     global IMG
     global E_fichier_unique
@@ -24,18 +23,18 @@ proc INTERFACE_Code_generation_php {} {
     toplevel $f
     # Icone de la fenêtre
     wm iconphoto $f $IMG(logo)
-    label $f.titre -text $LOCALE(gen_code_php_fonctions)
+    ttk::label $f.titre -text [phgt::mc "Générer du code PHP procédural"]
     pack $f.titre -pady 10 -padx 50
-    frame $f.prefix
-        label $f.prefix.l -text $LOCALE(gen_code_php_fonctions_prefix)
-        entry $f.prefix.e
+    ttk::frame $f.prefix
+        ttk::label $f.prefix.l -text [phgt::mc "Préfix des fonctions"]
+        ttk::entry $f.prefix.e
         pack $f.prefix.l $f.prefix.e -fill x -side left
-    frame $f.nfichiers
-        label $f.nfichiers.l -text $LOCALE(gen_code_php_fonctions_un_fichier)
-        checkbutton $f.nfichiers.c -onvalue 1 -offvalue 0 -variable E_fichier_unique
+    ttk::frame $f.nfichiers
+        ttk::label $f.nfichiers.l -text [phgt::mc "Tout générer dans un seul fichier"]
+        ttk::checkbutton $f.nfichiers.c -onvalue 1 -offvalue 0 -variable E_fichier_unique
         pack $f.nfichiers.l $f.nfichiers.c -fill x -side left
-    frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
+    ttk::frame $f.commandes
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command {
             global tables
             global relations
             global heritages
@@ -47,11 +46,11 @@ proc INTERFACE_Code_generation_php {} {
             
             destroy $f
         }
-        button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {destroy ".fen_gen_code_php_procedural"}
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {destroy ".fen_gen_code_php_procedural"}
         pack $f.commandes.ok $f.commandes.ko -fill x -side left -pady 10 -padx 50
     pack $f.prefix $f.nfichiers $f.commandes -fill x
     # Titre le la présente fenêtre
-    wm title $f $LOCALE(gen_code_php_fonctions_titre)
+    wm title $f [phgt::mc "Générer du code PHP procédural"]
     # Mise à jour forcée de l'affichage graphique
     update
 }
@@ -62,7 +61,6 @@ proc INTERFACE_Code_generation_php {} {
 # !! Expérimental !!
 ##
 proc INTERFACE_Code_generation_php_objet_doctrine {} {
-    global LOCALE
     global version
     global IMG
     global E_fichier_unique
@@ -77,23 +75,19 @@ proc INTERFACE_Code_generation_php_objet_doctrine {} {
     toplevel $f
     # Icone de la fenêtre
     wm iconphoto $f $IMG(logo)
-    label $f.titre -text $LOCALE(gen_code_php_doctrine)
+    ttk::label $f.titre -text [phgt::mc "Récents"]
     pack $f.titre -pady 10 -padx 50
-    frame $f.ns
-        label $f.ns.l -text $LOCALE(gen_code_php_doctrine_namespace)
-        entry $f.ns.e
+    ttk::frame $f.ns
+        ttk::label $f.ns.l -text [phgt::mc "Namespace : "]
+        ttk::entry $f.ns.e
         pack $f.ns.l $f.ns.e -fill x -side left
-    frame $f.prefix
-        label $f.prefix.l -text $LOCALE(gen_code_php_doctrine_prefix)
-        entry $f.prefix.e
+    ttk::frame $f.prefix
+        ttk::label $f.prefix.l -text [phgt::mc "préfix : "]
+        ttk::entry $f.prefix.e
         pack $f.prefix.l $f.prefix.e -fill x -side left
-    frame $f.nfichiers
-        label $f.nfichiers.l -text $LOCALE(gen_code_php_doctrine_un_fichier)
-        checkbutton $f.nfichiers.c -onvalue 1 -offvalue 0 -variable E_fichier_unique
-        pack $f.nfichiers.l $f.nfichiers.c -fill x -side left
-    label $f.att -text $LOCALE(gen_code_php_doctrine_attention) -foreground red
-    frame $f.commandes
-        button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
+    ttk::label $f.att -text [phgt::mc "Attention, la génération de code pour l'ORM Doctrine est expérimentale"] -foreground red
+    ttk::frame $f.commandes
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command {
             global tables
             global relations
             global heritages
@@ -105,11 +99,11 @@ proc INTERFACE_Code_generation_php_objet_doctrine {} {
             
             destroy $f
         }
-        button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {destroy ".fen_gen_code_php_objet_doctrine"}
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {destroy ".fen_gen_code_php_objet_doctrine"}
         pack $f.commandes.ok $f.commandes.ko -fill x -side left -pady 10 -padx 50
-    pack $f.ns $f.prefix $f.nfichiers $f.att $f.commandes -fill x
+    pack $f.ns $f.prefix $f.att $f.commandes -fill x
     # Titre le la présente fenêtre
-    wm title $f $LOCALE(gen_code_php_doctrine_titre)
+    wm title $f [phgt::mc "Générer du code PHP objet"]
     # Mise à jour forcée de l'affichage graphique
     update
 }

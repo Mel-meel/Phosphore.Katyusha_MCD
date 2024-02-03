@@ -19,7 +19,6 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
     global relation_tmp
     global relations
     global tables
-    global LOCALE
     global STYLES
     global IMG
     global E_nom_relation
@@ -52,7 +51,7 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
     
     # Frame de choix du nom de l'entité
     ttk::frame $f.nom
-        ttk::label $f.nom.l -text $LOCALE(nom_relation)
+        ttk::label $f.nom.l -text [phgt::mc "Nom de l'association : "]
         ttk::entry $f.nom.e -textvariable E_nom_relation
         pack $f.nom.l $f.nom.e -side left
     pack $f.nom -pady 10 -padx 50
@@ -71,12 +70,12 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
         pack $f.liens.commandes -side left -fill x
         # Liste des liens
         ttk::frame $f.liens.liste
-            ttk::label $f.liens.liste.titre -text $LOCALE(liste_attributs_relation)
+            ttk::label $f.liens.liste.titre -text [phgt::mc "Liste des liens de l'association"]
             pack $f.liens.liste.titre -fill x
             ttk::frame $f.liens.liste.tete
-                ttk::label $f.liens.liste.tete.nom -text "Entité concernée" -width 20 -background [dict get $STYLES "background"] -relief solid
-                ttk::label $f.liens.liste.tete.type -text "Type" -width 20 -background [dict get $STYLES "background"] -relief solid
-                ttk::label $f.liens.liste.tete.relatif -text "Identifiant relatif?" -width 25 -background [dict get $STYLES "background"] -relief solid
+                ttk::label $f.liens.liste.tete.nom -text [phgt::mc "Entité concernée"] -width 20 -background [dict get $STYLES "background"] -relief solid
+                ttk::label $f.liens.liste.tete.type -text [phgt::mc "Type de lien"] -width 20 -background [dict get $STYLES "background"] -relief solid
+                ttk::label $f.liens.liste.tete.relatif -text [phgt::mc "Identifiant relatif?"] -width 25 -background [dict get $STYLES "background"] -relief solid
                 pack $f.liens.liste.tete.nom $f.liens.liste.tete.type $f.liens.liste.tete.relatif -fill x -side left
             pack $f.liens.liste.tete
             ttk::frame $f.liens.liste.corps
@@ -107,7 +106,7 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
         # Commandes des attributs
         ttk::frame $f.attributs.commandes
             # Bouton d'ajout d'un nouvel attribut
-            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_MCD_INTERFACE_Objets_ajout_attribut "relation"}
+            ttk::button $f.attributs.commandes.ajout -text "+" -image $IMG(ajouter) -command {Katyusha_Interface_Objets_MCD_UML_ajout_attribut "relation"}
             # Bouton de supression d'un nouvel attribut
             ttk::button $f.attributs.commandes.supp -text "-" -image $IMG(supprimer) -command {Katyusha_MCD_INTERFACE_Objets_suppression_attribut "relation"}
             pack $f.attributs.commandes.ajout $f.attributs.commandes.supp -padx 10
@@ -118,17 +117,22 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
         ttk::frame $f.attributs.c.f
             # Liste des attributs
             ttk::frame $f.attributs.c.f.liste
-                ttk::label $f.attributs.c.f.titre -text "Liste des attributs de l'association"
+                ttk::label $f.attributs.c.f.titre -text [phgt::mc "Liste des attributs de l'association"]
                 pack $f.attributs.c.f.titre -fill x
                 ttk::frame $f.attributs.c.f.tete
-                    ttk::label $f.attributs.c.f.tete.nom -text $LOCALE(nom) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.type -text $LOCALE(type) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.taille -text $LOCALE(taille) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.valeur -text $LOCALE(valeur) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.auto -text $LOCALE(auto) -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.c.f.tete.pk -text $LOCALE(pk) -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.signe -text [phgt::mc "Non signé?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.auto -text [phgt::mc "Incrémentation\nautomatique?"] -width 15 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.pk -text [phgt::mc "Clef\nprimaire?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.unique -text [phgt::mc "Unique?"] -width 10 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.c.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
                     
-                    pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.auto $f.attributs.c.f.tete.pk -fill x -side left
+                    pack $f.attributs.c.f.tete.nom $f.attributs.c.f.tete.type $f.attributs.c.f.tete.signe $f.attributs.c.f.tete.taille $f.attributs.c.f.tete.valeur $f.attributs.c.f.tete.auto $f.attributs.c.f.tete.pk $f.attributs.c.f.tete.unique $f.attributs.c.f.tete.m $f.attributs.c.f.tete.d $f.attributs.c.f.tete.e -fill both -expand 1 -side left
                 pack $f.attributs.c.f.tete -fill x
                 ttk::frame $f.attributs.c.f.corps
                     
@@ -138,7 +142,7 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
                     ##
                     # Si l'association est en édition, on affiche la liste des attributs déjà existants
                     if {$id != "null"} {
-                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c.f.corps $relation "association"
+                        Katyusha_MCD_INTERFACE_Objets_MAJ_attributs $f.attributs.c $relation "association"
                     }
                 pack $f.attributs.c.f.corps -fill x
             pack $f.attributs.c.f.liste -side left -fill x
@@ -154,7 +158,7 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
     $f.attributs.c configure -yscrollcommand "$f.attributs.yscroll set"
     
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command {
             global relation_tmp
             set f ".fen_ajout_relation"
             set id [dict get $relation_tmp "id"]
@@ -169,7 +173,7 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
                 destroy $f
             }
         }
-        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {
             if {[winfo exists .fen_ajout_attribut]} {
                 destroy .fen_ajout_attribut
             }
@@ -181,9 +185,9 @@ proc Katyusha_MCD_INTERFACE_Association_ajout_association {x y {id "null"}} {
     
     # Titre le la présente fenêtre
     if {$id == "null"} {
-        wm title $f $LOCALE(ajouter_une_relation)
+        wm title $f [phgt::mc "Ajouter une association"]
     } else {
-        wm title $f "$LOCALE(editer_la_relation) : $E_nom_relation"
+        wm title $f [phgt::mc "Éditer l'association : %s" [list $E_nom_relation]]
     }
     
     # Couleur de fond de la fenêtre
@@ -200,7 +204,7 @@ proc Katyuusha_MCD_INTERFACE_Association_ajout_lien_association {{id_lien "null"
     global relation_tmp
     global tables
     global IMG
-    global LOCALE
+    global STYLES
     global E_relatif
     
     set f ".fen_ajout_lien_relation"
@@ -224,12 +228,12 @@ proc Katyuusha_MCD_INTERFACE_Association_ajout_lien_association {{id_lien "null"
     wm iconphoto $f $IMG(logo)
     # Choix des tables concernées par l'association
     ttk::frame $f.tables
-        ttk::label $f.tables.info -text $LOCALE(table_concernee_lien)
+        ttk::label $f.tables.info -text [phgt::mc "Sélectionner l'entité concernée par le lien :"]
         pack $f.tables.info
         ttk::frame $f.tables.tete
-            ttk::label $f.tables.tete.ct -text $LOCALE(table_lien) -width 20
-            ttk::label $f.tables.tete.cr -text $LOCALE(type_lien) -width 20
-            ttk::label $f.tables.tete.cb -text $LOCALE(relatif_lien) -width 20
+            ttk::label $f.tables.tete.ct -text [phgt::mc "Entité"] -width 20
+            ttk::label $f.tables.tete.cr -text [phgt::mc "Type de lien"] -width 20
+            ttk::label $f.tables.tete.cb -text [phgt::mc "Relatif?"] -width 20
             pack $f.tables.tete.ct $f.tables.tete.cr $f.tables.tete.cb -side left
         pack $f.tables.tete -fill x
         ttk::frame $f.tables.r
@@ -246,13 +250,13 @@ proc Katyuusha_MCD_INTERFACE_Association_ajout_lien_association {{id_lien "null"
         pack $f.tables.r -fill x
         # Si il y a moins de deux tables, avertir l'utilisateur
         if {[dict size $tables] < 1} {
-            ttk::label $f.tables.info_err -text $LOCALE(pas_assez_table) -justify left -foreground red
+            ttk::label $f.tables.info_err -text [phgt::mc "Il n'y a pas assez d'entités dans le MCD."] -justify left -foreground red
             pack $f.tables.info_err
         }
     pack $f.tables -pady 10 -padx 20
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command "Katyuusha_MCD_INTERFACE_COMMANDE_Association_ajout_lien_association $id_lien"
-        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command "Katyusha_MCD_INTERFACE_COMMANDE_Association_ajout_lien_association $id_lien"
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes -fill x
@@ -270,9 +274,15 @@ proc Katyuusha_MCD_INTERFACE_Association_ajout_lien_association {{id_lien "null"
         }
         update
     }
+    
+    # Titre le la présente fenêtre
+    wm title $f [phgt::mc "Sélectionner l'entité concernée par le lien"]
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
 }
 
-proc Katyuusha_MCD_INTERFACE_COMMANDE_Association_ajout_lien_association {id_lien} {
+proc Katyusha_MCD_INTERFACE_COMMANDE_Association_ajout_lien_association {id_lien} {
     global relation_tmp
     global E_relatif
     
@@ -286,7 +296,7 @@ proc Katyuusha_MCD_INTERFACE_COMMANDE_Association_ajout_lien_association {id_lie
         }
         destroy $f
     } else {
-        set res [tk_messageBox -message "Les informations saisies sont incomplètes"]
+        set res [tk_messageBox -message [phgt::mc "Les informations saisies sont incomplètes"]]
     }
 }
 
@@ -295,7 +305,6 @@ proc Katyuusha_MCD_INTERFACE_COMMANDE_Association_ajout_lien_association {id_lie
 ##
 proc Katyusha_MCD_INTERFACE_Association_suppression_lien_association {} {
     global relation_tmp
-    global LOCALE
     global STYLES
     global IMG
     
@@ -322,7 +331,7 @@ proc Katyusha_MCD_INTERFACE_Association_suppression_lien_association {} {
     ttk::combobox $f.cb -value $liens -width 50
     pack $f.cb
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command {
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command {
             global relation_tmp
             
             set f ".fen_supp_lien_relation"
@@ -338,7 +347,7 @@ proc Katyusha_MCD_INTERFACE_Association_suppression_lien_association {} {
             destroy .fen_ajout_relation.liens.liste.corps.$id_lien
             destroy $f
         }
-        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command {destroy .fen_supp_lien_relation}
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {destroy .fen_supp_lien_relation}
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes

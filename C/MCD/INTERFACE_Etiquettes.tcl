@@ -16,7 +16,6 @@
 ##
 proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
     global IMG
-    global LOCALE
     global STYLES
     global etiquettes
     global etiquette_tmp
@@ -39,7 +38,7 @@ proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
     
     # Nom de l'étiquette
     if {$id == "null"} {
-        set E_nom_etiquette "Etiquette_[expr [dict size $etiquettes] + 1]"
+        set E_nom_etiquette [phgt::mc "Étiquette_%s" [list [expr [dict size $etiquettes] + 1]]]
         dict set etiquette_tmp "coords" [list $x $y]
     } else {
         set E_nom_etiquette [dict get $etiquette "nom"]
@@ -49,13 +48,13 @@ proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
 
     # Frame de choix du nom de la table
     ttk::frame $f.nom
-        ttk::label $f.nom.l -text $LOCALE(nom_etiquette)
+        ttk::label $f.nom.l -text [phgt::mc "Nom de l'étiquette : "]
         ttk::entry $f.nom.e -textvariable E_nom_etiquette
         pack $f.nom.l $f.nom.e -side left
     pack $f.nom -pady 10 -padx 50
     # Texte de l'étiquette
     ttk::frame $f.texte
-        ttk::label $f.texte.l -text $LOCALE(texte_etiquette)
+        ttk::label $f.texte.l -text [phgt::mc "Texte de l'étiquette : "]
         text $f.texte.t -background [dict get $STYLES "background"] -highlightbackground [dict get $STYLES "graphics"] -highlightcolor [dict get $STYLES "graphics"] -foreground [dict get $STYLES "foreground"] -insertbackground [dict get $STYLES "foreground"] -relief flat
         pack $f.texte.l $f.texte.t
     pack $f.texte -pady 10 -padx 50
@@ -66,17 +65,17 @@ proc INTERFACE_Etiquettes_ajout {x y {id "null"}} {
     }
 
     ttk::frame $f.commandes
-        ttk::button $f.commandes.ok -text $LOCALE(valider) -image $IMG(valider) -compound left -command INTERFACE_COMMANDE_Etiquettes_ajout
-        ttk::button $f.commandes.ko -text $LOCALE(retour) -image $IMG(retour) -compound left -command "destroy $f"
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command INTERFACE_COMMANDE_Etiquettes_ajout
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command "destroy $f"
         pack $f.commandes.ok -side left -fill x -pady 10 -padx 50
         pack $f.commandes.ko -side right -fill x -pady 10 -padx 50
     pack $f.commandes -fill x
 
     # Titre le la présente fenêtre
     if {$id == "null"} {
-        wm title $f $LOCALE(ajouter_une_etiquette)
+        wm title $f [phgt::mc "Ajouter une étiquette"]
     } else {
-        wm title $f "$LOCALE(editer_l_etiquette)[dict get $etiquette nom]"
+        wm title $f [phgt::mc "Éditer l'étiquette %s" [list [dict get $etiquette nom]]]
     }
     
     # Couleur de fond de la fenêtre
