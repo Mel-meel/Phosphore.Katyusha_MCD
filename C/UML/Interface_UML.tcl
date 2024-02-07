@@ -22,13 +22,16 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
     
     set f [ttk::frame $parent.notebook_uml]
     
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
+    set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
+    
     ttk::frame $parent.notebook_uml.panel
         ttk::frame $parent.notebook_uml.panel.commandes
             # Bouton on/off d'ajout d'une classe
-            button $parent.notebook_uml.panel.commandes.ajout_classe -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "dbackground"] -text [phgt::mc "Ajouter une classe"] -image $IMG(ajouter_classe) -command {Katyusha_UML_action_boutons_ajout "classe"}
+            button $parent.notebook_uml.panel.commandes.ajout_classe -background $lbackground -activebackground $dbackground -highlightbackground $dbackground -text [phgt::mc "Ajouter une classe"] -image $IMG(ajouter_classe) -command {Katyusha_UML_action_boutons_ajout "classe"}
             tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_classe [phgt::mc "Ajouter une classe"]
             # Bouton on/off d'ajout d'une interface
-            button $parent.notebook_uml.panel.commandes.ajout_interface -background [dict get $STYLES "lbackground"] -activebackground [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "dbackground"] -text [phgt::mc "Ajouter une interface"] -image $IMG(ajouter_interface) -command {Katyusha_UML_action_boutons_ajout "interface"}
+            button $parent.notebook_uml.panel.commandes.ajout_interface -background $lbackground -activebackground $dbackground -highlightbackground $dbackground -text [phgt::mc "Ajouter une interface"] -image $IMG(ajouter_interface) -command {Katyusha_UML_action_boutons_ajout "interface"}
             tooltip::tooltip $parent.notebook_uml.panel.commandes.ajout_interface [phgt::mc "Ajouter une interface"]
             pack $parent.notebook_uml.panel.commandes.ajout_classe $parent.notebook_uml.panel.commandes.ajout_interface -side left
         pack $parent.notebook_uml.panel.commandes
@@ -36,7 +39,7 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
         pack $parent.notebook_uml.panel.entites -fill x -pady 10 -padx 5
         # Arbre des objets du MCD
         ttk::frame $parent.notebook_uml.panel.arbre
-            canvas $parent.notebook_uml.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_uml.panel.arbre.vs set" -background [dict get $STYLES "dbackground"] -highlightbackground [dict get $STYLES "dbackground"]
+            canvas $parent.notebook_uml.panel.arbre.c -height [expr $canvas_y - 30] -width 250 -yscrollcommand "$parent.notebook_uml.panel.arbre.vs set" -background $dbackground -highlightbackground $dbackground
             ttk::scrollbar $parent.notebook_uml.panel.arbre.vs -command "$parent.notebook_uml.panel.arbre.c yview"
             pack $parent.notebook_uml.panel.arbre.c $parent.notebook_uml.panel.arbre.vs -side left -fill both
         pack $parent.notebook_uml.panel.arbre
@@ -58,7 +61,7 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
             ttk::scrollbar $parent.notebook_uml.uml.modelisation.vs -command "$parent.notebook_uml.uml.modelisation.c yview"
             set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
             set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
-            canvas $parent.notebook_uml.uml.modelisation.c -background [dict get $STYLES "dbackground"] -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand "$parent.notebook_uml.uml.hs set" -yscrollcommand "$parent.notebook_uml.uml.modelisation.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas" -highlightbackground [dict get $STYLES "dbackground"]
+            canvas $parent.notebook_uml.uml.modelisation.c -background $dbackground -height [expr $canvas_y] -width [expr $canvas_x - 50] -xscrollcommand "$parent.notebook_uml.uml.hs set" -yscrollcommand "$parent.notebook_uml.uml.modelisation.vs set" -scrollregion "0 0 $xbcanvas $ybcanvas" -highlightbackground $dbackground
             pack $parent.notebook_uml.uml.modelisation.c -side left -fill both -expand 1
             pack $parent.notebook_uml.uml.modelisation.vs -side left -fill y
             #.mcd.canvas.c configure -scrollregion [.mcd.canvas.c bbox all]

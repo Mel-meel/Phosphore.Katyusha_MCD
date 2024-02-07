@@ -71,7 +71,7 @@ source "$rpr/C/Liens.tcl"
 source "$rpr/libs/canvas2svg.tcl"
 source "$rpr/libs/arabe.tcl"
 
-set theme adapta
+set THEME katyusha_darkblue
 
 # Tk
 puts -nonewline "Chargement de Tk"
@@ -84,7 +84,7 @@ if {[catch {package require Tk}]} {
 
 source "$rpr/Themes/katyusha/katyusha_darkblue.tcl"
 
-ttk::style theme use $theme
+ttk::style theme use $THEME
 set tbg [ttk::style lookup TFrame -background]
 lassign [winfo rgb . $tbg] bg_r bg_g bg_b
 . configure -background $tbg

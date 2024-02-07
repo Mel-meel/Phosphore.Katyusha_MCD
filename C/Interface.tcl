@@ -51,15 +51,26 @@ set x [winfo screenwidth .]
 set y [winfo screenheight .]
 #wm geometry . "$x\x$y+0+0"
 
-menu .mb -background [dict get $STYLES "ddbackground"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
-menu .mb.katyusha -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
-menu .mb.fichier -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
-menu .mb.bdd -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
-menu .mb.mcd -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
-menu .mb.uml -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
-menu .mb.code -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
-menu .mb.aide -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
-menu .mb.fichier.recents -tearoff 0 -background [dict get $STYLES "background"] -activebackground [dict get $STYLES "dbackground"] -foreground [dict get $STYLES "foreground"] -activeforeground [dict get $STYLES "foreground"] -borderwidth 0 -activeborderwidth 0
+set theme katyusha_darkblue
+
+set t "ttk\:\:theme\:\:$theme\:\:color"
+
+puts $t
+
+set ddbackground [Katyusha_Configurations_couleurs "-ddbackground"]
+set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
+set background [Katyusha_Configurations_couleurs "-frame"]
+set foreground [Katyusha_Configurations_couleurs "-foreground"]
+
+menu .mb -background $ddbackground -activebackground $ddbackground -foreground $foreground -activeforeground $foreground -borderwidth 0 -activeborderwidth 0
+menu .mb.katyusha -tearoff 0 -background $background -activebackground $dbackground -foreground $foreground -activeforeground $foreground -borderwidth 0 -activeborderwidth 0
+menu .mb.fichier -tearoff 0 -background $background -activebackground $dbackground -foreground $foreground -activeforeground $foreground -borderwidth 0 -activeborderwidth 0
+menu .mb.bdd -tearoff 0 -background $background -activebackground $dbackground -foreground $foreground -activeforeground $foreground -borderwidth 0 -activeborderwidth 0
+menu .mb.mcd -tearoff 0 -background $background -activebackground $dbackground -foreground $foreground -activeforeground $foreground -borderwidth 0 -activeborderwidth 0
+menu .mb.uml -tearoff 0 -background $background -activebackground $dbackground -foreground $foreground -activeforeground $foreground -borderwidth 0 -activeborderwidth 0
+menu .mb.code -tearoff 0 -background $background -activebackground $dbackground -foreground $foreground -activeforeground $foreground -borderwidth 0 -activeborderwidth 0
+menu .mb.aide -tearoff 0 -background $background -activebackground $dbackground -foreground $foreground -activeforeground $foreground -borderwidth 0 -activeborderwidth 0
+menu .mb.fichier.recents -tearoff 0 -background $background -activebackground $dbackground -foreground $foreground -activeforeground $foreground -borderwidth 0 -activeborderwidth 0
 . configure -menu .mb
 .mb add cascade -menu .mb.katyusha -label [phgt::mc "Katyusha!"]
 .mb add cascade -menu .mb.fichier -label [phgt::mc "Projet"]
@@ -144,9 +155,9 @@ pack .editeurs -fill both -expand 1
             if {$OS == "Windows" || $OS == "Win"} {
                 ttk::button .infos.s.splash -text [phgt::mc "Préférences"] -foreground red -activeforeground red -command INTERFACE_mise_en_garde
             } else {
-                ttk::label .infos.s.splash -text "                $splash" -foreground [dict get $STYLES "graphics"]
+                ttk::label .infos.s.splash -text "                $splash" -foreground $foreground
             }
-            ttk::label .infos.s.position_curseur -text "" -foreground [dict get $STYLES "graphics"]
+            ttk::label .infos.s.position_curseur -text "" -foreground $foreground
             pack .infos.s.position_curseur -padx 1 -side right -fill x -expand 1
             pack .infos.s.splash -padx 1 -side right -fill x -expand 1
         pack .infos.s -fill x

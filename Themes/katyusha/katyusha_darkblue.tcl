@@ -1,31 +1,36 @@
-set STYLES [dict create "background" "#1c2023" "frame" "#1c2023" "foreground" "#f5f5f5" "graphics" "#f4ba0e" "dbackground" "#000407" "lbackground" "#202328" "ddbackground" "#1c1d1f" "textwidget" "#0e0e10"]
-
-namespace eval ttk::theme::adapta {
+namespace eval ttk::theme::katyusha_darkblue {
 
     # Widget colors
     variable colors
-  array set colors {
-    -disabledfg	"DarkGrey"
-    -nbframe  	"#2c2c2c"
-    -frame  	"#1c2023"
-    -dark	"#222222"
-    -darker 	"#1c1c21"
-    -darkest	"#352f2b"
-    -lighter	"#626262"
-    -lightest 	"#ffffff"
-    -selectbg	"#84644a"
-    -selectfg	"#ffffff"
-    -checklight "#ff9429"
-    -graphics   "#f4ba0e"
-    -buttonbg   "#0f1213"
+    variable styles
+    
+    set styles [dict create "background" "#1c2023" "frame" "#1c2023" "foreground" "#f5f5f5" "graphics" "#f4ba0e" "dbackground" "#000407" "lbackground" "#202328" "ddbackground" "#1c1d1f" "textwidget" "#0e0e10"]
+    
+    array set colors {
+    -disabledfg	  "DarkGrey"
+    -nbframe  	  "#2c2c2c"
+    -frame  	  "#1c2023"
+    -dark	  "#222222"
+    -darker 	  "#1c1c21"
+    -ddbackground "#1c1d1f"
+    -dbackground  "#000407"
+    -foreground   "#f5f5f5"
+    -darkest	  "#352f2b"
+    -lighter	  "#626262"
+    -lightest 	  "#ffffff"
+    -selectbg	  "#84644a"
+    -selectfg	  "#ffffff"
+    -checklight   "#ff9429"
+    -graphics     "#f4ba0e"
+    -buttonbg     "#0f1213"
     -buttonhoverbg   "#626a6d"
     -buttonactivebg   "#626a6d"
     -border           "#626a6d"
-  }
+    }
 
     # Function to load images from subdirectory
     variable directory
-    # Subdirectory /adapta
+    # Subdirectory /katyusha_darkblue
     set directory [file join [file dirname [info script]] darkblue]
     variable images
     # Load the images
@@ -35,7 +40,7 @@ namespace eval ttk::theme::adapta {
     }
 
     # Create a new ttk::style
-    ttk::style theme create adapta -parent default -settings {
+    ttk::style theme create katyusha_darkblue -parent default -settings {
         # Configure basic style settings
         ttk::style configure . \
         -background $colors(-frame) \
@@ -310,5 +315,31 @@ namespace eval ttk::theme::adapta {
     }
 }
 
-variable version 1.0
-package provide ttk::theme::adapta $version
+proc ttk::theme::katyusha_darkblue::color {color} {
+    array set colors {
+    -disabledfg	  "DarkGrey"
+    -nbframe  	  "#2c2c2c"
+    -frame  	  "#1c2023"
+    -dark	  "#222222"
+    -darker 	  "#1c1c21"
+    -ddbackground "#1c1d1f"
+    -dbackground  "#000407"
+    -foreground   "#f5f5f5"
+    -lbackground  "#202328"
+    -darkest	  "#352f2b"
+    -lighter	  "#626262"
+    -lightest 	  "#ffffff"
+    -selectbg	  "#84644a"
+    -selectfg	  "#ffffff"
+    -checklight   "#ff9429"
+    -graphics     "#f4ba0e"
+    -buttonbg     "#0f1213"
+    -buttonhoverbg   "#626a6d"
+    -buttonactivebg   "#626a6d"
+    -border           "#626a6d"
+    }
+    return $colors($color)
+}
+
+variable version 1.0.0
+package provide ttk::theme::katyusha_darkblue $version

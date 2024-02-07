@@ -90,8 +90,10 @@ proc liste_tables {} {
 ##
 proc Katyusha_grille {canvas {pas 10}} {
     global CONFIGS
-    global STYLES
-
+    
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
+    set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
+    
     set xbcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 0]
     set ybcanvas [lindex [split $CONFIGS(TAILLE_CANVAS) "x"] 1]
     
@@ -104,7 +106,7 @@ proc Katyusha_grille {canvas {pas 10}} {
             set couleur "#A6A6A6"
         } else {
             set c [expr $c + $pas]
-            set couleur [dict get $STYLES "lbackground"]
+            set couleur $lbackground
         }
         set dx [expr $dx + $pas]
         $canvas create line $dx 0 $dx [expr $xbcanvas + 1000] -fill $couleur -tag "grille"
@@ -119,7 +121,7 @@ proc Katyusha_grille {canvas {pas 10}} {
             set couleur "#A6A6A6"
         } else {
             set c [expr $c + $pas]
-            set couleur [dict get $STYLES "dbackground"]
+            set couleur $dbackground
         }
         set dy [expr $dy + $pas]
         $canvas create line 0 $dy [expr $ybcanvas + 1000] $dy -fill $couleur -tag "grille"
