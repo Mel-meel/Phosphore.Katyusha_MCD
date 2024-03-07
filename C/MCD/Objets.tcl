@@ -17,7 +17,8 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
     global heritages
     global procedures
     global NOTEBOOK_MCD
-    global STYLES
+    
+    set foreground [Katyusha_Configurations_couleurs "-foreground"]
     
     set c "$NOTEBOOK_MCD.panel.arbre.c"
     set hauteur 20
@@ -28,12 +29,12 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
         $c delete $e
     }
     # Affiche les tables
-    $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text [phgt::mc "Entités"] -anchor w -tag "entite"
+    $c create text [expr $x + 0] $hauteur -fill $foreground -justify left -text [phgt::mc "Entités"] -anchor w -tag "entite"
     set hauteur [expr $hauteur + 20]
     set x [expr $x + 20]
     foreach {id table} $tables {
         set nom [dict get $table "nom"]
-        $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text "$id : $nom" -anchor w -tag "entite"
+        $c create text [expr $x + 0] $hauteur -fill $foreground -justify left -text "$id : $nom" -anchor w -tag "entite"
         set hauteur [expr $hauteur + 20]
     }
     # Saut de ligne
@@ -41,13 +42,13 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
     # Remet y à sa position initiale
     set x [expr $x - 20]
     # Affiche les relations
-    $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text $[phgt::mc "Associations"] -anchor w -tag "entite"
+    $c create text [expr $x + 0] $hauteur -fill $foreground -justify left -text $[phgt::mc "Associations"] -anchor w -tag "entite"
     set hauteur [expr $hauteur + 20]
     set x [expr $x + 20]
     foreach {id relation} $relations {
         set nom [dict get $relation "nom"]
         #$c create rect [expr $x - 5] [expr $hauteur - 9] [expr (($x + (3.1 * [string length $nom])) * 1.5) + 5] [expr $hauteur + 9] -outline #F5F5F5 -fill #F5F5F5 -tag "entite"
-        $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text "$id : $nom" -anchor w -tag "entite"
+        $c create text [expr $x + 0] $hauteur -fill $foreground -justify left -text "$id : $nom" -anchor w -tag "entite"
         set hauteur [expr $hauteur + 20]
     }
     # Saut de ligne
@@ -55,7 +56,7 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
     # Remet x à sa position initiale
     set x [expr $x - 20]
     # Affiche les héritages
-    $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text [phgt::mc "Héritages"] -anchor w -tag "entite"
+    $c create text [expr $x + 0] $hauteur -fill $foreground -justify left -text [phgt::mc "Héritages"] -anchor w -tag "entite"
     set hauteur [expr $hauteur + 20]
     set x [expr $x + 20]
     foreach {id heritage} $heritages {
@@ -66,7 +67,7 @@ proc Katyusha_MCD_Objets_maj_arbre_objets {} {
             set nom_table ""
         }
         #$c create rect [expr $x - 5] [expr $hauteur - 9] [expr (($x + (3.1 * [string length $nom])) * 1.5) + 5] [expr $hauteur + 9] -outline #F5F5F5 -fill #F5F5F5 -tag "entite"
-        $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text "$id : Table mère '$nom_table'" -anchor w -tag "entite"
+        $c create text [expr $x + 0] $hauteur -fill $foreground -justify left -text "$id : Table mère '$nom_table'" -anchor w -tag "entite"
         set hauteur [expr $hauteur + 20]
     }
     # Saut de ligne

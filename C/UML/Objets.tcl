@@ -19,7 +19,8 @@ proc Katyusha_UML_Objets_maj_arbre_objets {} {
     global classes
     global interfaces
     global NOTEBOOK_UML
-    global STYLES
+    
+    set foreground [Katyusha_Configurations_couleurs "-foreground"]
     
     set c "$NOTEBOOK_UML.panel.arbre.c"
     set hauteur 20
@@ -30,12 +31,12 @@ proc Katyusha_UML_Objets_maj_arbre_objets {} {
         $c delete $e
     }
     # Affiche les classes
-    $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text [phgt::mc "Classes"] -anchor w -tag "classe"
+    $c create text [expr $x + 0] $hauteur -fill $foreground -justify left -text [phgt::mc "Classes"] -anchor w -tag "classe"
     set hauteur [expr $hauteur + 20]
     set x [expr $x + 20]
     foreach {id classe} $classes {
         set nom [dict get $classe "nom"]
-        $c create text [expr $x + 0] $hauteur -fill [dict get $STYLES "foreground"] -justify left -text "$id : $nom" -anchor w -tag "classe"
+        $c create text [expr $x + 0] $hauteur -fill $foreground -justify left -text "$id : $nom" -anchor w -tag "classe"
         set hauteur [expr $hauteur + 20]
     }
     # Saut de ligne

@@ -52,7 +52,7 @@ proc Katyusha_Interface_editeur_UML {parent canvas_x canvas_y} {
             ttk::button $parent.notebook_uml.uml.infos_bdd.zoom_initial -text "1:1" -image $IMG(zoom_initial) -command "Katyusha_zoom_initial $ZONE_UML.canvas.c"
             ttk::button $parent.notebook_uml.uml.infos_bdd.defaire -text "défaire" -image $IMG(defaire) -command Katyusha_Historique_defaire
             ttk::button $parent.notebook_uml.uml.infos_bdd.refaire -text "refaire" -image $IMG(refaire) -command Katyusha_Historique_refaire
-            pack $parent.notebook_uml.uml.infos_bdd.zoom_plus $parent.notebook_uml.uml.infos_bdd.zoom_moins $parent.notebook_uml.uml.infos_bdd.zoom_initial $parent.notebook_uml.uml.infos_bdd.defaire $parent.notebook_uml.uml.infos_bdd.refaire -side left
+            pack $parent.notebook_uml.uml.infos_bdd.zoom_plus $parent.notebook_uml.uml.infos_bdd.zoom_moins $parent.notebook_uml.uml.infos_bdd.zoom_initial $parent.notebook_uml.uml.infos_bdd.defaire $parent.notebook_uml.uml.infos_bdd.refaire -side left -padx 10 -pady 5
         pack $parent.notebook_uml.uml.infos_bdd -fill x
         # Canvas principal
         ttk::frame $parent.notebook_uml.uml.modelisation

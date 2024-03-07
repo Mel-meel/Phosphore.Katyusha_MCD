@@ -15,7 +15,6 @@
 # Pour une édition, indiquer en coordonnées 0:0 et passer son id
 ##
 proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
-    global STYLES
     global coords
     global IMG
     global classes
@@ -23,6 +22,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     global id_attribut_graphique
     global E_nom_classe
     
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
     
     set f ".fen_ajout_classe"
     
@@ -82,7 +82,7 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     }
     
     # Couleur de fond de la fenêtre
-    $f configure -background [dict get $STYLES "lbackground"]
+    $f configure -background $lbackground
     
     # Mise à jour forcée de l'affichage graphique
     update
@@ -90,7 +90,8 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
 
 proc Katyusha_UML_Interface_Classes_notebook_attributs {f id} {
     global IMG
-    global STYLES
+    
+    set background [Katyusha_Configurations_couleurs "-frame"]
     
     ##
     # Attributs de la classe
@@ -110,15 +111,15 @@ proc Katyusha_UML_Interface_Classes_notebook_attributs {f id} {
                 ttk::label $f.attributs.table_tete.f.titre -text [phgt::mc "Liste des attributs de la classe"]
                 pack $f.attributs.table_tete.f.titre -fill both -anchor center -padx 10 -pady 10 -expand 1
                 ttk::frame $f.attributs.table_tete.f.tete
-                    ttk::label $f.attributs.table_tete.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.table_tete.f.tete.type -text [phgt::mc "Type"] -width 15 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.table_tete.f.tete.accces -text [phgt::mc "Accès"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.table_tete.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.table_tete.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.table_tete.f.tete.id -text [phgt::mc "Identifiant?"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.table_tete.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.table_tete.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.attributs.table_tete.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background $background -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.type -text [phgt::mc "Type"] -width 15 -background $background -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.accces -text [phgt::mc "Accès"] -width 10 -background $background -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.taille -text [phgt::mc "Taille"] -width 10 -background $background -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.valeur -text [phgt::mc "Valeur\npar défaut"] -width 20 -background $background -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.id -text [phgt::mc "Identifiant?"] -width 10 -background $background -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.m -text "" -width 6 -background $background -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.d -text "" -width 6 -background $background -relief solid
+                    ttk::label $f.attributs.table_tete.f.tete.e -text "" -width 5 -background $background -relief solid
                     
                     pack $f.attributs.table_tete.f.tete.nom $f.attributs.table_tete.f.tete.type $f.attributs.table_tete.f.tete.accces $f.attributs.table_tete.f.tete.taille $f.attributs.table_tete.f.tete.valeur $f.attributs.table_tete.f.tete.id $f.attributs.table_tete.f.tete.m $f.attributs.table_tete.f.tete.d $f.attributs.table_tete.f.tete.e -fill both -expand 1 -side left
                 pack $f.attributs.table_tete.f.tete -fill both -anchor w -expand 1
@@ -158,7 +159,8 @@ proc Katyusha_UML_Interface_Classes_notebook_attributs {f id} {
 
 proc Katyusha_UML_Interface_Classes_notebook_methodes {f id} {
     global IMG
-    global STYLES
+    
+    set background [Katyusha_Configurations_couleurs "-frame"]
     
     ###
     # Méthodes de la classe
@@ -178,13 +180,13 @@ proc Katyusha_UML_Interface_Classes_notebook_methodes {f id} {
                 ttk::label $f.methodes.table_tete.f.titre -text [phgt::mc "Liste des méthodes de la classe"]
                 pack $f.methodes.table_tete.f.titre -fill both -anchor center -padx 10 -pady 10 -expand 1
                 ttk::frame $f.methodes.table_tete.f.tete
-                    ttk::label $f.methodes.table_tete.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.parametres -text [phgt::mc "Paramètres"] -width 30 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.type -text [phgt::mc "Type"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.acces -text [phgt::mc "Accès"] -width 10 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.m -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.d -text "" -width 6 -background [dict get $STYLES "background"] -relief solid
-                    ttk::label $f.methodes.table_tete.f.tete.e -text "" -width 5 -background [dict get $STYLES "background"] -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.nom -text [phgt::mc "Nom"] -width 30 -background $background -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.parametres -text [phgt::mc "Paramètres"] -width 30 -background $background -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.type -text [phgt::mc "Type"] -width 10 -background $background -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.acces -text [phgt::mc "Accès"] -width 10 -background $background -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.m -text "" -width 6 -background $background -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.d -text "" -width 6 -background $background -relief solid
+                    ttk::label $f.methodes.table_tete.f.tete.e -text "" -width 5 -background $background -relief solid
                     
                     pack $f.methodes.table_tete.f.tete.nom $f.methodes.table_tete.f.tete.parametres $f.methodes.table_tete.f.tete.type $f.methodes.table_tete.f.tete.acces $f.methodes.table_tete.f.tete.m $f.methodes.table_tete.f.tete.d $f.methodes.table_tete.f.tete.e -fill both -expand 1 -side left
                 pack $f.methodes.table_tete.f.tete -fill both -anchor w -expand 1

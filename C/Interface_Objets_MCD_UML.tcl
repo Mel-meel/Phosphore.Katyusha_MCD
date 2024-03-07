@@ -16,7 +16,6 @@ proc Katyusha_Interface_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "m
     global table_tmp
     global relation_tmp
     global classe_tmp
-    global STYLES
     global IMG
     global E_valeur_attribut
     global E_nom_attribut
@@ -31,6 +30,8 @@ proc Katyusha_Interface_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "m
     global E_acces_attribut
     
     set f ".fen_ajout_attribut"
+    
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
     
     # Détruit la fenêtre si elle existe déjà
     if {[winfo exists $f]} {
@@ -219,7 +220,7 @@ proc Katyusha_Interface_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "m
     wm title $f [phgt::mc "Ajouter un attribut"]
     
     # Couleur de fond de la fenêtre
-    $f configure -background [dict get $STYLES "lbackground"]
+    $f configure -background $lbackground
     
     update
 }

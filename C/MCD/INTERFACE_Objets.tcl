@@ -16,9 +16,11 @@
 ##
 proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f objet type_objet} {
     global IMG
-    global STYLES
     
     set attributs [dict get $objet "attributs"]
+    
+    # Couleurs
+    set background [Katyusha_Configurations_couleurs "-frame"]
     
     foreach {id_attribut_graphique attribut} $attributs {
         if {[winfo exists $f.f.corps]} {
@@ -26,14 +28,14 @@ proc Katyusha_MCD_INTERFACE_Objets_MAJ_attributs {f objet type_objet} {
         }
         #set nom_attribut_graphique [dict get $attribut "nom"]
         ttk::frame $f.f.corps.$id_attribut_graphique
-            ttk::label $f.f.corps.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 30 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.f.corps.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 15 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.f.corps.$id_attribut_graphique.signe -text "true" -width 10 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.f.corps.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 10 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.f.corps.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.f.corps.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 15 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.f.corps.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 10 -background [dict get $STYLES "background"] -relief solid
-            ttk::label $f.f.corps.$id_attribut_graphique.unique -text "" -width 10 -background [dict get $STYLES "background"] -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.nom -text [dict get $attribut "nom"] -width 30 -background $background -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.type -text [dict get $attribut "type"] -width 15 -background $background -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.signe -text "true" -width 10 -background $background -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.taille -text [dict get $attribut "taille"] -width 10 -background $background -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.valeur -text [dict get $attribut "valeur"] -width 20 -background $background -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.auto -text [dict get $attribut "auto"] -width 15 -background $background -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.pk -text [dict get $attribut "pk"] -width 10 -background $background -relief solid
+            ttk::label $f.f.corps.$id_attribut_graphique.unique -text "" -width 10 -background $background -relief solid
             
             ttk::button $f.f.corps.$id_attribut_graphique.haut -text "Remonter" -width 6 -image $IMG(fleche_haut) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique - 1]"
             ttk::button $f.f.corps.$id_attribut_graphique.bas -text "Descendre" -width 6 -image $IMG(fleche_bas) -command "Katyusha_MCD_INTERFACE_Objets_deplacer_attribut $f $type_objet $id_attribut_graphique [expr $id_attribut_graphique + 1]"
@@ -67,8 +69,9 @@ proc Katyusha_MCD_INTERFACE_Objets_deplacer_attribut {f type_objet id_ancien id_
 proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {entite} {
     global table_tmp
     global relation_tmp
-    global STYLES
     global IMG
+    
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
     
     set f ".fen_supp_attribut"
     set defaut_valeur "null"
@@ -111,7 +114,7 @@ proc Katyusha_MCD_INTERFACE_Objets_suppression_attribut {entite} {
     wm title $f [phgt::mc "Supprimer un attribut"]
     
     # Couleur de fond de la fenêtre
-    $f configure -background [dict get $STYLES "lbackground"]
+    $f configure -background $lbackground
     
     update
 }
@@ -176,10 +179,11 @@ proc INTERFACE_liste_objets {} {
     global relations
     global tables
     global IMG
-    global STYLES
     global LOCALE
     
     set f ".fen_liste_entites"
+    
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
     
     set liste_tables [list]
     set liste_relations [list]
@@ -285,7 +289,7 @@ proc INTERFACE_liste_objets {} {
     wm title $f "Liste des entités du MCD"
     
     # Couleur de fond de la fenêtre
-    $f configure -background [dict get $STYLES "lbackground"]
+    $f configure -background $lbackground
     
     update
 }

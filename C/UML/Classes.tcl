@@ -282,7 +282,8 @@ proc Katysha_UML_Classes_modifier_classe {id classe_tmp} {
 proc Katyusha_UML_Classes_ajout_methode {nom parametres type acces description {graphique 1}} {
     global classe_tmp
     global IMG
-    global STYLES
+    
+    set background [Katyusha_Configurations_couleurs "-frame"]
     
     set methodes [dict get $classe_tmp "methodes"]
     
@@ -302,10 +303,10 @@ proc Katyusha_UML_Classes_ajout_methode {nom parametres type acces description {
         set f ".fen_ajout_classe.corps"
         #
         frame $f.methodes.c.f.corps.$id_methode_graphique
-            ttk::label $f.methodes.c.f.corps.$id_methode_graphique.nom -text $nom -width 30 -background [dict get $STYLES "background"]  -relief solid
-            ttk::label $f.methodes.c.f.corps.$id_methode_graphique.parametres -text $parametres -width 30 -background [dict get $STYLES "background"]  -relief solid
-            ttk::label $f.methodes.c.f.corps.$id_methode_graphique.type -text $type -width 10 -background [dict get $STYLES "background"]  -relief solid
-            ttk::label $f.methodes.c.f.corps.$id_methode_graphique.acces -text $acces -width 10 -background [dict get $STYLES "background"]  -relief solid
+            ttk::label $f.methodes.c.f.corps.$id_methode_graphique.nom -text $nom -width 30 -background $background  -relief solid
+            ttk::label $f.methodes.c.f.corps.$id_methode_graphique.parametres -text $parametres -width 30 -background $background  -relief solid
+            ttk::label $f.methodes.c.f.corps.$id_methode_graphique.type -text $type -width 10 -background $background  -relief solid
+            ttk::label $f.methodes.c.f.corps.$id_methode_graphique.acces -text $acces -width 10 -background $background  -relief solid
             ttk::button $f.methodes.c.f.corps.$id_methode_graphique.haut -text "Remonter" -image $IMG(fleche_haut) -command "Katyusha_UML_Interface_Objets_deplacer_attribut $f.attributs.c.f.corps classe $id_methode_graphique [expr $id_methode_graphique - 1]"
             ttk::button $f.methodes.c.f.corps.$id_methode_graphique.bas -text "Descendre" -image $IMG(fleche_bas) -command "Katyusha_UML_Interface_Objets_deplacer_attribut $f.attributs.c.f.corps classe $id_methode_graphique [expr $id_methode_graphique + 1]"
             ttk::button $f.methodes.c.f.corps.$id_methode_graphique.edit -text [phgt::mc "Éditer"] -image $IMG(editer) -command "Katyusha_MCD_INTERFACE_Objets_ajout_attribut classe $id_methode_graphique"
