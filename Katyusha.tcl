@@ -119,7 +119,7 @@ set ENV "null"
 Katyusha_MCD_init
 Katyusha_UML_init
 
-set version "1.0.0 alpha 1"
+set version "1.0.0 alpha 2"
 set splash [lindex [list "Катюша!" "Katyusha!" "!کاتیوشا" "कात्युषा" "კატიუშა" "Կատյուշա" "Катюша!"] [expr int((rand() * 7) + 1) - 1]]
 set sgbd 0
 # Fichier dans lequel toutes les sauvegardes simples se feronts
