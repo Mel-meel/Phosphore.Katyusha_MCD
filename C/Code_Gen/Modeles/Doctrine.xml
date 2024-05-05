@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modele>
+    <infos>
+        <nom>Doctrine</nom>
+        <auteur>Projet Phosphore</auteur>
+        <version>0.0.0</version>
+        <description>
+            <fr>Génération de modèles pour l'ORM Doctrine.</fr>
+            <en>Model's generation for the Doctrine PHP ORM.</en>
+        </description>
+    </infos>
+    
+    
+</modele>

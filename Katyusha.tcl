@@ -64,7 +64,7 @@ source "$rpr/C/Charge.tcl"
 source "$rpr/C/Historique.tcl"
 source "$rpr/C/SVG.tcl"
 source "$rpr/C/Code.tcl"
-source "$rpr/C/Code_gen.tcl"
+source "$rpr/C/Modeles/Code_gen.tcl"
 source "$rpr/C/MLD.tcl"
 source "$rpr/C/Liens.tcl"
 
@@ -82,7 +82,7 @@ if {[catch {package require Tk}]} {
     puts " # OK!"
 }
 
-source "$rpr/Themes/katyusha/katyusha_darkblue.tcl"
+source "$rpr/Themes/katyusha/$THEME.tcl"
 
 ttk::style theme use $THEME
 set tbg [ttk::style lookup TFrame -background]
