@@ -10,5 +10,93 @@
         </description>
     </infos>
     
-    
+    <sql>
+        <general>
+            <types>
+                <type>
+                    <nom>integer</nom>
+                    <refenrences>
+                        <reference>tinyint</reference>
+                        <reference>smallint</reference>
+                        <reference>integer</reference>
+                        <reference>bigint</reference>
+                    </refenrences>
+                </type>
+                <type>
+                    <nom>string</nom>
+                    <references>
+                        <reference>varchar</reference>
+                        <reference>char</reference>
+                    </references>
+                </type>
+                <type>
+                    <nom>text</nom>
+                    <references>
+                        <reference>text</reference>
+                        <reference>clob</reference>
+                    </references>
+                </type>
+                <type>
+                    <nom>object</nom>
+                    <references>
+                        <reference>clob</reference>
+                    </references>
+                </type>
+                <type>
+                    <nom>array</nom>
+                    <references>
+                        <reference>clob</reference>
+                    </references>
+                </type>
+                <type>
+                    <nom>decimal</nom>
+                    <references>
+                        <reference>double</reference>
+                    </references>
+                </type>
+                <type>
+                    <nom>float</nom>
+                    <references>
+                        <reference>float</reference>
+                    </references>
+                </type>
+                <type>
+                    <nom>boolean</nom>
+                    <references>
+                        <reference>bool</reference>
+                    </references>
+                </type>
+                <type>
+                    <nom>date</nom>
+                    <references>
+                        <reference>datetime</reference>
+                    </references>
+                </type>
+                <type>
+                    <nom>time</nom>
+                    <references>
+                        <reference>time</reference>
+                    </references>
+                </type>
+                <type>
+                    <nom>datetime</nom>
+                    <references>
+                        <reference>datetime</reference>
+                        <reference>timestamp</reference>
+                    </references>
+                </type>
+            </types>
+        </general>
+        <dialects>
+            <mysql>
+                
+            </mysql>
+            <sqlite>
+                
+            </sqlite>
+            <pgsql>
+                
+            </pgsql>
+        </dialects>
+    </sql>
 </modele>
