@@ -86,6 +86,11 @@
                     </references>
                 </type>
             </types>
+            <clefs>
+                <primaire>
+                    <nom>Id</nom>
+                </primaire>
+            </clefs>
         </general>
         <dialects>
             <mysql>
