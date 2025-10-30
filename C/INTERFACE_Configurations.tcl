@@ -37,11 +37,224 @@ proc INTERFACE_Configurations_preferences {} {
     # Onglets de navigation pour les différents types de réglages
     ttk::notebook $f.onglets
     
+    $f.onglets add [Katyusha_Interface_preferences_generales "$f.onglets"] -text [phgt::mc "Général"]
+    $f.onglets add [Katyusha_Interface_preferences_MCD "$f.onglets"] -text [phgt::mc "MCD"]
+    $f.onglets add [Katyusha_Interface_preferences_UML "$f.onglets"] -text [phgt::mc "UML"]
+    $f.onglets add [Katyusha_Interface_preferences_modules "$f.onglets"] -text [phgt::mc "Modules"]
+    
     pack $f.onglets
+    
+        ttk::frame $f.commandes
+        ttk::button $f.commandes.ok -text [phgt::mc "Valider"] -image $IMG(valider) -compound left -command {
+			global CONFIGS
+			global E_conf_att_pk
+			global E_conf_att_nom
+			global E_conf_att_type
+			global E_conf_att_null
+			global E_conf_att_defaut
+			global E_conf_att_taille
+			
+			
+			set CONFIGS(AFFICHAGE_OBJETS) [list]
+			
+			if {$E_conf_att_pk == 1} {
+				lappend CONFIGS(AFFICHAGE_OBJETS) "pk"
+			}
+			if {$E_conf_att_nom == 1} {
+				lappend CONFIGS(AFFICHAGE_OBJETS) "nom"
+			}
+			if {$E_conf_att_type == 1} {
+				lappend CONFIGS(AFFICHAGE_OBJETS) "type"
+			}
+			if {$E_conf_att_taille == 1} {
+				lappend CONFIGS(AFFICHAGE_OBJETS) "taille"
+			}
+			if {$E_conf_att_null == 1} {
+				lappend CONFIGS(AFFICHAGE_OBJETS) "null"
+			}
+			if {$E_conf_att_defaut == 1} {
+				lappend CONFIGS(AFFICHAGE_OBJETS) "valeur"
+			}
+			
+            set langue [.fen_preferences.pref.langues.lb get]
+            Katyusha_Configurations_sauve $langue 1
+            set res [tk_messageBox -type ok -message [phgt::mc "Le changement de certaines configurations ne prendra effet qu'au redémarrage de Katyusha MCD."]]
+            destroy .fen_preferences
+        }
+        ttk::button $f.commandes.ko -text [phgt::mc "Retour"] -image $IMG(retour) -compound left -command {destroy .fen_preferences}
+        pack $f.commandes.ok $f.commandes.ko -fill x -side left -pady 10 -padx 50
+    pack $f.commandes
     
     set tbg [ttk::style lookup TFrame -background]
     lassign [winfo rgb . $tbg] bg_r bg_g bg_b
     $f configure -background $tbg
+}
+
+##
+# Onglet de configuration générale
+##
+proc Katyusha_Interface_preferences_generales {onglet} {
+    global IMG
+    global CONFIGS
+    global STYLES
+    
+    set f [ttk::frame $onglet.notebook_general]
+    
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
+    set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
+    
+    ttk::frame $onglet.notebook_general.panel
+        # Choix de la langue
+        ttk::frame $onglet.notebook_general.panel.langues
+            ttk::label $onglet.notebook_general.panel.langues.l -text [phgt::mc "Choix de la langue : "] -width 50 -anchor w
+            ttk::combobox $onglet.notebook_general.panel.langues.lb -values [Katyusha_Configurations_liste_langues]
+            $onglet.notebook_general.panel.langues.lb set "$CONFIGS(LANG) - [Katyusha_Configurations_langue_code $CONFIGS(LANG)]"
+            pack $onglet.notebook_general.panel.langues.l $onglet.notebook_general.panel.langues.lb -side left -fill x
+        pack $onglet.notebook_general.panel.langues -fill x -padx 10
+        # Résolution
+        ttk::frame $onglet.notebook_general.panel.resolution
+            ttk::label $onglet.notebook_general.panel.resolution.l -text [phgt::mc "Taille de la fenêtre (auto pour une configuration automatique) : "] -width 50 -anchor w
+            ttk::entry $onglet.notebook_general.panel.resolution.e -textvariable CONFIGS(RESOLUTION)
+            ttk::label $onglet.notebook_general.panel.resolution.info -text [phgt::mc "Attention, la configuration automatique fonctionne mal avec les écrans multiples!"] -foreground red -anchor w
+            pack $onglet.notebook_general.panel.resolution.info -side bottom
+            pack $onglet.notebook_general.panel.resolution.l $onglet.notebook_general.panel.resolution.e -side left -fill x
+        pack $onglet.notebook_general.panel.resolution -fill x -padx 10
+        # Nom de la base par défaut
+        ttk::frame $onglet.notebook_general.panel.base
+            ttk::label $onglet.notebook_general.panel.base.l -text [phgt::mc "Nom par défaut de la base de donnée : "] -width 50 -anchor w
+            ttk::entry $onglet.notebook_general.panel.base.e -textvariable CONFIGS(NOM_BDD_DEFAUT)
+            pack $onglet.notebook_general.panel.base.l $onglet.notebook_general.panel.base.e -side left -fill x
+        pack $onglet.notebook_general.panel.base -fill x -padx 10
+        # SGBD par défaut
+        ttk::frame $f.pref.panel.sgbd
+            ttk::label $f.pref.panel.sgbd.l -text [phgt::mc "SGBD à utiliser par défaut : "] -width 50 -anchor w
+            ttk::combobox $f.pref.panel.sgbd.lb -values [liste_sgbd]
+            pack $f.pref.panel.sgbd.l $f.pref.panel.sgbd.lb -side left -fill x
+        pack $f.pref.panel.sgbd -fill x -padx 10
+        # Taille du canvas
+        ttk::frame $f.pref.panel.taille_canvas
+            ttk::label $f.pref.taille_canvas.l -text [phgt::mc "Taille du canvas : "] -width 50 -anchor w
+            ttk::entry $f.pref.taille_canvas.e -textvariable CONFIGS(TAILLE_CANVAS)
+            pack $f.pref.panel.taille_canvas.l $f.pref.panel.taille_canvas.e -side left -fill x
+        pack $f.pref.panel.taille_canvas -fill x -padx 10
+    pack $f.pref.panel -side left -expand 1
+    
+    return $f
+}
+
+##
+# Gestion des préférences MCD
+##
+proc Katyusha_Interface_preferences_MCD {onglet} {
+    global IMG
+    global CONFIGS
+    global STYLES
+    global E_conf_att_pk
+    global E_conf_att_nom
+    global E_conf_att_type
+    global E_conf_att_null
+    global E_conf_att_defaut
+    global E_conf_att_taille
+    
+    set f [ttk::frame $onglet.notebook_mcd]
+    
+    ##
+    # Gestion de l'affichage au sein des objets
+    ##
+    
+    foreach el $CONFIGS(AFFICHAGE_OBJETS) {
+		if {$el == "pk"} {
+			set E_conf_att_pk 1
+		} elseif {$el == "nom"} {
+			set E_conf_att_nom 1
+		} elseif {$el == "type"} {
+			set E_conf_att_type 1
+		} elseif {$el == "null"} {
+			set E_conf_att_null 1
+		} elseif {$el == "defaut"} {
+			set E_conf_att_defaut 1
+		} elseif {$el == "taille"} {
+			set E_conf_att_taille 1
+		}
+	}
+    
+    ttk::frame $f.aff_objets
+		ttk::label $f.aff_objets.titre -text [phgt::mc "Choisir les propriétés des attributs à afficher à l'intérieur des objets du MCD"]
+		pack $f.aff_objets.titre -fill x -pady 10 -padx 50
+		ttk::frame $f.aff_objets.pk
+			ttk::label $f.aff_objets.pk.f -text [phgt::mc "Clef primaire"] -width 50 -anchor w
+			ttk::checkbutton $f.aff_objets.pk.c -onvalue 1 -offvalue 0 -variable E_conf_att_pk
+			pack $f.aff_objets.pk.f $f.aff_objets.pk.c -side left -anchor w
+		pack $f.aff_objets.pk
+		
+		ttk::frame $f.aff_objets.nom
+			ttk::label $f.aff_objets.nom.f -text [phgt::mc "Nom"] -width 50 -anchor w
+			ttk::checkbutton $f.aff_objets.nom.c -onvalue 1 -offvalue 0 -variable E_conf_att_nom
+			pack $f.aff_objets.nom.f $f.aff_objets.nom.c -side left -anchor w
+		pack $f.aff_objets.nom
+		
+		ttk::frame $f.aff_objets.type
+			ttk::label $f.aff_objets.type.f -text [phgt::mc "Type"] -width 50 -anchor w
+			ttk::checkbutton $f.aff_objets.type.c -onvalue 1 -offvalue 0 -variable E_conf_att_type
+			pack $f.aff_objets.type.f $f.aff_objets.type.c -side left -anchor w
+		pack $f.aff_objets.type
+			
+		ttk::frame $f.aff_objets.taille
+			ttk::label $f.aff_objets.taille.f -text [phgt::mc "Taille de l'attribut"] -width 50 -anchor w
+			ttk::checkbutton $f.aff_objets.taille.c -onvalue 1 -offvalue 0 -variable E_conf_att_taille
+			pack $f.aff_objets.taille.f $f.aff_objets.taille.c -side left -anchor w
+		pack $f.aff_objets.taille
+		
+		ttk::frame $f.aff_objets.null
+			ttk::label $f.aff_objets.null.f -text [phgt::mc "Si l'attribut peut être nul"] -width 50 -anchor w
+			ttk::checkbutton $f.aff_objets.null.c -onvalue 1 -offvalue 0 -variable E_conf_att_null
+			pack $f.aff_objets.null.f $f.aff_objets.null.c -side left -anchor w
+		pack $f.aff_objets.null
+			
+		ttk::frame $f.aff_objets.defaut
+			ttk::label $f.aff_objets.defaut.f -text [phgt::mc "Varleur par défaut"] -width 50 -anchor w
+			ttk::checkbutton $f.aff_objets.defaut.c -onvalue 1 -offvalue 0 -variable E_conf_att_defaut
+			pack $f.aff_objets.defaut.f $f.aff_objets.defaut.c -side left -anchor w
+		pack $f.aff_objets.defaut
+		
+    pack $f.aff_objets -fill x
+    
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
+    set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
+    
+    return $f
+}
+
+##
+# Gestion des préférences UML
+##
+proc Katyusha_Interface_preferences_UML {onglet} {
+    global IMG
+    global CONFIGS
+    global STYLES
+    
+    set f [ttk::frame $onglet.notebook_uml]
+    
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
+    set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
+    
+    return $f
+}
+
+##
+# Gestion des modules
+##
+proc Katyusha_Interface_preferences_modules {onglet} {
+    global IMG
+    global CONFIGS
+    global STYLES
+    
+    set f [ttk::frame $onglet.notebook_modules]
+    
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
+    set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
+    
+    return $f
 }
 
 ##
