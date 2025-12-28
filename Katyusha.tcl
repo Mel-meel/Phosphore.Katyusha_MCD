@@ -71,7 +71,7 @@ source "$rpr/C/Liens.tcl"
 source "$rpr/libs/canvas2svg.tcl"
 source "$rpr/libs/arabe.tcl"
 
-set THEME katyusha_darkblue
+set THEME katyusha_dark
 
 # Tk
 puts -nonewline "Chargement de Tk"
@@ -82,7 +82,7 @@ if {[catch {package require Tk}]} {
     puts " # OK!"
 }
 
-source "$rpr/Themes/katyusha/$THEME.tcl"
+source "$rpr/Themes/katyusha/katyusha_dark.tcl"
 
 ttk::style theme use $THEME
 set tbg [ttk::style lookup TFrame -background]
@@ -107,7 +107,7 @@ Katyusha_Images
 
 # Configurations
 puts "Chargement des configurations"
-set rep_configs "~/.phosphore/katyusha_mcd"
+set rep_configs "[Katyusha_C_get_home_dir]/.phosphore/katyusha_mcd"
 Katyusha_Configurations_init
 Katyusha_Configurations_charge $rpr $rep_configs
 
@@ -132,7 +132,7 @@ set zoom_compteur 0
 
 # Initialisation de la traduction
 puts "Chargement de la langue locale"
-phgt::src "$rpr/locale" "fr"
+phgt::src "$rpr/locale" "en"
 
 
 # Par défaut, français

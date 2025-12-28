@@ -273,3 +273,15 @@ proc Katyusha_C_fichier_enrigistrer {fichier contenu acces} {
     puts $stream $contenu
     close $stream
 }
+
+proc Katyusha_C_get_home_dir { } {
+    global env
+    # Check if we're using windows
+    if { [expr [string compare "$::tcl_platform(platform)" "windows" ] == 0] } {
+        package require registry 1.0
+        set env_home [registry get {HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders} {Personal}]
+    } else {
+        set env_home $env(HOME)
+    }
+    return $env_home
+}

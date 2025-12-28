@@ -29,11 +29,12 @@ proc Katyusha_Configurations_init {} {
     global nom_script
     global rep_mcd
     
+    set home [Katyusha_C_get_home_dir]
     ##
     # Créé les répertoires de configuration s'il n'existent pas
     ##
-    if {![file exists "~/.phosphore"]} {
-        file mkdir "~/.phosphore"
+    if {![file exists "$home/.phosphore"]} {
+        file mkdir "$home/.phosphore"
     }
     if {![file exists $rep_configs]} {
         file mkdir $rep_configs
@@ -47,7 +48,7 @@ proc Katyusha_Configurations_init {} {
     }
     
     # Répertoire par défaut des projets Katyusha! MCD
-    set rep_mcd "~/Documents/Katyusha_projets"
+    set rep_mcd "$home/Documents/Katyusha_projets"
     # Si il n'existe pas, le créer
     if {![file exists $rep_mcd]} {
         file mkdir $rep_mcd

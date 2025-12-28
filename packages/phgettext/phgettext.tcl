@@ -33,6 +33,7 @@ namespace eval phgt {
 
 proc phgt::src {dossier langue_i} {
     variable sources
+    variable traduction
     
     set ok 0
     if {[file isdirectory $dossier] == 1} {
@@ -80,7 +81,7 @@ proc phgt::src {dossier langue_i} {
                     set curseur [lindex $res 0]
                     set valeur [lindex $res 1]
                     set etape 1
-                    dict set phgt::traduction [string map {"\\n" "\n" "\\t" "\t" "\\r" "\r"} $clef] [string map {"\\n" "\n" "\\t" "\t" "\\r" "\r"} $valeur]
+                    dict set traduction [string map {"\\n" "\n" "\\t" "\t" "\\r" "\r"} $clef] [string map {"\\n" "\n" "\\t" "\t" "\\r" "\r"} $valeur]
                 }
             }
         }
@@ -109,9 +110,11 @@ proc phgt::_chaine {curseur contenu} {
 }
 
 proc phgt::mc {clef {variables ""}} {
+    variable traduction
+    
     # Si aucune clef ne correspond à celle spécifiée, on prend la clef passée en paramètre comme valeur
-    if {[lsearch [dict keys $phgt::traduction] $clef] >= 0} {
-        set valeur [dict get $phgt::traduction $clef]
+    if {[lsearch [dict keys $traduction] $clef] >= 0} {
+        set valeur [dict get $traduction $clef]
     } else {
         set valeur $clef
     }
