@@ -181,6 +181,13 @@ proc INTERFACE_liste_objets {} {
     global IMG
     global LOCALE
     
+    # Couleurs
+    set ddbackground [Katyusha_Configurations_couleurs "-ddbackground"]
+    set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
+    set background [Katyusha_Configurations_couleurs "-frame"]
+    set foreground [Katyusha_Configurations_couleurs "-foreground"]
+    
     set f ".fen_liste_entites"
     
     set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
@@ -289,7 +296,9 @@ proc INTERFACE_liste_objets {} {
     wm title $f "Liste des entités du MCD"
     
     # Couleur de fond de la fenêtre
-    $f configure -background $lbackground
+    set tbg [ttk::style lookup TFrame -background]
+    lassign [winfo rgb . $tbg] bg_r bg_g bg_b
+    $f configure -background $tbg
     
     update
 }
