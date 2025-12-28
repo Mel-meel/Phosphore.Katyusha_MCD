@@ -40,6 +40,7 @@ proc INTERFACE_Configurations_preferences {} {
     $f.onglets add [Katyusha_Interface_preferences_generales "$f.onglets"] -text [phgt::mc "Général"]
     $f.onglets add [Katyusha_Interface_preferences_MCD "$f.onglets"] -text [phgt::mc "MCD"]
     $f.onglets add [Katyusha_Interface_preferences_UML "$f.onglets"] -text [phgt::mc "UML"]
+    $f.onglets add [Katyusha_Interface_preferences_code "$f.onglets"] -text [phgt::mc "Génération de code"]
     $f.onglets add [Katyusha_Interface_preferences_modules "$f.onglets"] -text [phgt::mc "Modules"]
     
     pack $f.onglets
@@ -85,6 +86,8 @@ proc INTERFACE_Configurations_preferences {} {
         pack $f.commandes.ok $f.commandes.ko -fill x -side left -pady 10 -padx 50
     pack $f.commandes
     
+    wm title $f [phgt::mc "Préférences de Katyusha MCD"]
+    
     set tbg [ttk::style lookup TFrame -background]
     lassign [winfo rgb . $tbg] bg_r bg_g bg_b
     $f configure -background $tbg
@@ -103,41 +106,41 @@ proc Katyusha_Interface_preferences_generales {onglet} {
     set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
     set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
     
-    ttk::frame $onglet.notebook_general.panel
+    ttk::frame $f.pref
         # Choix de la langue
-        ttk::frame $onglet.notebook_general.panel.langues
-            ttk::label $onglet.notebook_general.panel.langues.l -text [phgt::mc "Choix de la langue : "] -width 50 -anchor w
-            ttk::combobox $onglet.notebook_general.panel.langues.lb -values [Katyusha_Configurations_liste_langues]
-            $onglet.notebook_general.panel.langues.lb set "$CONFIGS(LANG) - [Katyusha_Configurations_langue_code $CONFIGS(LANG)]"
-            pack $onglet.notebook_general.panel.langues.l $onglet.notebook_general.panel.langues.lb -side left -fill x
-        pack $onglet.notebook_general.panel.langues -fill x -padx 10
+        ttk::frame $f.pref.langues
+            ttk::label $f.pref.langues.l -text [phgt::mc "Choix de la langue : "] -width 50 -anchor w
+            ttk::combobox $f.pref.langues.lb -values [Katyusha_Configurations_liste_langues]
+            $f.pref.langues.lb set "$CONFIGS(LANG) - [Katyusha_Configurations_langue_code $CONFIGS(LANG)]"
+            pack $f.pref.langues.l $f.pref.langues.lb -side left -fill x
+        pack $f.pref.langues -fill x -padx 10
         # Résolution
-        ttk::frame $onglet.notebook_general.panel.resolution
-            ttk::label $onglet.notebook_general.panel.resolution.l -text [phgt::mc "Taille de la fenêtre (auto pour une configuration automatique) : "] -width 50 -anchor w
-            ttk::entry $onglet.notebook_general.panel.resolution.e -textvariable CONFIGS(RESOLUTION)
-            ttk::label $onglet.notebook_general.panel.resolution.info -text [phgt::mc "Attention, la configuration automatique fonctionne mal avec les écrans multiples!"] -foreground red -anchor w
-            pack $onglet.notebook_general.panel.resolution.info -side bottom
-            pack $onglet.notebook_general.panel.resolution.l $onglet.notebook_general.panel.resolution.e -side left -fill x
-        pack $onglet.notebook_general.panel.resolution -fill x -padx 10
+        ttk::frame $f.pref.resolution
+            ttk::label $f.pref.resolution.l -text [phgt::mc "Taille de la fenêtre (auto pour une configuration automatique) : "] -width 50 -anchor w
+            ttk::entry $f.pref.resolution.e -textvariable CONFIGS(RESOLUTION)
+            ttk::label $f.pref.resolution.info -text [phgt::mc "Attention, la configuration automatique fonctionne mal avec les écrans multiples!"] -foreground red -anchor w
+            pack $f.pref.resolution.info -side bottom
+            pack $f.pref.resolution.l $f.pref.resolution.e -side left -fill x
+        pack $f.pref.resolution -fill x -padx 10
         # Nom de la base par défaut
-        ttk::frame $onglet.notebook_general.panel.base
-            ttk::label $onglet.notebook_general.panel.base.l -text [phgt::mc "Nom par défaut de la base de donnée : "] -width 50 -anchor w
-            ttk::entry $onglet.notebook_general.panel.base.e -textvariable CONFIGS(NOM_BDD_DEFAUT)
-            pack $onglet.notebook_general.panel.base.l $onglet.notebook_general.panel.base.e -side left -fill x
-        pack $onglet.notebook_general.panel.base -fill x -padx 10
+        ttk::frame $f.pref.base
+            ttk::label $f.pref.base.l -text [phgt::mc "Nom par défaut de la base de donnée : "] -width 50 -anchor w
+            ttk::entry $f.pref.base.e -textvariable CONFIGS(NOM_BDD_DEFAUT)
+            pack $f.pref.base.l $f.pref.base.e -side left -fill x
+        pack $f.pref.base -fill x -padx 10
         # SGBD par défaut
-        ttk::frame $f.pref.panel.sgbd
-            ttk::label $f.pref.panel.sgbd.l -text [phgt::mc "SGBD à utiliser par défaut : "] -width 50 -anchor w
-            ttk::combobox $f.pref.panel.sgbd.lb -values [liste_sgbd]
-            pack $f.pref.panel.sgbd.l $f.pref.panel.sgbd.lb -side left -fill x
-        pack $f.pref.panel.sgbd -fill x -padx 10
+        ttk::frame $f.pref.sgbd
+            ttk::label $f.pref.sgbd.l -text [phgt::mc "SGBD à utiliser par défaut : "] -width 50 -anchor w
+            ttk::combobox $f.pref.sgbd.lb -values [liste_sgbd]
+            pack $f.pref.sgbd.l $f.pref.sgbd.lb -side left -fill x
+        pack $f.pref.sgbd -fill x -padx 10
         # Taille du canvas
-        ttk::frame $f.pref.panel.taille_canvas
+        ttk::frame $f.pref.taille_canvas
             ttk::label $f.pref.taille_canvas.l -text [phgt::mc "Taille du canvas : "] -width 50 -anchor w
             ttk::entry $f.pref.taille_canvas.e -textvariable CONFIGS(TAILLE_CANVAS)
-            pack $f.pref.panel.taille_canvas.l $f.pref.panel.taille_canvas.e -side left -fill x
-        pack $f.pref.panel.taille_canvas -fill x -padx 10
-    pack $f.pref.panel -side left -expand 1
+            pack $f.pref.taille_canvas.l $f.pref.taille_canvas.e -side left -fill x
+        pack $f.pref.taille_canvas -fill x -padx 10
+    pack $f.pref -side left -expand 1
     
     return $f
 }
@@ -234,6 +237,22 @@ proc Katyusha_Interface_preferences_UML {onglet} {
     global STYLES
     
     set f [ttk::frame $onglet.notebook_uml]
+    
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
+    set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
+    
+    return $f
+}
+
+##
+# Gestion de la génération de code
+##
+proc Katyusha_Interface_preferences_code {onglet} {
+    global IMG
+    global CONFIGS
+    global STYLES
+    
+    set f [ttk::frame $onglet.notebook_code]
     
     set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
     set dbackground [Katyusha_Configurations_couleurs "-dbackground"]
