@@ -82,7 +82,9 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
     }
     
     # Couleur de fond de la fenêtre
-    $f configure -background $lbackground
+    set tbg [ttk::style lookup TFrame -background]
+    lassign [winfo rgb . $tbg] bg_r bg_g bg_b
+    $f configure -background $tbg
     
     # Mise à jour forcée de l'affichage graphique
     update
@@ -90,8 +92,10 @@ proc Katyusha_UML_Interface_Classes_ajout_classe {x y {id "null"}} {
 
 proc Katyusha_UML_Interface_Classes_notebook_attributs {f id} {
     global IMG
-    
+    # Couleurs
     set background [Katyusha_Configurations_couleurs "-frame"]
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
+    set foreground [Katyusha_Configurations_couleurs "-foreground"]
     
     ##
     # Attributs de la classe
@@ -127,7 +131,7 @@ proc Katyusha_UML_Interface_Classes_notebook_attributs {f id} {
         pack $f.attributs.table_tete -anchor w -expand 1
         
         # Attributs dans un canvas pour pouvoir utiliser une scrollbar
-        canvas $f.attributs.c -background [dict get $STYLES "lbackground"] -highlightbackground [dict get $STYLES "graphics"]
+        canvas $f.attributs.c -background $lbackground -highlightbackground $lbackground
         ttk::frame $f.attributs.c.f
             # Liste des attributs
             ttk::frame $f.attributs.c.f.liste
@@ -159,8 +163,10 @@ proc Katyusha_UML_Interface_Classes_notebook_attributs {f id} {
 
 proc Katyusha_UML_Interface_Classes_notebook_methodes {f id} {
     global IMG
-    
+    # Couleurs
     set background [Katyusha_Configurations_couleurs "-frame"]
+    set lbackground [Katyusha_Configurations_couleurs "-lbackground"]
+    set foreground [Katyusha_Configurations_couleurs "-foreground"]
     
     ###
     # Méthodes de la classe
@@ -194,7 +200,7 @@ proc Katyusha_UML_Interface_Classes_notebook_methodes {f id} {
         pack $f.methodes.table_tete -anchor w -expand 1
         
         # Attributs dans un canvas pour pouvoir utiliser une scrollbar
-        canvas $f.methodes.c -background [dict get $STYLES "lbackground"] -highlightbackground [dict get $STYLES "graphics"]
+        canvas $f.methodes.c -background $lbackground -highlightbackground $lbackground
         ttk::frame $f.methodes.c.f
             # Liste des attributs
             ttk::frame $f.methodes.c.f.liste

@@ -163,7 +163,9 @@ proc Katyusha_UML_Interface_Objets_ajout_methode {objet {id "null"}} {
     wm title $f [phgt::mc "Ajouter un attribut"]
     
     # Couleur de fond de la fenêtre
-    $f configure -background $lbackground
+    set tbg [ttk::style lookup TFrame -background]
+    lassign [winfo rgb . $tbg] bg_r bg_g bg_b
+    $f configure -background $tbg
     
     update
 }

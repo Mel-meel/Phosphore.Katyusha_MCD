@@ -220,7 +220,9 @@ proc Katyusha_Interface_Objets_MCD_UML_ajout_attribut {objet {id "null"} {env "m
     wm title $f [phgt::mc "Ajouter un attribut"]
     
     # Couleur de fond de la fenêtre
-    $f configure -background $lbackground
+    set tbg [ttk::style lookup TFrame -background]
+    lassign [winfo rgb . $tbg] bg_r bg_g bg_b
+    $f configure -background $tbg
     
     update
 }
