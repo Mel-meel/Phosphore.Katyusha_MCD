@@ -18,14 +18,18 @@ LDFLAGS = $(TCL_LIBS)
 TARGET = Katyusha_MCD
 SOURCES = main.c
 OBJECTS = $(SOURCES:.c=.o)
-LIST_FILE = list.conf
+LIST_FILE = scripts.conf
 EMBEDDED_HEADER = scripts_embedded.h
+FILES_LIST = files.conf
+EMBEDDED_FILES_HEADER = files_embedded.h
+
+EMBEDDED_HEADERS = scripts_embedded.h files_embedded.h
 
 # Script d'embarquement
 EMBED_SCRIPT = "./embed_scripts.sh"
 
 # Règle par défaut
-all: $(EMBEDDED_HEADER) $(TARGET)
+all: $(EMBEDDED_HEADERS) $(TARGET)
 	@echo ""
 	@echo "=========================================="
 	@echo "✓ Successfuly compiled !"
@@ -36,15 +40,15 @@ all: $(EMBEDDED_HEADER) $(TARGET)
 	@echo "=========================================="
 
 # Générer le header avec tous les scripts embarqués
-$(EMBEDDED_HEADER): Katyusha.tcl $(LIST_FILE)
-	@echo "Génération de $(EMBEDDED_HEADER)..."
+$(EMBEDDED_HEADERS): Katyusha.tcl $(LIST_FILE) $(FILES_LIST)
+	@echo "Embedded headers generation..."
 	@if [ -f "embed_scripts.py" ]; then \
 		python3 embed_scripts.py; \
 	elif [ -f "embed_scripts.sh" ]; then \
 		chmod +x embed_scripts.sh; \
 		./embed_scripts.sh; \
 	else \
-		echo "ERREUR: Aucun script d'embarquement trouvé!"; \
+		echo "ERREUR : No script found !"; \
 		exit 1; \
 	fi
 
@@ -53,7 +57,7 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 
 # Compilation des fichiers objets (dépend du header embarqué)
-%.o: %.c $(EMBEDDED_HEADER)
+%.o: %.c $(EMBEDDED_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Créer Katyusha.tcl par défaut s'il n'existe pas
@@ -73,13 +77,13 @@ $(LIST_FILE):
 
 # Règle de nettoyage
 clean:
-	rm -f $(OBJECTS) $(TARGET) $(EMBEDDED_HEADER)
+	rm -f $(OBJECTS) $(TARGET) $(EMBEDDED_HEADERS)
 	@echo "Nettoyage effectué."
 
 # Nettoyage complet
 distclean: clean
-	rm -f $(LIST_FILE)
-	@echo "Nettoyage complet effectué."
+	rm -f $(LIST_FILE) $(FILES_LIST)
+	@echo "Complete cleaning done."
 
 # Règle pour exécuter le programme
 run: $(TARGET)
@@ -98,10 +102,12 @@ list-scripts: $(TARGET)
 	./$(TARGET) --list-scripts
 
 # Afficher le contenu du header embarqué
-show-embedded: $(EMBEDDED_HEADER)
-	@echo "Contenu de $(EMBEDDED_HEADER):"
-	@head -50 $(EMBEDDED_HEADER)
-	@echo "..."
+show-embedded: $(EMBEDDED_HEADERS)
+	@echo "Content of scripts_embedded.h:"
+	@head -40 scripts_embedded.h
+	@echo ""
+	@echo "Content of files_embedded.h:"
+	@head -40 files_embedded.h
 
 # Afficher les flags utilisés
 info:

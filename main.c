@@ -30,10 +30,104 @@ static int verbose = 0;
 #define LOG_WARN(...)  do { fprintf(stderr, "[WARN] " __VA_ARGS__); fprintf(stderr, "\n"); } while(0)
 
 /* ============================================================================
- * Scripts embarqués
+ * Scripts et ressources embarqués
  * ========================================================================= */
 
 #include "scripts_embedded.h"
+#include "files_embedded.h"
+
+static int ListResources_Cmd(void *clientData, Tcl_Interp *interp,
+                             int objc, Tcl_Obj *const objv[])
+{
+    Tcl_Obj *listObj;
+    int i;
+
+    (void)clientData;
+    (void)objc;
+    (void)objv;
+
+    listObj = Tcl_NewListObj(0, NULL);
+
+    for (i = 0; i < EMBEDDED_FILES_COUNT; i++) {
+        Tcl_ListObjAppendElement(
+            interp,
+            listObj,
+            Tcl_NewStringObj(embedded_files[i].name, -1)
+        );
+    }
+
+    Tcl_SetObjResult(interp, listObj);
+    return TCL_OK;
+}
+
+static int GetResource_Cmd(void *clientData, Tcl_Interp *interp,
+                           int objc, Tcl_Obj *const objv[])
+{
+    const char *name;
+    int i;
+
+    (void)clientData;
+
+    if (objc != 2) {
+        Tcl_WrongNumArgs(interp, 1, objv, "resource_name");
+        return TCL_ERROR;
+    }
+
+    name = Tcl_GetString(objv[1]);
+
+    for (i = 0; i < EMBEDDED_FILES_COUNT; i++) {
+        if (strcmp(embedded_files[i].name, name) == 0) {
+            Tcl_Obj *obj = Tcl_NewByteArrayObj(
+                embedded_files[i].data,
+                embedded_files[i].length
+            );
+            Tcl_SetObjResult(interp, obj);
+            return TCL_OK;
+        }
+    }
+
+    Tcl_SetResult(interp, "resource not found", TCL_STATIC);
+    return TCL_ERROR;
+}
+
+static int ResourceToFile_Cmd(void *clientData, Tcl_Interp *interp,
+                              int objc, Tcl_Obj *const objv[])
+{
+    const char *name;
+    const char *path;
+    FILE *f;
+    int i;
+
+    (void)clientData;
+
+    if (objc != 3) {
+        Tcl_WrongNumArgs(interp, 1, objv, "resource_name path");
+        return TCL_ERROR;
+    }
+
+    name = Tcl_GetString(objv[1]);
+    path = Tcl_GetString(objv[2]);
+
+    for (i = 0; i < EMBEDDED_FILES_COUNT; i++) {
+        if (strcmp(embedded_files[i].name, name) == 0) {
+            f = fopen(path, "wb");
+            if (!f) {
+                Tcl_SetResult(interp, "cannot open file", TCL_STATIC);
+                return TCL_ERROR;
+            }
+
+            fwrite(embedded_files[i].data, 1,
+                   embedded_files[i].length, f);
+            fclose(f);
+            return TCL_OK;
+        }
+    }
+
+    Tcl_SetResult(interp, "resource not found", TCL_STATIC);
+    return TCL_ERROR;
+}
+
+
 
 /* ============================================================================
  * Variables globales
@@ -255,6 +349,19 @@ static int register_custom_commands(Tcl_Interp *interp)
     Tcl_CreateObjCommand(interp, "list_embedded", 
                         ListEmbedded_Cmd, 
                         (void *)NULL, NULL);
+    
+    /* Ressources binaires embarquées */
+    Tcl_CreateObjCommand(interp, "list_resources",
+                        ListResources_Cmd,
+                        NULL, NULL);
+
+    Tcl_CreateObjCommand(interp, "get_resource",
+                        GetResource_Cmd,
+                        NULL, NULL);
+
+    Tcl_CreateObjCommand(interp, "resource_to_file",
+                        ResourceToFile_Cmd,
+                        NULL, NULL);
     
     return TCL_OK;
 }
