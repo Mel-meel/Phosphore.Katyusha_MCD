@@ -77,7 +77,7 @@ proc INTERFACE_Configurations_preferences {} {
 				lappend CONFIGS(AFFICHAGE_OBJETS) "valeur"
 			}
 			
-            set langue [.fen_preferences.pref.langues.lb get]
+            set langue [.fen_preferences.onglets.notebook_general.pref.langues.lb get]
             Katyusha_Configurations_sauve $langue 1
             set res [tk_messageBox -type ok -message [phgt::mc "Le changement de certaines configurations ne prendra effet qu'au redémarrage de Katyusha MCD."]]
             destroy .fen_preferences
