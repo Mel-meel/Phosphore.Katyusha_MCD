@@ -29,6 +29,23 @@ proc Katyusha_Configurations_init {} {
     global nom_script
     global rep_mcd
     
+    # Import de toutes les variables globales pouvant être configurées
+    global E_conf_att_pk
+	global E_conf_att_nom
+	global E_conf_att_type
+	global E_conf_att_null
+	global E_conf_att_defaut
+	global E_conf_att_taille
+    
+    # Initialisation par défaut à une valeur nulle de touttes les variables globales pouvant être configurées
+    # le chargement des configurations de l'utilisateur viendra mettre d'autres valeurs là où c'est nécessaire.
+    set E_conf_att_pk 0
+    set E_conf_att_nom 0
+	set E_conf_att_type 0
+	set E_conf_att_null 0
+	set E_conf_att_defaut 0
+	set E_conf_att_taille 0
+    
     set home [Katyusha_C_get_home_dir]
     ##
     # Créé les répertoires de configuration s'il n'existent pas
