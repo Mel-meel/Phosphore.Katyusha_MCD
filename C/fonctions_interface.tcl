@@ -20,7 +20,7 @@
 proc INTERFACE_apropos {} {
     global version
     global IMG
-    global IMG
+    global STYLES
     
     set f ".fen_a_propos"
     # Détruit la fenêtre si elle existe déjà
@@ -30,14 +30,18 @@ proc INTERFACE_apropos {} {
     toplevel $f
     # Icone de la fenêtre
     wm iconphoto $f $IMG(logo)
-    label $f.titre -text "Katyusha MCD v$version"
-    label $f.logo -image $IMG(splash)
-    label $f.texte -text [phgt::mc "À propos"]
-    label $f.lien -text "http://katyusha-mcd.projet-phosphore.anazaar.org" -foreground blue -font Underline-Font
-    button $f.ok -text "OK" -command "destroy $f"
-    pack $f.titre $f.logo $f.texte $f.lien $f.ok -fill x
+    ttk::label $f.titre -text "Katyusha MCD v$version"
+    ttk::label $f.logo -image $IMG(splash)
+    ttk::label $f.texte -text [phgt::mc "À propos"]
+    ttk::label $f.lien -text "http://katyusha-mcd.projet-phosphore.anazaar.org" -foreground blue -font Underline-Font
+    ttk::button $f.ok -text "OK" -command "destroy $f"
+    pack $f.titre $f.logo $f.texte $f.lien $f.ok -fill x -pady 10 -padx 50
     # Titre le la présente fenêtre
     wm title $f [phgt::mc "À propos"]
+    
+    # Couleur de fond de la fenêtre
+    $f configure -background [dict get $STYLES "lbackground"]
+    
     # Mise à jour forcée de l'affichage graphique
     update
 }
@@ -98,6 +102,7 @@ proc INTERFACE_generation_sql {} {
 ##
 proc INTERFACE_erreurs_MCD {erreurs} {
     global IMG
+    global STYLES
     
     set texte ""
     
@@ -113,11 +118,11 @@ proc INTERFACE_erreurs_MCD {erreurs} {
     toplevel $f
     # Icone de la fenêtre
     wm iconphoto $f $IMG(logo)
-    frame $f.commandes
+    ttk::frame $f.commandes
     pack $f.commandes -fill x
-    frame $f.texte
+    ttk::frame $f.texte
         text $f.texte.t -yscrollcommand {.fen_erreurs_mcd.texte.ysbar set}
-        scrollbar $f.texte.ysbar -orient vertical -command {.fen_erreurs_mcd.texte.t yview}
+        ttk::scrollbar $f.texte.ysbar -orient vertical -command {.fen_erreurs_mcd.texte.t yview}
         pack $f.texte.t -fill both -side left -expand 1
         pack $f.texte.ysbar -fill y -side left
     pack $f.texte -fill both -expand 1
